@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 
 public class QOTD {
-	private JDA builder;
+	public JDA builder;
 	private LinkedList<Question> questions = new LinkedList<Question>();
 	public QOTD(String token) throws LoginException, InterruptedException {
 		builder = JDABuilder.createDefault(token).build();

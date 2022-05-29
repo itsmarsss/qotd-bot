@@ -1,5 +1,6 @@
 package QOTDBot;
 
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
@@ -51,6 +52,9 @@ public class CMD extends ListenerAdapter{
 			case "interval":
 				qotdInterval(raw);
 				break;
+			case "prefix":
+				prefix(raw);
+				break;
 			}
 		}
 		if(event.getMember().isOwner()) {
@@ -62,9 +66,21 @@ public class CMD extends ListenerAdapter{
 		}
 	}
 
+	private void prefix(String raw) {
+		// qotd prefix
+		try {
+			String param = raw.split(" ")[2].trim();
+			Main.prefix = param;
+			e.getMessage().reply("QOTD prefix has been changed to `" + param + "`.").queue();
+			Main.qotd.builder.getPresence().setActivity(Activity.watching("for '" + Main.prefix + " help'"));
+		}catch(Exception e) {
+			this.e.getMessage().reply("Invalid prefix.");
+		}
+	}
+
 	private void qotdManager(String raw) {
-		// dnd managerrole
-		String param = raw.substring(15).trim();
+		// qotd managerrole
+		String param = raw.substring(Main.prefix.length()+1+11).trim();
 		boolean exists = false;
 		for(Role r : e.getGuild().getRoles()) {
 			if(r.getId().equals(param)) {
@@ -80,9 +96,9 @@ public class CMD extends ListenerAdapter{
 	}
 
 	private void qotdInterval(String raw) {
-		// dnd interval
+		// qotd interval
 		try {
-			int param = Integer.parseInt(raw.substring(12).trim());
+			int param = Integer.parseInt(raw.substring(Main.prefix.length()+1+8).trim());
 			if(param < 1 || param > 240) {
 				e.getMessage().reply("Invalid number.").queue();
 			}else{
@@ -95,8 +111,8 @@ public class CMD extends ListenerAdapter{
 	}
 
 	private void qotdChannel(String raw) {
-		// dnd qotdchannel
-		String param = raw.substring(15).trim();
+		// qotd qotdchannel
+		String param = raw.substring(Main.prefix.length()+1+11).trim();
 		boolean exists = false;
 		for(GuildChannel ch : e.getGuild().getChannels()) {
 			if(ch.getId().equals(param)) {
@@ -112,8 +128,8 @@ public class CMD extends ListenerAdapter{
 	}
 
 	private void addQuestion(String raw, User user) {
-		// dnd add
-		String[]param = raw.substring(7).split("-=-");
+		// qotd add
+		String[]param = raw.substring(Main.prefix.length()+1+3).split("-=-");
 		for(int i = 0; i < param.length; i++) {
 			param[i].trim();
 		}
@@ -131,9 +147,9 @@ public class CMD extends ListenerAdapter{
 	}
 
 	private void removeQuestion(String raw) {
-		// dnd remove
+		// qotd remove
 		try {
-			int param = Integer.parseInt(raw.substring(10).trim());
+			int param = Integer.parseInt(raw.substring(Main.prefix.length()+1+6).trim());
 			int status = Main.qotd.remove(param);
 			if(status == -1) {
 				e.getMessage().reply("Invalid number.").queue();
@@ -146,9 +162,9 @@ public class CMD extends ListenerAdapter{
 	}
 
 	private void showQuestion(String raw) {
-		// dnd view
+		// qotd view
 		try {
-			int param = Integer.parseInt(raw.substring(8).trim());
+			int param = Integer.parseInt(raw.substring(Main.prefix.length()+1+4).trim());
 			Question q = Main.qotd.getQuestions().get(param);
 			e.getMessage().reply("**__QOTD #" + param + ";__**\n" + q).queue();
 		}catch(Exception e) {
@@ -157,7 +173,7 @@ public class CMD extends ListenerAdapter{
 	}
 
 	private void showQueue() {
-		// dnd showqueue
+		// qotd showqueue
 		String out = "**__QOTD Queue:__**";
 		int c = 0;
 		for(Question q : Main.qotd.getQuestions()) {
@@ -172,7 +188,7 @@ public class CMD extends ListenerAdapter{
 	}
 
 	private void help() {
-		// dnd help
+		// qotd help
 		e.getMessage().reply(
 				"**Commands**"
 						+ "\n`dnd add <question 500 char>-=-<footer 100 char>`"
