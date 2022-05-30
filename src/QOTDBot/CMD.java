@@ -1,5 +1,9 @@
 package QOTDBot;
 
+import java.awt.Color;
+
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
@@ -21,30 +25,34 @@ public class CMD extends ListenerAdapter{
 		if(!rawSplit[0].equals(Main.prefix) || rawSplit.length == 1) {
 			return;
 		}
+
 		switch(rawSplit[1]) {
-		case "add":
-			addQuestion(raw, event.getAuthor());
-			break;
-		case "view":
-			showQuestion(raw);
-			break;
-		case "viewqueue":
-			showQueue();
-			break;
 		case "help":
 			help();
 			break;
 		}
-		boolean manager = false;
-		for(Role r : event.getMember().getRoles()) {
-			if(r.getId().equals(Main.managerRoleID)) {
-				manager = true;
+
+		if(hasPerm(Main.permRoleID) || hasPerm(Main.managerRoleID) || isAdmin()) {
+			switch(rawSplit[1]) {
+			case "add":
+				addQuestion(raw, event.getAuthor());
+				break;
 			}
 		}
-		if(manager || event.getMember().isOwner()) {
+
+		if(hasPerm(Main.managerRoleID) || isAdmin()) {
 			switch(rawSplit[1]) {
 			case "remove":
 				removeQuestion(raw);
+				break;
+			case "view":
+				viewQuestion(raw);
+				break;
+			case "viewqueue":
+				viewQueue();
+				break;
+			case "qotdtest":
+				qotdTest();
 				break;
 			case "qotdchannel":
 				qotdChannel(raw);
@@ -53,78 +61,34 @@ public class CMD extends ListenerAdapter{
 				qotdInterval(raw);
 				break;
 			case "prefix":
-				prefix(raw);
+				qotdPrefix(raw);
 				break;
 			}
 		}
-		if(event.getMember().isOwner()) {
+		if(isAdmin()) {
 			switch(rawSplit[1]) {
 			case "managerrole":
 				qotdManager(raw);
 				break;
+			case "permrole":
+				qotdPerm(raw);
 			}
 		}
 	}
 
-	private void prefix(String raw) {
-		// qotd prefix
-		try {
-			String param = raw.split(" ")[2].trim();
-			Main.prefix = param;
-			e.getMessage().reply("QOTD prefix has been changed to `" + param + "`.").queue();
-			Main.qotd.builder.getPresence().setActivity(Activity.watching("for '" + Main.prefix + " help'"));
-		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid prefix.");
-		}
-	}
-
-	private void qotdManager(String raw) {
-		// qotd managerrole
-		String param = raw.substring(Main.prefix.length()+1+11).trim();
-		boolean exists = false;
-		for(Role r : e.getGuild().getRoles()) {
-			if(r.getId().equals(param)) {
-				exists = true;
+	private boolean hasPerm(String ID) {
+		if(ID.isBlank())
+			return true;
+		for(Role r : e.getMember().getRoles()) {
+			if(r.getId().equals(ID)) {
+				return true;
 			}
 		}
-		if(exists) {
-			Main.managerRoleID = param;
-			e.getMessage().reply("QOTD manager role has been changed to <@&" + param + ">.").queue();
-		}else{
-			e.getMessage().reply("Invalid role id.").queue();
-		}
+		return false;
 	}
 
-	private void qotdInterval(String raw) {
-		// qotd interval
-		try {
-			int param = Integer.parseInt(raw.substring(Main.prefix.length()+1+8).trim());
-			if(param < 1 || param > 240) {
-				e.getMessage().reply("Invalid number.").queue();
-			}else{
-				Main.interval = param;
-				e.getMessage().reply("QOTD interval has been changed to " + param + " hour(s).").queue();
-			}
-		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid number.").queue();
-		}
-	}
-
-	private void qotdChannel(String raw) {
-		// qotd qotdchannel
-		String param = raw.substring(Main.prefix.length()+1+11).trim();
-		boolean exists = false;
-		for(GuildChannel ch : e.getGuild().getChannels()) {
-			if(ch.getId().equals(param)) {
-				exists = true;
-			}
-		}
-		if(exists) {
-			Main.channelID = param;
-			e.getMessage().reply("QOTD channel has been changed to <#" + param + ">.").queue();
-		}else{
-			e.getMessage().reply("Invalid channel id.").queue();
-		}
+	private boolean isAdmin() {
+		return e.getMember().hasPermission(Permission.ADMINISTRATOR);
 	}
 
 	private void addQuestion(String raw, User user) {
@@ -161,7 +125,7 @@ public class CMD extends ListenerAdapter{
 		}
 	}
 
-	private void showQuestion(String raw) {
+	private void viewQuestion(String raw) {
 		// qotd view
 		try {
 			int param = Integer.parseInt(raw.substring(Main.prefix.length()+1+4).trim());
@@ -172,7 +136,7 @@ public class CMD extends ListenerAdapter{
 		}
 	}
 
-	private void showQueue() {
+	private void viewQueue() {
 		// qotd showqueue
 		String out = "**__QOTD Queue:__**";
 		int c = 0;
@@ -187,20 +151,123 @@ public class CMD extends ListenerAdapter{
 		}
 	}
 
+	private void qotdTest() {
+		// qotd testqotd
+		EmbedBuilder QOTDEmbed = new EmbedBuilder();
+		QOTDEmbed.setAuthor("Added by: *author here*", null, Main.qotd.builder.getSelfUser().getAvatarUrl())
+		.setTitle("QOTD For Today!\n**Question:** *question here*")
+		.setDescription("*footer here*")
+		.setFooter("Added on: *date here*")
+		.setColor(new Color(230, 33, 39));
+		e.getMessage().replyEmbeds(QOTDEmbed.build()).queue();
+	}
+
+	private void qotdChannel(String raw) {
+		// qotd qotdchannel
+		String param = raw.substring(Main.prefix.length()+1+11).trim();
+		boolean exists = false;
+		for(GuildChannel ch : e.getGuild().getChannels()) {
+			if(ch.getId().equals(param)) {
+				exists = true;
+			}
+		}
+		if(exists) {
+			Main.channelID = param;
+			e.getMessage().reply("QOTD channel has been changed to <#" + param + ">.").queue();
+		}else{
+			e.getMessage().reply("Invalid channel id.").queue();
+		}
+	}
+
+	private void qotdInterval(String raw) {
+		// qotd interval
+		try {
+			int param = Integer.parseInt(raw.substring(Main.prefix.length()+1+8).trim());
+			if(param < 1 || param > 240) {
+				e.getMessage().reply("Invalid number.").queue();
+			}else{
+				Main.interval = param;
+				e.getMessage().reply("QOTD interval has been changed to " + param + " hour(s).").queue();
+			}
+		}catch(Exception e) {
+			this.e.getMessage().reply("Invalid number.").queue();
+		}
+	}
+
+	private void qotdPrefix(String raw) {
+		// qotd prefix
+		try {
+			String param = raw.split(" ")[2].trim();
+			Main.prefix = param;
+			e.getMessage().reply("QOTD prefix has been changed to `" + param + "`.").queue();
+			Main.qotd.builder.getPresence().setActivity(Activity.watching("for '" + Main.prefix + " help'"));
+		}catch(Exception e) {
+			this.e.getMessage().reply("Invalid prefix.");
+		}
+	}
+
+	private void qotdManager(String raw) {
+		// qotd managerrole
+		String param = raw.substring(Main.prefix.length()+1+11).trim();
+		if(param.equalsIgnoreCase("everyone"))
+			return;
+		boolean exists = false;
+		for(Role r : e.getGuild().getRoles()) {
+			if(r.getId().equals(param)) {
+				exists = true;
+			}
+		}
+		if(exists) {
+			Main.managerRoleID = param;
+			e.getMessage().reply("QOTD manager role has been changed to <@&" + param + ">.").queue();
+		}else{
+			e.getMessage().reply("Invalid role id.").queue();
+		}
+	}
+
+	private void qotdPerm(String raw) {
+		// qotd permrole
+		String param = raw.substring(Main.prefix.length()+1+8).trim();
+		if(param.equalsIgnoreCase("everyone"))
+			return;
+		boolean exists = false;
+		for(Role r : e.getGuild().getRoles()) {
+			if(r.getId().equals(param)) {
+				exists = true;
+			}
+		}
+		if(exists) {
+			Main.permRoleID = param;
+			e.getMessage().reply("QOTD perm role has been changed to <@&" + param + ">.").queue();
+		}else{
+			e.getMessage().reply("Invalid role id.").queue();
+		}
+	}
+
+
+
+
+
+
+
+
 	private void help() {
 		// qotd help
 		e.getMessage().reply(
 				"**Commands**"
-						+ "\n`" + Main.prefix + " add <question 500 char>-=-<footer 100 char>`"
-						+ "\n`" + Main.prefix + " viewqueue`"
-						+ "\n`" + Main.prefix + " view <index>`"
 						+ "\n`" + Main.prefix + " help`"
+						+ "\n**Perm commands**"
+						+ "\n`" + Main.prefix + " add <question 500 char>-=-<footer 100 char>`"
 						+ "\n**Manager commands:**"
 						+ "\n`" + Main.prefix + " remove <index>`"
+						+ "\n`" + Main.prefix + " view <index>`"
+						+ "\n`" + Main.prefix + " viewqueue`"
+						+ "\n`" + Main.prefix + " qotdtest`"
 						+ "\n`" + Main.prefix + " qotdchannel <channel id>`"
 						+ "\n`" + Main.prefix + " interval <hour(s) 1 to 240>` - faulty"
 						+ "\n`" + Main.prefix + " prefix <prefix, no space>`"
-						+ "\n**Owner commands:**"
-						+ "\n`" + Main.prefix + " managerrole <role id>`").queue();
+						+ "\n**Admin commands:**"
+						+ "\n`" + Main.prefix + " permrole <role id/'everyone'>`"
+						+ "\n`" + Main.prefix + " managerrole <role id/'everyone'>`").queue();
 	}
 }
