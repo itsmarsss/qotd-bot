@@ -191,7 +191,7 @@ public class CMD extends ListenerAdapter{
 		// qotd help
 		e.getMessage().reply(
 				"**Commands**"
-						+ "\n`dnd add <question 500 char>-=-<footer 100 char>`"
+						+ "\n`" + Main.prefix + " add <question 500 char>-=-<footer 100 char>`"
 						+ "\n`" + Main.prefix + " viewqueue`"
 						+ "\n`" + Main.prefix + " view <index>`"
 						+ "\n`" + Main.prefix + " help`"
