@@ -27,6 +27,8 @@ public class QOTD {
 		ses.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
+				if(Main.channelID.isBlank())
+					return;
 		        Question q = getNext();
 		        if(q.isPoll()) {
 		        	builder.getTextChannelById(Main.channelID).sendMessageEmbeds(q.createEmbed()).queue(msg -> {
