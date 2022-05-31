@@ -28,16 +28,23 @@ public class QOTD {
 			@Override
 			public void run() {
 		        Question q = getNext();
-            	builder.getTextChannelById(Main.channelID).sendMessageEmbeds(q.createEmbed()).queue();
-            	System.out.println("=============================");
+		        if(q.isPoll()) {
+		        	builder.getTextChannelById(Main.channelID).sendMessageEmbeds(q.createEmbed()).queue(msg -> {
+		        		msg.addReaction("✅").queue();
+		        		msg.addReaction("❎").queue();
+		        	});
+		        }else {
+		        	builder.getTextChannelById(Main.channelID).sendMessageEmbeds(q.createEmbed()).queue();
+		        }
+		        System.out.println("=============================");
             	System.out.println(q);
 			}
-		}, 0, Main.interval, TimeUnit.HOURS);
+		}, 0, 8, TimeUnit.SECONDS);
 	}
 	
 	public Question getNext() {
 		if(questions.isEmpty()) {
-			questions.add(new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", builder.getSelfUser()));
+			questions.add(new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", builder.getSelfUser(), false));
 		}
 		return questions.poll();
 	}

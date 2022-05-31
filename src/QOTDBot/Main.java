@@ -9,7 +9,7 @@ public class Main {
 	public static String prefix = "qotd";
 	public static String permRoleID = "";
 	public static String managerRoleID = "";
-	public static String channelID = "";
+	public static String channelID = "idhere";
 	public static int interval = 24;
 	public static void main(String[] args) throws LoginException, InterruptedException {
 		Scanner sc = new Scanner(System.in);

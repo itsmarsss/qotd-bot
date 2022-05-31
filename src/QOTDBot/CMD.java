@@ -17,7 +17,6 @@ public class CMD extends ListenerAdapter{
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		if(event.getAuthor().isBot())
 			return;
-		e = event;
 		Message msg = event.getMessage();
 		String raw = msg.getContentRaw();
 		String[]rawSplit = raw.toLowerCase().split(" ");
@@ -25,6 +24,7 @@ public class CMD extends ListenerAdapter{
 		if(!rawSplit[0].equals(Main.prefix) || rawSplit.length == 1) {
 			return;
 		}
+		e = event;
 
 		switch(rawSplit[1]) {
 		case "help":
@@ -36,6 +36,9 @@ public class CMD extends ListenerAdapter{
 			switch(rawSplit[1]) {
 			case "add":
 				addQuestion(raw, event.getAuthor());
+				break;
+			case "addpoll":
+				addPoll(raw, event.getAuthor());
 				break;
 			}
 		}
@@ -98,11 +101,11 @@ public class CMD extends ListenerAdapter{
 			param[i].trim();
 		}
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
-			Question q = new Question(param[0], user);
+			Question q = new Question(param[0], user, false);
 			Main.qotd.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
-			Question q = new Question(param[0], param[1], user);
+			Question q = new Question(param[0], param[1], user, false);
 			Main.qotd.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else {
@@ -110,6 +113,25 @@ public class CMD extends ListenerAdapter{
 		}
 	}
 
+	private void addPoll(String raw, User user) {
+		// qotd addpoll
+		String[]param = raw.substring(Main.prefix.length()+1+7).split("-=-");
+		for(int i = 0; i < param.length; i++) {
+			param[i].trim();
+		}
+		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
+			Question q = new Question(param[0], user, true);
+			Main.qotd.add(q);
+			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
+		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
+			Question q = new Question(param[0], param[1], user, true);
+			Main.qotd.add(q);
+			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
+		}else {
+			e.getMessage().reply("Invalid parameters.").queue();
+		}
+	}
+	
 	private void removeQuestion(String raw) {
 		// qotd remove
 		try {
@@ -155,11 +177,14 @@ public class CMD extends ListenerAdapter{
 		// qotd testqotd
 		EmbedBuilder QOTDEmbed = new EmbedBuilder();
 		QOTDEmbed.setAuthor("Added by: *author here*", null, Main.qotd.builder.getSelfUser().getAvatarUrl())
-		.setTitle("QOTD For Today!\n**Question:** *question here*")
+		.setTitle("❔❓ QOTD For Today! ❔❓\n**Question/Poll:** *question here*")
 		.setDescription("*footer here*")
 		.setFooter("Added on: *date here*")
 		.setColor(new Color(230, 33, 39));
-		e.getMessage().replyEmbeds(QOTDEmbed.build()).queue();
+		e.getMessage().replyEmbeds(QOTDEmbed.build()).queue(msg -> {
+			msg.addReaction("✅");
+			msg.addReaction("❎");
+		});
 	}
 
 	private void qotdChannel(String raw) {

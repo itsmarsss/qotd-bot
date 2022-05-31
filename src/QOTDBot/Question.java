@@ -13,17 +13,21 @@ public class Question {
 	private String footer;
 	private User author;
 	private String date;
+	private boolean isPoll;
 
-	public Question(String q, String f, User a) {
+	public Question(String q, String f, User a, boolean p) {
 		setQuestion(q);
 		setFooter(f);
 		setAuthor(a);
+		setIsPoll(p);
 		updateDate();
 	}
-	public Question(String q, User a) {
+	
+	public Question(String q, User a, boolean p) {
 		setQuestion(q);
-		setFooter("");
+		setFooter("n/a");
 		setAuthor(a);
+		setIsPoll(p);
 		updateDate();
 	}
 
@@ -32,6 +36,9 @@ public class Question {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		String now = LocalDateTime.now().format(dtf);
 		date = now;
+	}
+	public void setIsPoll(boolean p) {
+		isPoll = p;
 	}
 	public void setAuthor(User a) {
 		author = a;
@@ -43,6 +50,9 @@ public class Question {
 		question = q;
 	}
 	
+	public boolean isPoll() {
+		return isPoll;
+	}
 	private String getDate() {
 		return date;  
 	}
@@ -57,16 +67,24 @@ public class Question {
 	}
 	
 	public MessageEmbed createEmbed() {
+		String iswhat = "Question";
+		if(isPoll()) {
+			iswhat = "Poll";
+		}
 		EmbedBuilder QOTDEmbed = new EmbedBuilder();
 		QOTDEmbed.setAuthor("Added by: " + getAuthor().getAsTag(), null, getAuthor().getAvatarUrl())
-		.setTitle("QOTD For Today!\n**Question:** " + getQuestion())
+		.setTitle("❔❓ QOTD For Today! ❔❓\n**" + iswhat + ":** " + getQuestion())
 		.setDescription("*" + getFooter() + "*")
 		.setFooter("Added on: " + getDate())
 		.setColor(new Color(230, 33, 39));
 		return QOTDEmbed.build();
 	}
 	public String toString() {
-		return "**Question:** " + getQuestion() + "\n**Footer:** " + getFooter() + "\n**Author:** " + getAuthor().getAsTag() + "\n**Date:** " + getDate();
+		String iswhat = "Question";
+		if(isPoll()) {
+			iswhat = "Poll";
+		}
+		return "**" + iswhat + ":** " + getQuestion() + "\n**Footer:** " + getFooter() + "\n**Author:** " + getAuthor().getAsTag() + "\n**Date:** " + getDate();
 	}
 	
 }
