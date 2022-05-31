@@ -1,0 +1,22 @@
+# IMPORTANT - Mandatory fields:
+# Input the bot's token here, this can be found in Developers Portal > Applications > [Bot Profile] > Bot > Token > [Copy]
+botToken: tokenhere
+
+# Turn on developers mode in Settings > Advanced > Developer Mode, right click your Discord Server and click on [Copy ID]
+serverID: 1234567890
+
+# Right click your QOTD channel and click on [Copy ID]
+channelID: 1234567890
+
+# Set a prefix here for the bot, this is what members use to use the bot (e.g. qotd help)
+prefix: qotd
+
+# Input number of hours until another QOTD is sent (greater than 1)
+interval: 24
+
+# Not mandatory fields:
+# Set a perm role, these members can add QOTDs (leave empty if everyone)
+permRoleID: 1234567890
+
+# Set a manager role, these members can manage QOTDs (leave empty if everyone)
+managerRoleID: 1234567890

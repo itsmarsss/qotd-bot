@@ -15,13 +15,13 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class CMD extends ListenerAdapter{
 	private GuildMessageReceivedEvent e;
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-		if(event.getAuthor().isBot())
+		if(event.getAuthor().isBot() || !event.getGuild().getId().equals(QOTDBot.config.getServerID()))
 			return;
 		Message msg = event.getMessage();
 		String raw = msg.getContentRaw();
 		String[]rawSplit = raw.toLowerCase().split(" ");
 		// [prefix - 0] [cmd - 1] [parameter - 2 to ???]
-		if(!rawSplit[0].equals(Main.prefix) || rawSplit.length == 1) {
+		if(!rawSplit[0].equals(QOTDBot.config.getPrefix()) || rawSplit.length == 1) {
 			return;
 		}
 		e = event;
@@ -32,7 +32,7 @@ public class CMD extends ListenerAdapter{
 			break;
 		}
 
-		if(hasPerm(Main.permRoleID) || hasPerm(Main.managerRoleID) || isAdmin()) {
+		if(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin()) {
 			switch(rawSplit[1]) {
 			case "add":
 				addQuestion(raw, event.getAuthor());
@@ -43,7 +43,7 @@ public class CMD extends ListenerAdapter{
 			}
 		}
 
-		if(hasPerm(Main.managerRoleID) || isAdmin()) {
+		if(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin()) {
 			switch(rawSplit[1]) {
 			case "remove":
 				removeQuestion(raw);
@@ -96,17 +96,17 @@ public class CMD extends ListenerAdapter{
 
 	private void addQuestion(String raw, User user) {
 		// qotd add
-		String[]param = raw.substring(Main.prefix.length()+1+3).split("-=-");
+		String[]param = raw.substring(QOTDBot.config.getPrefix().length()+1+3).split("-=-");
 		for(int i = 0; i < param.length; i++) {
 			param[i].trim();
 		}
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
 			Question q = new Question(param[0], user, false);
-			Main.qotd.add(q);
+			QOTDBot.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
 			Question q = new Question(param[0], param[1], user, false);
-			Main.qotd.add(q);
+			QOTDBot.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else {
 			e.getMessage().reply("Invalid parameters.").queue();
@@ -115,17 +115,17 @@ public class CMD extends ListenerAdapter{
 
 	private void addPoll(String raw, User user) {
 		// qotd addpoll
-		String[]param = raw.substring(Main.prefix.length()+1+7).split("-=-");
+		String[]param = raw.substring(QOTDBot.config.getPrefix().length()+1+7).split("-=-");
 		for(int i = 0; i < param.length; i++) {
 			param[i].trim();
 		}
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
 			Question q = new Question(param[0], user, true);
-			Main.qotd.add(q);
+			QOTDBot.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
 			Question q = new Question(param[0], param[1], user, true);
-			Main.qotd.add(q);
+			QOTDBot.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else {
 			e.getMessage().reply("Invalid parameters.").queue();
@@ -135,8 +135,8 @@ public class CMD extends ListenerAdapter{
 	private void removeQuestion(String raw) {
 		// qotd remove
 		try {
-			int param = Integer.parseInt(raw.substring(Main.prefix.length()+1+6).trim());
-			int status = Main.qotd.remove(param);
+			int param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+6).trim());
+			int status = QOTDBot.remove(param);
 			if(status == -1) {
 				e.getMessage().reply("Invalid number.").queue();
 			}else{
@@ -150,8 +150,8 @@ public class CMD extends ListenerAdapter{
 	private void viewQuestion(String raw) {
 		// qotd view
 		try {
-			int param = Integer.parseInt(raw.substring(Main.prefix.length()+1+4).trim());
-			Question q = Main.qotd.getQuestions().get(param);
+			int param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+4).trim());
+			Question q = QOTDBot.getQuestions().get(param);
 			e.getMessage().reply("**__QOTD #" + param + ";__**\n" + q).queue();
 		}catch(Exception e) {
 			this.e.getMessage().reply("Invalid number.").queue();
@@ -162,7 +162,7 @@ public class CMD extends ListenerAdapter{
 		// qotd showqueue
 		String out = "**__QOTD Queue:__**";
 		int c = 0;
-		for(Question q : Main.qotd.getQuestions()) {
+		for(Question q : QOTDBot.getQuestions()) {
 			out = out + "\n" + c + ": " + q.getQuestion();
 			c++;
 		}
@@ -176,7 +176,7 @@ public class CMD extends ListenerAdapter{
 	private void qotdTest() {
 		// qotd testqotd
 		EmbedBuilder QOTDEmbed = new EmbedBuilder();
-		QOTDEmbed.setAuthor("Added by: *author here*", null, Main.qotd.builder.getSelfUser().getAvatarUrl())
+		QOTDEmbed.setAuthor("Added by: *author here*", null, QOTDBot.jda.getSelfUser().getAvatarUrl())
 		.setTitle("❔❓ QOTD For Today! ❔❓\n**Question/Poll:** *question here*")
 		.setDescription("*footer here*")
 		.setFooter("Added on: *date here*")
@@ -189,7 +189,7 @@ public class CMD extends ListenerAdapter{
 
 	private void qotdChannel(String raw) {
 		// qotd qotdchannel
-		String param = raw.substring(Main.prefix.length()+1+11).trim();
+		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+11).trim();
 		boolean exists = false;
 		for(GuildChannel ch : e.getGuild().getChannels()) {
 			if(ch.getId().equals(param)) {
@@ -197,7 +197,7 @@ public class CMD extends ListenerAdapter{
 			}
 		}
 		if(exists) {
-			Main.channelID = param;
+			QOTDBot.config.setChannelID(param);
 			e.getMessage().reply("QOTD channel has been changed to <#" + param + ">.").queue();
 		}else{
 			e.getMessage().reply("Invalid channel id.").queue();
@@ -207,11 +207,11 @@ public class CMD extends ListenerAdapter{
 	private void qotdInterval(String raw) {
 		// qotd interval
 		try {
-			int param = Integer.parseInt(raw.substring(Main.prefix.length()+1+8).trim());
+			int param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim());
 			if(param < 1 || param > 240) {
 				e.getMessage().reply("Invalid number.").queue();
 			}else{
-				Main.interval = param;
+				QOTDBot.config.setInterval(param);
 				e.getMessage().reply("QOTD interval has been changed to " + param + " hour(s).").queue();
 			}
 		}catch(Exception e) {
@@ -223,9 +223,9 @@ public class CMD extends ListenerAdapter{
 		// qotd prefix
 		try {
 			String param = raw.split(" ")[2].trim();
-			Main.prefix = param;
+			QOTDBot.config.setPrefix(param);
 			e.getMessage().reply("QOTD prefix has been changed to `" + param + "`.").queue();
-			Main.qotd.builder.getPresence().setActivity(Activity.watching("for '" + Main.prefix + " help'"));
+			QOTDBot.jda.getPresence().setActivity(Activity.watching("for '" + QOTDBot.config.getPrefix() + " help'"));
 		}catch(Exception e) {
 			this.e.getMessage().reply("Invalid prefix.");
 		}
@@ -233,7 +233,7 @@ public class CMD extends ListenerAdapter{
 
 	private void qotdManager(String raw) {
 		// qotd managerrole
-		String param = raw.substring(Main.prefix.length()+1+11).trim();
+		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+11).trim();
 		if(param.equalsIgnoreCase("everyone"))
 			return;
 		boolean exists = false;
@@ -243,7 +243,7 @@ public class CMD extends ListenerAdapter{
 			}
 		}
 		if(exists) {
-			Main.managerRoleID = param;
+			QOTDBot.config.setManagerRoleID(param);
 			e.getMessage().reply("QOTD manager role has been changed to <@&" + param + ">.").queue();
 		}else{
 			e.getMessage().reply("Invalid role id.").queue();
@@ -252,7 +252,7 @@ public class CMD extends ListenerAdapter{
 
 	private void qotdPerm(String raw) {
 		// qotd permrole
-		String param = raw.substring(Main.prefix.length()+1+8).trim();
+		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim();
 		if(param.equalsIgnoreCase("everyone"))
 			return;
 		boolean exists = false;
@@ -262,7 +262,7 @@ public class CMD extends ListenerAdapter{
 			}
 		}
 		if(exists) {
-			Main.permRoleID = param;
+			QOTDBot.config.setPermRoleID(param);
 			e.getMessage().reply("QOTD perm role has been changed to <@&" + param + ">.").queue();
 		}else{
 			e.getMessage().reply("Invalid role id.").queue();
@@ -280,19 +280,19 @@ public class CMD extends ListenerAdapter{
 		// qotd help
 		e.getMessage().reply(
 				"**Commands**"
-						+ "\n`" + Main.prefix + " help`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " help`"
 						+ "\n**Perm commands**"
-						+ "\n`" + Main.prefix + " add <question 500 char>-=-<footer 100 char>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " add <question 500 char>-=-<footer 100 char>`"
 						+ "\n**Manager commands:**"
-						+ "\n`" + Main.prefix + " remove <index>`"
-						+ "\n`" + Main.prefix + " view <index>`"
-						+ "\n`" + Main.prefix + " viewqueue`"
-						+ "\n`" + Main.prefix + " qotdtest`"
-						+ "\n`" + Main.prefix + " qotdchannel <channel id>`"
-						+ "\n`" + Main.prefix + " interval <hour(s) 1 to 240>` - faulty"
-						+ "\n`" + Main.prefix + " prefix <prefix, no space>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " remove <index>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " view <index>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " viewqueue`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " qotdtest`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " qotdchannel <channel id>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " interval <hour(s) 1 to 240>` - faulty"
+						+ "\n`" + QOTDBot.config.getPrefix() + " prefix <prefix, no space>`"
 						+ "\n**Admin commands:**"
-						+ "\n`" + Main.prefix + " permrole <role id/'everyone'>`"
-						+ "\n`" + Main.prefix + " managerrole <role id/'everyone'>`").queue();
+						+ "\n`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " managerrole <role id/'everyone'>`").queue();
 	}
 }
