@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -33,14 +34,16 @@ public class QOTDBot {
 	static Config config;
 	static JDA jda;
 
+	static long lastQOTD = 0;
+
 	private static LinkedList<Question> questions = new LinkedList<Question>();
 
 	private static final String version = "1.1.0";
 	private static String parent;
 	private static final EnumSet<GatewayIntent> intent = EnumSet.of(GatewayIntent.GUILD_MESSAGES);
 	public static void main(String[] args) throws UnsupportedEncodingException, URISyntaxException, FileNotFoundException, LoginException, InterruptedException {
-		System.out.println(" ____   ____ _______ _____    ____   ____ _______ ");
-		System.out.println("/ __ \\ / __ \\__   __|  __ \\  |  _ \\ / __ \\__   __|");
+		System.out.println("  ____   ____ _______ _____    ____   ____ _______ ");
+		System.out.println(" / __ \\ / __ \\__   __|  __ \\  |  _ \\ / __ \\__   __|");
 		System.out.println("| |  | | |  | | | |  | |  | | | |_) | |  | | | |  "); 
 		System.out.println("| |  | | |  | | | |  | |  | | |  _ <| |  | | | |   ");
 		System.out.println("| |__| | |__| | | |  | |__| | | |_) | |__| | | |");   
@@ -88,9 +91,9 @@ public class QOTDBot {
 		sc.nextLine();
 		sc.close();
 		try {
-			jda = JDABuilder.createDefault(config.getBotToken(), intent).build();
 			System.out.println("Connecting to Discord...");
 			System.out.println("Validating token...");
+			jda = JDABuilder.createDefault(config.getBotToken(), intent).build();
 			jda.awaitReady();
 		} catch(Exception e) {
 			System.out.println("______________________________________________________");
@@ -114,35 +117,17 @@ public class QOTDBot {
 		jda.addEventListener(new CMD());
 		System.out.println("Done!");
 
-		ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
-		ses.scheduleAtFixedRate(new Runnable() {
+		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+		exec.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
-				boolean exists = false;
-				for(GuildChannel ch : jda.getGuildById(config.getServerID()).getChannels()) {
-					if(ch.getId().equals(config.getChannelID())) {
-						exists = true;
-						break;
-					}
-				}
-				if(!exists)
-					return;
-				Question q = getNext();
-				if(q.isPoll()) {
-					jda.getTextChannelById(config.getChannelID()).sendMessageEmbeds(q.createEmbed()).queue(msg -> {
-						msg.addReaction("✅").queue();
-						msg.addReaction("❎").queue();
-					});
-				}else {
-					jda.getTextChannelById(config.getChannelID()).sendMessageEmbeds(q.createEmbed()).queue();
-				}
-				System.out.println("=============================");
-				System.out.println(q);
+				checkInterval();
 			}
-		}, 0, 8, TimeUnit.SECONDS);
+		}, 0, 1, TimeUnit.MINUTES);
+
 	}
 
-	private static Question getNext() {
+	static Question getNext() {
 		if(questions.isEmpty()) {
 			questions.add(new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", jda.getSelfUser(), false));
 		}
@@ -200,12 +185,45 @@ public class QOTDBot {
 			Yaml yml = new Yaml(new Constructor(Config.class));
 			config = yml.load(is);
 			if(config.getBotToken().isBlank() || config.getServerID().isBlank()) {
-				System.out.println("here");
 				return false;
 			}
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	private static void checkInterval() {
+		long current = (LocalDateTime.now().getHour()*60 + LocalDateTime.now().getMinute()) * 60000;
+		long passed = current - lastQOTD;
+		if(!(passed >= (config.getInterval()*60000)))
+			return;
+
+		postQOTD();
+
+		lastQOTD = current; 
+	}
+
+	static void postQOTD() {
+		boolean exists = false;
+		for(GuildChannel ch : jda.getGuildById(config.getServerID()).getChannels()) {
+			if(ch.getId().equals(config.getChannelID())) {
+				exists = true;
+				break;
+			}
+		}
+		if(!exists)
+			return;
+		Question q = getNext();
+		if(q.isPoll()) {
+			jda.getTextChannelById(config.getChannelID()).sendMessageEmbeds(q.createEmbed()).queue(msg -> {
+				msg.addReaction("✅").queue();
+				msg.addReaction("❎").queue();
+			});
+		}else {
+			jda.getTextChannelById(config.getChannelID()).sendMessageEmbeds(q.createEmbed()).queue();
+		}
+		System.out.println("=============================");
+		System.out.println(q);
 	}
 }

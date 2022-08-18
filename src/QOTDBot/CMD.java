@@ -57,11 +57,17 @@ public class CMD extends ListenerAdapter{
 			case "qotdtest":
 				qotdTest();
 				break;
+			case "postnext":
+				qotdNext();
+				break;
 			case "qotdchannel":
 				qotdChannel(raw);
 				break;
 			case "interval":
 				qotdInterval(raw);
+				break;
+			case "setstart":
+				qotdStart(raw);
 				break;
 			case "prefix":
 				qotdPrefix(raw);
@@ -80,7 +86,7 @@ public class CMD extends ListenerAdapter{
 	}
 
 	private boolean hasPerm(String ID) {
-		if(ID.isBlank())
+		if(ID.equals("everyone"))
 			return true;
 		for(Role r : e.getMember().getRoles()) {
 			if(r.getId().equals(ID)) {
@@ -186,6 +192,11 @@ public class CMD extends ListenerAdapter{
 			msg.addReaction("❎");
 		});
 	}
+	
+	private void qotdNext() {
+		// qotd postnext
+		QOTDBot.postQOTD();
+	}
 
 	private void qotdChannel(String raw) {
 		// qotd qotdchannel
@@ -208,14 +219,34 @@ public class CMD extends ListenerAdapter{
 		// qotd interval
 		try {
 			int param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim());
-			if(param < 1 || param > 240) {
+			if(param < 1 || param > 14400) {
 				e.getMessage().reply("Invalid number.").queue();
-			}else{
+			}else {
 				QOTDBot.config.setInterval(param);
-				e.getMessage().reply("QOTD interval has been changed to " + param + " hour(s).").queue();
+				e.getMessage().reply("QOTD interval has been changed to " + param + " minute(s).").queue();
 			}
 		}catch(Exception e) {
 			this.e.getMessage().reply("Invalid number.").queue();
+		}
+	}
+	
+	private void qotdStart(String raw) {
+		// qotd setstart
+		try {
+			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim();
+		
+			String[]time = param.split(":");
+			System.out.println(QOTDBot.config.getPrefix().length());
+			int hour = Integer.parseInt(time[0]);
+			int minute = Integer.parseInt(time[1]);
+			if(hour < 1 || hour > 24 || minute < 0 || minute > 59) {
+				e.getMessage().reply("Invalid time1.").queue();
+			}else {
+				QOTDBot.lastQOTD = ((hour*60)+minute)*60000;
+				e.getMessage().reply("QOTD start time has been changed to " + time[0] + ":" + time[1] + ".").queue();
+			}
+		}catch(Exception e) {
+			this.e.getMessage().reply("Invalid time2.").queue();
 		}
 	}
 
@@ -245,7 +276,7 @@ public class CMD extends ListenerAdapter{
 		if(exists) {
 			QOTDBot.config.setManagerRoleID(param);
 			e.getMessage().reply("QOTD manager role has been changed to <@&" + param + ">.").queue();
-		}else{
+		}else {
 			e.getMessage().reply("Invalid role id.").queue();
 		}
 	}
@@ -253,8 +284,11 @@ public class CMD extends ListenerAdapter{
 	private void qotdPerm(String raw) {
 		// qotd permrole
 		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim();
-		if(param.equalsIgnoreCase("everyone"))
+		if(param.equalsIgnoreCase("everyone")) {
+			e.getMessage().reply("QOTD perm role has been changed; `everyone` can post questions.").queue();
+			QOTDBot.config.setPermRoleID("everyone");
 			return;
+		}
 		boolean exists = false;
 		for(Role r : e.getGuild().getRoles()) {
 			if(r.getId().equals(param)) {
@@ -264,7 +298,7 @@ public class CMD extends ListenerAdapter{
 		if(exists) {
 			QOTDBot.config.setPermRoleID(param);
 			e.getMessage().reply("QOTD perm role has been changed to <@&" + param + ">.").queue();
-		}else{
+		}else {
 			e.getMessage().reply("Invalid role id.").queue();
 		}
 	}
@@ -283,13 +317,16 @@ public class CMD extends ListenerAdapter{
 						+ "\n`" + QOTDBot.config.getPrefix() + " help`"
 						+ "\n**Perm commands**"
 						+ "\n`" + QOTDBot.config.getPrefix() + " add <question 500 char>-=-<footer 100 char>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " addpoll <question 500 char>-=-<footer 100 char>`"
 						+ "\n**Manager commands:**"
 						+ "\n`" + QOTDBot.config.getPrefix() + " remove <index>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " view <index>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " viewqueue`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " qotdtest`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " postnext`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " qotdchannel <channel id>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " interval <hour(s) 1 to 240>` - faulty"
+						+ "\n`" + QOTDBot.config.getPrefix() + " interval <minute(s) 1 to 14400>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " setstart <hour(s) 1 to 24>:<minute(s) 1 to 59>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " prefix <prefix, no space>`"
 						+ "\n**Admin commands:**"
 						+ "\n`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>`"

@@ -69,7 +69,7 @@ public class Config {
 		if(prefix.isBlank())
 					return false;
 		
-		if(interval < 1)
+		if(interval < 1 || interval > 1440)
 			return false;
 		
 		return true;
