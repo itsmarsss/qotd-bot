@@ -11,12 +11,12 @@ channelID: 1234567890
 # Set a prefix here for the bot, this is what members use to use the bot (e.g. qotd help)
 prefix: qotd
 
-# Input number of hours until another QOTD is sent (greater than 1)
-interval: 24
+# Input number of minutes until another QOTD is sent ( 1 to 1440 [24 hours] )
+interval: 1440
 
 # Not mandatory fields:
-# Set a perm role, these members can add QOTDs (leave empty if everyone)
+# Set a perm role, these members can add QOTDs (write everyone if everyone)
 permRoleID: 1234567890
 
-# Set a manager role, these members can manage QOTDs (leave empty if everyone)
+# Set a manager role, these members can manage QOTDs (write everyone if everyone)
 managerRoleID: 1234567890
