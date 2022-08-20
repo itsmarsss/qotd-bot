@@ -45,7 +45,7 @@ public class QOTDBot {
 	private static LinkedList<Question> questions = new LinkedList<Question>();
 	private static boolean isPaused = false;
 
-	private static final String version = "1.4.0";
+	private static final String version = "2.1.0";
 	private static String parent;
 	private static final EnumSet<GatewayIntent> intent = EnumSet.of(GatewayIntent.GUILD_MESSAGES);
 	public static void main(String[] args) throws UnsupportedEncodingException, URISyntaxException, FileNotFoundException, LoginException, InterruptedException {
@@ -123,19 +123,24 @@ public class QOTDBot {
 
 		startThread(wait);
 
-		System.out.println(wait);
-		System.out.println(config.getHour());
-		System.out.println(config.getMinute());
-		System.out.println(lastQOTD);
+		System.out.println();
+		System.out.println("----- INFO -----");
+		System.out.println("\tTime until start time: " + wait + " minutes");
+		System.out.printf("\tStart time: %s hours and %s minutes from midnight (00:00)", config.getHour(), config.getMinute());
+		System.out.println("\n--- INFO END ---");
 
+		System.out.println();
 		System.out.println("Looking for questions.json...");
 		if(readQuestionsJSON()) {
 			System.out.println("~ Successfully read questions.json ~");
 			System.out.println("\tAppended " + questions.size() + " questions");
-			System.out.println("\tWarning: Invalid questions have been deleted from file");
+			System.out.println("\tWarning: Invalid questions have been deleted from the file");
 		}else {
 			System.out.println("- questions.json not found or is improperly formatted -");
 		}
+
+		System.out.println();
+		System.out.println("Finished!");
 
 	}
 
