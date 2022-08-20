@@ -360,6 +360,7 @@ public class CMD extends ListenerAdapter{
 						+ "\n`" + QOTDBot.config.getPrefix() + " addpoll <question 500 char>-=-<footer 100 char>`"
 						+ "\n**Manager commands:**"
 						+ "\n`" + QOTDBot.config.getPrefix() + " upload [attached json file]`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " readfile`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " format`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " remove <index>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " view <index>`"
