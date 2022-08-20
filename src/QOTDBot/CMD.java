@@ -3,6 +3,7 @@ package QOTDBot;
 import java.awt.Color;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.GuildChannel;
@@ -12,6 +13,8 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Button;
 
 public class CMD extends ListenerAdapter{
 	private GuildMessageReceivedEvent e;
@@ -122,11 +125,27 @@ public class CMD extends ListenerAdapter{
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
 			Question q = new Question(param[0], user.getAsTag(), false);
 			QOTDBot.add(q);
-			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
+			
+			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
+			
+			Message message = new MessageBuilder()
+					.append("**__Added the following;__**\n")
+					.append(q)
+					.setActionRows(ActionRow.of(removeButton))
+					.build();
+			e.getMessage().reply(message).queue();
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
 			Question q = new Question(param[0], param[1], user.getAsTag(), false);
 			QOTDBot.add(q);
-			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
+			
+			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
+			
+			Message message = new MessageBuilder()
+					.append("**__Added the following;__**\n")
+					.append(q)
+					.setActionRows(ActionRow.of(removeButton))
+					.build();
+			e.getMessage().reply(message).queue();
 		}else {
 			e.getMessage().reply("Invalid parameters.").queue();
 		}
@@ -141,11 +160,27 @@ public class CMD extends ListenerAdapter{
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
 			Question q = new Question(param[0], user.getAsTag(), true);
 			QOTDBot.add(q);
-			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
+			
+			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
+			
+			Message message = new MessageBuilder()
+					.append("**__Added the following poll;__**\n")
+					.append(q)
+					.setActionRows(ActionRow.of(removeButton))
+					.build();
+			e.getMessage().reply(message).queue();
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
 			Question q = new Question(param[0], param[1], user.getAsTag(), true);
 			QOTDBot.add(q);
-			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
+
+			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
+			
+			Message message = new MessageBuilder()
+					.append("**__Added the following poll;__**\n")
+					.append(q)
+					.setActionRows(ActionRow.of(removeButton))
+					.build();
+			e.getMessage().reply(message).queue();
 		}else {
 			e.getMessage().reply("Invalid parameters.").queue();
 		}

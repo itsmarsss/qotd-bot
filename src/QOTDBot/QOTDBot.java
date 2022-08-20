@@ -115,6 +115,7 @@ public class QOTDBot {
 		}
 		System.out.println("Adding listeners...");
 		jda.addEventListener(new CMD());
+		jda.addEventListener(new ButtonListener());
 		System.out.println("Done!");
 
 		int wait = calculateWaitTime();
