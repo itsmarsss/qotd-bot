@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -45,6 +46,15 @@ public class CMD extends ListenerAdapter{
 
 		if(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin()) {
 			switch(rawSplit[1]) {
+			case "upload":
+				uploadFile();
+				break;
+			case "readfile":
+				readFile();
+				break;
+			case "format":
+				sendFormat();
+				break;
 			case "remove":
 				removeQuestion(raw);
 				break;
@@ -137,6 +147,65 @@ public class CMD extends ListenerAdapter{
 			e.getMessage().reply("Invalid parameters.").queue();
 		}
 	}
+
+	private void uploadFile() {
+		// qotd upload
+		if(this.e.getMessage().getAttachments().isEmpty()) {
+			this.e.getMessage().reply("No json file attached.").queue();
+			return;
+		}
+		Attachment attachment = this.e.getMessage().getAttachments().get(0);
+		if(!attachment.getFileExtension().equalsIgnoreCase("json")) {
+			this.e.getMessage().reply("File must be in json format, `" + QOTDBot.config.getPrefix() + " format` for example").queue();
+			return;
+		}
+
+
+		try {
+			attachment.downloadToFile(QOTDBot.getParent() + "/upload.json");
+
+			System.out.println();
+			System.out.println("~~~~~~~~~~~~~");
+			System.out.println("File uploaded: " + QOTDBot.getParent() + "\\upload.json");
+			
+			this.e.getMessage().reply("Downloaded file, please run `" + QOTDBot.config.getPrefix() + " readfile` to load all questions in.").queue();
+		}catch(Exception e) {
+			this.e.getMessage().reply("Unable to read file.").queue();
+		}
+	}
+
+	private void readFile() {
+		int diff = QOTDBot.getQuestions().size();
+		QOTDBot.readQuestionsJSON("upload.json");
+
+		diff = QOTDBot.getQuestions().size() - diff;
+		this.e.getMessage().reply("File read; **" + diff + "** questions appended. *(Invalid questions were not added.)*").queue();
+		
+		QOTDBot.prepUploadJSON();
+	}
+	
+	private void sendFormat() {
+		String format = "QOTD json formatting:\n```"
+				+ "{\r\n"
+				+ "\t\"questions\": [\r\n"
+				+ "\t\t{\r\n"
+				+ "\t\t\t\"question\": \"Question here\",\r\n"
+				+ "\t\t\t\"footer\": \"Footer here\",\r\n"
+				+ "\t\t\t\"time\": 1234567890,\r\n"
+				+ "\t\t\t\"user\": \"userhere#0000\"\r\n"
+				+ "\t\t\t\"poll\": false,\r\n"
+				+ "\t\t},\r\n\n"
+				+ "\t\t{\n"
+				+ "\t\t\t\"question\": \"Question here\",\r\n"
+				+ "\t\t\t\"footer\": \"Footer here\",\r\n"
+				+ "\t\t\t\"time\": 1234567890,\r\n"
+				+ "\t\t\t\"user\": \"userhere#0000\"\r\n"
+				+ "\t\t\t\"poll\": false,\r\n"
+				+ "\t\t}\r\n"
+				+ "\t]\r\n"
+				+ "}```";
+		this.e.getMessage().reply(format).queue();
+	}
 	
 	private void removeQuestion(String raw) {
 		// qotd remove
@@ -192,7 +261,7 @@ public class CMD extends ListenerAdapter{
 			msg.addReaction("❎");
 		});
 	}
-	
+
 	private void qotdNext() {
 		// qotd postnext
 		QOTDBot.postQOTD();
@@ -220,7 +289,7 @@ public class CMD extends ListenerAdapter{
 		QOTDBot.setPause(status);
 		this.e.getMessage().reply("QOTD bot paused: **" + status + "**").queue();
 	}
-	
+
 	private void qotdPrefix(String raw) {
 		// qotd prefix
 		try {
@@ -290,6 +359,8 @@ public class CMD extends ListenerAdapter{
 						+ "\n`" + QOTDBot.config.getPrefix() + " add <question 500 char>-=-<footer 100 char>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " addpoll <question 500 char>-=-<footer 100 char>`"
 						+ "\n**Manager commands:**"
+						+ "\n`" + QOTDBot.config.getPrefix() + " upload [attached json file]`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " format`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " remove <index>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " view <index>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " viewqueue`"

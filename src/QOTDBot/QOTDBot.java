@@ -131,7 +131,7 @@ public class QOTDBot {
 
 		System.out.println();
 		System.out.println("Looking for questions.json...");
-		if(readQuestionsJSON()) {
+		if(readQuestionsJSON("questions.json")) {
 			System.out.println("~ Successfully read questions.json ~");
 			System.out.println("\tAppended " + questions.size() + " questions");
 			System.out.println("\tWarning: Invalid questions have been deleted from the file");
@@ -139,6 +139,14 @@ public class QOTDBot {
 			System.out.println("- questions.json not found or is improperly formatted -");
 		}
 
+		System.out.println();
+		System.out.println("Preparing upload.json");
+		if(prepUploadJSON()) {
+			System.out.println("~ Successfully prepared upload.json ~");
+		}else {
+			System.out.println("- Unable to prepare upload.json -");
+		}
+		
 		System.out.println();
 		System.out.println("Finished!");
 
@@ -212,10 +220,10 @@ public class QOTDBot {
 		}
 	}
 
-	private static boolean readQuestionsJSON() {
+	static boolean readQuestionsJSON(String file) {
 		JSONParser parser = new JSONParser();
 
-		try (Reader reader = new FileReader(parent + "/questions.json")) {
+		try (Reader reader = new FileReader(parent + "/" + file)) {
 			JSONObject jsonObject = (JSONObject) parser.parse(reader);
 			JSONArray questions = (JSONArray) jsonObject.get("questions");
 			for(Object q : questions) {
@@ -231,17 +239,28 @@ public class QOTDBot {
 					newq.setDate(time);
 					add(newq);
 				}catch(Exception e) {
+					e.printStackTrace();
 					continue;
 				}
 			}
-
+			reader.close();
 			writeQuestionsJSON();
 
 			return true;
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	static boolean prepUploadJSON() {
+		try (FileWriter file = new FileWriter(parent + "/upload.json")) {
+			file.write("{\"questions\": []}");
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -304,7 +323,7 @@ public class QOTDBot {
 		}, wait, config.getInterval(), TimeUnit.MINUTES);
 	}
 
-	public static void setPause(boolean status) {
+	static void setPause(boolean status) {
 		isPaused = status;
 	}
 
@@ -316,6 +335,10 @@ public class QOTDBot {
 			return starttime-current;
 		}
 		return 1440-(current-starttime);
+	}
+
+	static String getParent() {
+		return parent;
 	}
 
 }
