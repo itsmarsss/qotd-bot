@@ -146,7 +146,7 @@ public class QOTDBot {
 		}else {
 			System.out.println("- Unable to prepare upload.json -");
 		}
-		
+
 		System.out.println();
 		System.out.println("Finished!");
 
@@ -162,6 +162,20 @@ public class QOTDBot {
 		if(index < 0 || index >= questions.size())
 			return -1;
 		questions.remove(index);
+		writeQuestionsJSON();
+		return 0;
+	}
+	static int bremove(int s, int e) {
+		if (s > e) {
+			return -1;
+		}
+		if((s < 0 || s >= questions.size()) ||
+				(e < 0 || e >= questions.size()))
+			return -1;
+
+		for(int i = s; i <= e; i++) {
+			questions.remove(i);
+		}
 		writeQuestionsJSON();
 		return 0;
 	}
@@ -253,7 +267,7 @@ public class QOTDBot {
 			return false;
 		}
 	}
-	
+
 	static boolean prepUploadJSON() {
 		try (FileWriter file = new FileWriter(parent + "/upload.json")) {
 			file.write("{\"questions\": []}");

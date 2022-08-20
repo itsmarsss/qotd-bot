@@ -58,6 +58,9 @@ public class CMD extends ListenerAdapter{
 			case "remove":
 				removeQuestion(raw);
 				break;
+			case "bremove":
+				removeQuestions(raw);
+				break;
 			case "view":
 				viewQuestion(raw);
 				break;
@@ -221,6 +224,24 @@ public class CMD extends ListenerAdapter{
 			this.e.getMessage().reply("Invalid number.").queue();
 		}
 	}
+	
+	private void removeQuestions(String raw) {
+		// qotd bremove
+		try {
+			String[]num = (raw.substring(QOTDBot.config.getPrefix().length()+1+7).trim()).split("-");
+			int start = Integer.parseInt(num[0]);
+			int end = Integer.parseInt(num[1]);
+			
+			int status = QOTDBot.bremove(start, end);
+			if(status == -1) {
+				e.getMessage().reply("Invalid numbers.").queue();
+			}else{
+				e.getMessage().reply("Index " + start + " to " + end + " has been removed from the queue.").queue();
+			}
+		}catch(Exception e) {
+			this.e.getMessage().reply("Invalid numbers.").queue();
+		}
+	}
 
 	private void viewQuestion(String raw) {
 		// qotd view
@@ -238,7 +259,11 @@ public class CMD extends ListenerAdapter{
 		String out = "**__QOTD Queue:__**";
 		int c = 0;
 		for(Question q : QOTDBot.getQuestions()) {
-			out = out + "\n" + c + ": " + q.getQuestion();
+			String question = q.getQuestion();
+			if(question.length() > 50) {
+				question = question.substring(0, 48) + "...";
+			}
+			out = out + "\n**" + c + ":** " + question;
 			c++;
 		}
 		try {
@@ -363,6 +388,7 @@ public class CMD extends ListenerAdapter{
 						+ "\n`" + QOTDBot.config.getPrefix() + " readfile`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " format`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " remove <index>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " bremove <Start index>-<End index>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " view <index>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " viewqueue`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " qotdtest`"
