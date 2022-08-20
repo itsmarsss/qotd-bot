@@ -8,5 +8,4 @@ This bot allows for daily (or custom timed) QOTD to be sent in a specific channe
 Simply follow a tutorial to create a Discord bot and run the code. Pass in the bot's token and configure the bot through the commands in `qotd help`.
 ## Restrictions?
 1. The bot will only work on one server
-2. The QOTD queue is stored in ram, meaning it will all be cleared once the program stops
-3. The bot must be self-hosted
+2. The bot must be self-hosted
