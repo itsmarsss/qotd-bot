@@ -154,6 +154,7 @@ public class QOTDBot {
 		if(index < 0 || index >= questions.size())
 			return -1;
 		questions.remove(index);
+		writeQuestionsJSON();
 		return 0;
 	}
 	static void add(Question q) {
