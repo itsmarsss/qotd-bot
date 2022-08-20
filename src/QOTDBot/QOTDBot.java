@@ -45,7 +45,7 @@ public class QOTDBot {
 	private static LinkedList<Question> questions = new LinkedList<Question>();
 	private static boolean isPaused = false;
 
-	private static final String version = "2.5.0";
+	private static final String version = "2.5.1";
 	private static String parent;
 	private static final EnumSet<GatewayIntent> intent = EnumSet.of(GatewayIntent.GUILD_MESSAGES);
 	public static void main(String[] args) throws UnsupportedEncodingException, URISyntaxException, FileNotFoundException, LoginException, InterruptedException {
