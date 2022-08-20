@@ -9,6 +9,8 @@ public class Config {
 	private String permRoleID;
 	private String managerRoleID;
 	private int interval;
+	private int hour;
+	private int minute;
 	
 	
 	public Config() {}
@@ -55,6 +57,18 @@ public class Config {
 	public void setInterval(int interval) {
 		this.interval = interval;
 	}
+	public int getHour() {
+		return hour;
+	}
+	public void setHour(int hour) {
+		this.hour = hour;
+	}
+	public int getMinute() {
+		return minute;
+	}
+	public void setMinute(int minute) {
+		this.minute = minute;
+	}
 	
 	public boolean isValid() {
 		if(botToken.isBlank())
@@ -64,10 +78,10 @@ public class Config {
 			return false;
 		
 		if(channelID.isBlank())
-				return false;
+			return false;
 		
 		if(prefix.isBlank())
-					return false;
+			return false;
 		
 		if(interval < 1 || interval > 1440)
 			return false;

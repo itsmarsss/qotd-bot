@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -20,6 +23,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.security.auth.login.LoginException;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -37,6 +43,7 @@ public class QOTDBot {
 	static long lastQOTD = 0;
 
 	private static LinkedList<Question> questions = new LinkedList<Question>();
+	private static boolean isPaused = false;
 
 	private static final String version = "1.4.0";
 	private static String parent;
@@ -77,13 +84,6 @@ public class QOTDBot {
 			System.out.println("\t2. Make sure config.yml values are correctly inputted");
 			System.exit(0);
 		}
-		if(!config.isValid()) {
-			System.out.println("______________________________________________________");
-			System.out.println("There was an error with config.yml");
-			System.out.println("\t1. Make sure config.yml template exists");
-			System.out.println("\t2. Make sure config.yml values are correctly inputted");
-			System.exit(0);
-		}
 		System.out.println("~ Successfully read config.yml ~");
 		System.out.println();
 		System.out.println("** Press [enter] to start the bot **");
@@ -117,19 +117,31 @@ public class QOTDBot {
 		jda.addEventListener(new CMD());
 		System.out.println("Done!");
 
-		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-		exec.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				checkInterval();
-			}
-		}, 0, 1, TimeUnit.MINUTES);
+		int wait = calculateWaitTime();
+
+		lastQOTD = (System.currentTimeMillis() + (wait * 60000)) - config.getInterval()*60000;
+
+		startThread(wait);
+
+		System.out.println(wait);
+		System.out.println(config.getHour());
+		System.out.println(config.getMinute());
+		System.out.println(lastQOTD);
+
+		System.out.println("Looking for questions.json...");
+		if(readQuestionsJSON()) {
+			System.out.println("~ Successfully read questions.json ~");
+			System.out.println("\tAppended " + questions.size() + " questions");
+			System.out.println("\tWarning: Invalid questions have been deleted from file");
+		}else {
+			System.out.println("- questions.json not found or is improperly formatted -");
+		}
 
 	}
 
 	static Question getNext() {
 		if(questions.isEmpty()) {
-			questions.add(new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", jda.getSelfUser(), false));
+			questions.add(new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", jda.getSelfUser().getAsTag(), false));
 		}
 		return questions.poll();
 	}
@@ -141,6 +153,7 @@ public class QOTDBot {
 	}
 	static void add(Question q) {
 		questions.add(q);
+		writeQuestionsJSON();
 	}
 	static LinkedList<Question> getQuestions(){
 		return questions;
@@ -184,7 +197,7 @@ public class QOTDBot {
 			is = new FileInputStream(new File(parent + "/config.yml"));
 			Yaml yml = new Yaml(new Constructor(Config.class));
 			config = yml.load(is);
-			if(config.getBotToken().isBlank() || config.getServerID().isBlank()) {
+			if(!config.isValid()) {
 				return false;
 			}
 			return true;
@@ -193,18 +206,64 @@ public class QOTDBot {
 		}
 	}
 
-	private static void checkInterval() {
-		long current = (LocalDateTime.now().getHour()*60 + LocalDateTime.now().getMinute()) * 60000;
-		long passed = current - lastQOTD;
-		if(!(passed >= (config.getInterval()*60000)))
+	private static boolean readQuestionsJSON() {
+		JSONParser parser = new JSONParser();
+
+		try (Reader reader = new FileReader(parent + "/questions.json")) {
+			JSONObject jsonObject = (JSONObject) parser.parse(reader);
+			JSONArray questions = (JSONArray) jsonObject.get("questions");
+			for(Object q : questions) {
+				try {
+					JSONObject questionObj = (JSONObject) q;
+					String question = (String) questionObj.get("question");
+					String footer = (String) questionObj.get("footer");
+					String user = (String) questionObj.get("user");
+					long time = (long) questionObj.get("time");
+					boolean isPoll = (boolean) questionObj.get("poll");
+
+					Question newq = new Question(question, footer, user, isPoll);
+					newq.setDate(time);
+					add(newq);
+				}catch(Exception e) {
+					continue;
+				}
+			}
+
+			writeQuestionsJSON();
+
+			return true;
+
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private static void writeQuestionsJSON() {
+		JSONObject questions = new JSONObject();
+		JSONArray questionsList = new JSONArray();
+		for(Question q : QOTDBot.questions) {
+			JSONObject question = new JSONObject();
+			question.put("question", q.getQuestion());
+			question.put("footer", q.getFooter());
+			question.put("user", q.getAuthor());
+			question.put("time", q.getMillis());
+			question.put("poll", q.isPoll());
+			questionsList.add(question);
+		}
+		questions.put("questions", questionsList);
+
+		try (FileWriter file = new FileWriter(parent + "/questions.json")) {
+			file.write(questions.toJSONString());
+		} catch (Exception e) {
 			return;
-
-		postQOTD();
-
-		lastQOTD = current; 
+		}
 	}
 
 	static void postQOTD() {
+		if (isPaused)
+			return;
+
 		boolean exists = false;
 		for(GuildChannel ch : jda.getGuildById(config.getServerID()).getChannels()) {
 			if(ch.getId().equals(config.getChannelID())) {
@@ -214,6 +273,7 @@ public class QOTDBot {
 		}
 		if(!exists)
 			return;
+
 		Question q = getNext();
 		if(q.isPoll()) {
 			jda.getTextChannelById(config.getChannelID()).sendMessageEmbeds(q.createEmbed()).queue(msg -> {
@@ -225,5 +285,31 @@ public class QOTDBot {
 		}
 		System.out.println("=============================");
 		System.out.println(q);
+		writeQuestionsJSON();
 	}
+
+	private static void startThread(int wait) {
+		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+		exec.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				postQOTD();	
+			}
+		}, wait, config.getInterval(), TimeUnit.MINUTES);
+	}
+
+	public static void setPause(boolean status) {
+		isPaused = status;
+	}
+
+	private static int calculateWaitTime() {
+		int current = LocalDateTime.now().getHour()*60 + LocalDateTime.now().getMinute();
+		int starttime = config.getHour()*60 + config.getMinute();
+
+		if(starttime > current) {
+			return starttime-current;
+		}
+		return 1440-(current-starttime);
+	}
+
 }

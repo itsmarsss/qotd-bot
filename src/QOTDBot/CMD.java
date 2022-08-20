@@ -63,11 +63,11 @@ public class CMD extends ListenerAdapter{
 			case "qotdchannel":
 				qotdChannel(raw);
 				break;
-			case "interval":
-				qotdInterval(raw);
+			case "pause":
+				setPause(true);
 				break;
-			case "setstart":
-				qotdStart(raw);
+			case "unpause":
+				setPause(false);
 				break;
 			case "prefix":
 				qotdPrefix(raw);
@@ -107,11 +107,11 @@ public class CMD extends ListenerAdapter{
 			param[i].trim();
 		}
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
-			Question q = new Question(param[0], user, false);
+			Question q = new Question(param[0], user.getAsTag(), false);
 			QOTDBot.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
-			Question q = new Question(param[0], param[1], user, false);
+			Question q = new Question(param[0], param[1], user.getAsTag(), false);
 			QOTDBot.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else {
@@ -126,11 +126,11 @@ public class CMD extends ListenerAdapter{
 			param[i].trim();
 		}
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
-			Question q = new Question(param[0], user, true);
+			Question q = new Question(param[0], user.getAsTag(), true);
 			QOTDBot.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
-			Question q = new Question(param[0], param[1], user, true);
+			Question q = new Question(param[0], param[1], user.getAsTag(), true);
 			QOTDBot.add(q);
 			e.getMessage().reply("**__Added the following;__**\n" + q).queue();
 		}else {
@@ -215,41 +215,12 @@ public class CMD extends ListenerAdapter{
 		}
 	}
 
-	private void qotdInterval(String raw) {
-		// qotd interval
-		try {
-			int param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim());
-			if(param < 1 || param > 14400) {
-				e.getMessage().reply("Invalid number.").queue();
-			}else {
-				QOTDBot.config.setInterval(param);
-				e.getMessage().reply("QOTD interval has been changed to " + param + " minute(s).").queue();
-			}
-		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid number.").queue();
-		}
+	private void setPause(boolean status) {
+		// qotd pause
+		QOTDBot.setPause(status);
+		this.e.getMessage().reply("QOTD bot paused: **" + status + "**").queue();
 	}
 	
-	private void qotdStart(String raw) {
-		// qotd setstart
-		try {
-			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim();
-		
-			String[]time = param.split(":");
-			System.out.println(QOTDBot.config.getPrefix().length());
-			int hour = Integer.parseInt(time[0]);
-			int minute = Integer.parseInt(time[1]);
-			if(hour < 1 || hour > 24 || minute < 0 || minute > 59) {
-				e.getMessage().reply("Invalid time1.").queue();
-			}else {
-				QOTDBot.lastQOTD = ((hour*60)+minute)*60000;
-				e.getMessage().reply("QOTD start time has been changed to " + time[0] + ":" + time[1] + ".").queue();
-			}
-		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid time2.").queue();
-		}
-	}
-
 	private void qotdPrefix(String raw) {
 		// qotd prefix
 		try {
@@ -324,9 +295,8 @@ public class CMD extends ListenerAdapter{
 						+ "\n`" + QOTDBot.config.getPrefix() + " viewqueue`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " qotdtest`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " postnext`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " qotdchannel <channel id>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " interval <minute(s) 1 to 14400>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " setstart <hour(s) 1 to 24>:<minute(s) 1 to 59>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " pause`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " unpause`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " prefix <prefix, no space>`"
 						+ "\n**Admin commands:**"
 						+ "\n`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>`"
