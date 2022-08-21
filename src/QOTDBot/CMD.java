@@ -392,7 +392,7 @@ public class CMD extends ListenerAdapter{
 	}
 
 	private void viewQueue() {
-		// qotd showqueue
+		// qotd queue
 		String out = "**__QOTD Queue:__**";
 		int c = 0;
 		for(Question q : QOTDBot.getQuestions()) {
