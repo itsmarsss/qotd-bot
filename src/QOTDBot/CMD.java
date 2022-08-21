@@ -120,32 +120,76 @@ public class CMD extends ListenerAdapter{
 		// qotd add
 		String[]param = raw.substring(QOTDBot.config.getPrefix().length()+1+3).split("-=-");
 		for(int i = 0; i < param.length; i++) {
-			param[i].trim();
+			param[i] = param[i].trim();
 		}
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
 			Question q = new Question(param[0], user.getAsTag(), false);
-			QOTDBot.add(q);
-			
+
+			String title = "**__Added the following;__**\n";
+
+			if(QOTDBot.config.getManagerReview()) {
+				title = "**__Requested the following;__**\n";
+			}else {
+				QOTDBot.add(q);
+			}
+
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
-			
+
 			Message message = new MessageBuilder()
-					.append("**__Added the following;__**\n")
+					.append(title)
 					.append(q)
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
+
+			if(QOTDBot.config.getManagerReview()) {
+				Button approveButton = Button.success("approve-qotd", "Approve and Delete");
+				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
+
+				Message req = new MessageBuilder()
+						.append(q.toString2())
+						.setActionRows(ActionRow.of(approveButton, denyButton))
+						.build();
+				try {
+					e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
+				}catch(Exception ex) {
+					e.getMessage().reply(req).queue();
+				}
+			}
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
 			Question q = new Question(param[0], param[1], user.getAsTag(), false);
-			QOTDBot.add(q);
-			
+
+			String title = "**__Added the following;__**\n";
+
+			if(QOTDBot.config.getManagerReview()) {
+				title = "**__Requested the following;__**\n";
+			}else {
+				QOTDBot.add(q);
+			}
+
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
-			
+
 			Message message = new MessageBuilder()
-					.append("**__Added the following;__**\n")
+					.append(title)
 					.append(q)
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
+
+			if(QOTDBot.config.getManagerReview()) {
+				Button approveButton = Button.success("approve-qotd", "Approve and Delete");
+				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
+
+				Message req = new MessageBuilder()
+						.append(q.toString2())
+						.setActionRows(ActionRow.of(approveButton, denyButton))
+						.build();
+				try {
+					e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
+				}catch(Exception ex) {
+					e.getMessage().reply(req).queue();
+				}
+			}
 		}else {
 			e.getMessage().reply("Invalid parameters.").queue();
 		}
@@ -155,32 +199,76 @@ public class CMD extends ListenerAdapter{
 		// qotd addpoll
 		String[]param = raw.substring(QOTDBot.config.getPrefix().length()+1+7).split("-=-");
 		for(int i = 0; i < param.length; i++) {
-			param[i].trim();
+			param[i] = param[i].trim();
 		}
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
 			Question q = new Question(param[0], user.getAsTag(), true);
-			QOTDBot.add(q);
-			
-			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
-			
-			Message message = new MessageBuilder()
-					.append("**__Added the following poll;__**\n")
-					.append(q)
-					.setActionRows(ActionRow.of(removeButton))
-					.build();
-			e.getMessage().reply(message).queue();
-		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
-			Question q = new Question(param[0], param[1], user.getAsTag(), true);
-			QOTDBot.add(q);
+
+			String title = "**__Added the following poll;__**\n";
+
+			if(QOTDBot.config.getManagerReview()) {
+				title = "**__Requested the following poll;__**\n";
+			}else {
+				QOTDBot.add(q);
+			}
 
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
-			
+
 			Message message = new MessageBuilder()
-					.append("**__Added the following poll;__**\n")
+					.append(title)
 					.append(q)
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
+
+			if(QOTDBot.config.getManagerReview()) {
+				Button approveButton = Button.success("approve-qotd", "Approve and Delete");
+				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
+
+				Message req = new MessageBuilder()
+						.append(q.toString2())
+						.setActionRows(ActionRow.of(approveButton, denyButton))
+						.build();
+				try {
+					e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
+				}catch(Exception ex) {
+					e.getMessage().reply(req).queue();
+				}
+			}
+		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
+			Question q = new Question(param[0], param[1], user.getAsTag(), true);
+
+			String title = "**__Added the following poll;__**\n";
+
+			if(QOTDBot.config.getManagerReview()) {
+				title = "**__Requested the following poll;__**\n";
+			}else {
+				QOTDBot.add(q);
+			}
+
+			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
+
+			Message message = new MessageBuilder()
+					.append(title)
+					.append(q)
+					.setActionRows(ActionRow.of(removeButton))
+					.build();
+			e.getMessage().reply(message).queue();
+
+			if(QOTDBot.config.getManagerReview()) {
+				Button approveButton = Button.success("approve-qotd", "Approve and Delete");
+				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
+
+				Message req = new MessageBuilder()
+						.append(q.toString2())
+						.setActionRows(ActionRow.of(approveButton, denyButton))
+						.build();
+				try {
+					e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
+				}catch(Exception ex) {
+					e.getMessage().reply(req).queue();
+				}
+			}
 		}else {
 			e.getMessage().reply("Invalid parameters.").queue();
 		}
@@ -205,7 +293,7 @@ public class CMD extends ListenerAdapter{
 			System.out.println();
 			System.out.println("~~~~~~~~~~~~~");
 			System.out.println("File uploaded: " + QOTDBot.getParent() + "\\upload.json");
-			
+
 			this.e.getMessage().reply("Downloaded file, please run `" + QOTDBot.config.getPrefix() + " readfile` to load all questions in.").queue();
 		}catch(Exception e) {
 			this.e.getMessage().reply("Unable to read file.").queue();
@@ -218,10 +306,10 @@ public class CMD extends ListenerAdapter{
 
 		diff = QOTDBot.getQuestions().size() - diff;
 		this.e.getMessage().reply("File read; **" + diff + "** questions appended. *(Invalid questions were not added.)*").queue();
-		
+
 		QOTDBot.prepUploadJSON();
 	}
-	
+
 	private void sendFormat() {
 		String format = "QOTD json formatting:\n```"
 				+ "{\r\n"
@@ -244,7 +332,7 @@ public class CMD extends ListenerAdapter{
 				+ "}```";
 		this.e.getMessage().reply(format).queue();
 	}
-	
+
 	private void removeQuestion(String raw) {
 		// qotd remove
 		try {
@@ -259,14 +347,14 @@ public class CMD extends ListenerAdapter{
 			this.e.getMessage().reply("Invalid number.").queue();
 		}
 	}
-	
+
 	private void removeQuestions(String raw) {
 		// qotd bremove
 		try {
 			String[]num = (raw.substring(QOTDBot.config.getPrefix().length()+1+7).trim()).split("-");
 			int start = Integer.parseInt(num[0]);
 			int end = Integer.parseInt(num[1]);
-			
+
 			int status = QOTDBot.bremove(start, end);
 			if(status == -1) {
 				e.getMessage().reply("Invalid numbers.").queue();
@@ -274,6 +362,7 @@ public class CMD extends ListenerAdapter{
 				e.getMessage().reply("Index " + start + " to " + end + " has been removed from the queue.").queue();
 			}
 		}catch(Exception e) {
+			e.printStackTrace();
 			this.e.getMessage().reply("Invalid numbers.").queue();
 		}
 	}

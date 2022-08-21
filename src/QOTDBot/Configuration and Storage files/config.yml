@@ -26,3 +26,9 @@ permRoleID: 1234567890
 
 # Set a manager role, these members can manage QOTDs (write everyone if everyone)
 managerRoleID: 1234567890
+
+# QOTD submission review settings
+# Set to true if you want QOTD submissions to go through bot manager review
+managerReview: false
+# Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed
+reviewChannel: 1234567890

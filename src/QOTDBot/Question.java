@@ -47,6 +47,9 @@ public class Question {
 		this.date = date;
 		this.millis = millis;
 	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 	public void setIsPoll(boolean p) {
 		isPoll = p;
 	}
@@ -98,6 +101,14 @@ public class Question {
 			iswhat = "Poll";
 		}
 		return "**" + iswhat + ":** " + getQuestion() + "\n**Footer:** " + getFooter() + "\n**Author:** " + getAuthor() + "\n**Date:** " + getDate();
+	}
+	
+	public String toString2() {
+		String iswhat = "Question";
+		if(isPoll()) {
+			iswhat = "Poll";
+		}
+		return "__**The Following QOTD Was Requested:**__" + "\n" + iswhat + "\n" + getQuestion() + "\n" + getFooter() + "\n" + getAuthor() + "\n" + getDate();
 	}
 	
 }

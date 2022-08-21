@@ -1,19 +1,42 @@
 package QOTDBot;
 
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.util.concurrent.TimeUnit;
+
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 
 public class ButtonListener extends ListenerAdapter {
 	public void onButtonClick(ButtonClickEvent event) {
-		try {
-			if(event.getButton().getId().startsWith("delete-notif")) {
-				event.getMessage().delete().queue();
+		String id = event.getButton().getId();
+		if(id.startsWith("delete-notif")) {
+			event.getMessage().delete().queue();
 
-				String commandId = event.getButton().getId().replace("delete-notif-", "");
-				event.getChannel().retrieveMessageById(commandId).queue(message -> {
+			String commandId = event.getButton().getId().replace("delete-notif-", "");
+			event.getChannel().retrieveMessageById(commandId).queue(message -> {
+				try {
 					message.delete().queue();
-				});
+				}catch(Exception e) {
+					message.addReaction("🚫").queue();
+				}
+			});
+		}
+		if(id.equals("approve-qotd")) {
+			String[]content = event.getMessage().getContentRaw().split("\r?\n|\r");
+			boolean isPoll = false;
+
+			if(content[1].equals("Poll")) {
+				isPoll = true;
 			}
-		}catch(Exception e) {}
+
+			Question q = new Question(content[2], content[3], content[4], isPoll);
+			q.setDate(content[5]);
+			QOTDBot.add(q);
+
+			event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
+		}
+		if(id.equals("deny-qotd")) {
+			event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
+		}
 	}
 }

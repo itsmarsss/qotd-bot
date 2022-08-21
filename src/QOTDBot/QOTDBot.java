@@ -174,7 +174,7 @@ public class QOTDBot {
 				(e < 0 || e >= questions.size()))
 			return -1;
 
-		for(int i = s; i <= e; i++) {
+		for(int i = e; i >= s; i--) {
 			questions.remove(i);
 		}
 		writeQuestionsJSON();
@@ -231,6 +231,7 @@ public class QOTDBot {
 			}
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

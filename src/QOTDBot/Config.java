@@ -6,12 +6,15 @@ public class Config {
 	private String channelID;
 	private String prefix;
 	
-	private String permRoleID;
-	private String managerRoleID;
 	private int interval;
 	private int hour;
 	private int minute;
 	
+	private String permRoleID;
+	private String managerRoleID;
+	
+	private boolean managerReview;
+	private String reviewChannel;
 	
 	public Config() {}
 
@@ -39,6 +42,21 @@ public class Config {
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
 	}
+	public void setInterval(int interval) {
+		this.interval = interval;
+	}
+	public int getHour() {
+		return hour;
+	}
+	public void setHour(int hour) {
+		this.hour = hour;
+	}
+	public int getMinute() {
+		return minute;
+	}
+	public void setMinute(int minute) {
+		this.minute = minute;
+	}
 	public String getPermRoleID() {
 		return permRoleID;
 	}
@@ -54,20 +72,17 @@ public class Config {
 	public int getInterval() {
 		return interval;
 	}
-	public void setInterval(int interval) {
-		this.interval = interval;
+	public boolean getManagerReview() {
+		return managerReview;
 	}
-	public int getHour() {
-		return hour;
+	public void setManagerReview(boolean managerReview) {
+		this.managerReview = managerReview;
 	}
-	public void setHour(int hour) {
-		this.hour = hour;
+	public String getReviewChannel() {
+		return reviewChannel;
 	}
-	public int getMinute() {
-		return minute;
-	}
-	public void setMinute(int minute) {
-		this.minute = minute;
+	public void setReviewChannel(String reviewChannel) {
+		this.reviewChannel = reviewChannel;
 	}
 	
 	public boolean isValid() {
