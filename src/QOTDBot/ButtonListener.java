@@ -17,7 +17,7 @@ public class ButtonListener extends ListenerAdapter {
 		e = event;
 
 		if(!(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
-			e.reply("No permission").setEphemeral(true).queue();
+			e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
 			return;
 		}
 
