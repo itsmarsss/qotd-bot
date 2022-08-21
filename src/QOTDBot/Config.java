@@ -101,6 +101,9 @@ public class Config {
 		if(interval < 1 || interval > 1440)
 			return false;
 		
+		if(hour < 0 || hour > 24 || minute < 0 || minute > 59)
+			return false;
+		
 		return true;
 	}
 }
