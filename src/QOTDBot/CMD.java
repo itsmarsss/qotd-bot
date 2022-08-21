@@ -369,7 +369,6 @@ public class CMD extends ListenerAdapter{
 				e.getMessage().reply("Index " + start + " to " + end + " has been removed from the queue.").queue();
 			}
 		}catch(Exception e) {
-			e.printStackTrace();
 			this.e.getMessage().reply("Invalid numbers.").queue();
 		}
 	}
