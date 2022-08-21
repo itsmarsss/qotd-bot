@@ -1,6 +1,8 @@
 package QOTDBot;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
@@ -9,6 +11,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.Attachment;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -94,6 +97,9 @@ public class CMD extends ListenerAdapter{
 				break;
 			case "reviewchannel":
 				setReviewChannel(raw);
+				break;
+			case "info":
+				sendInfo();
 				break;
 			}
 		}
@@ -507,6 +513,28 @@ public class CMD extends ListenerAdapter{
 			e.getMessage().reply("Invalid channel id.").queue();
 		}
 	}
+	
+	private void sendInfo() {
+		// qotd info
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
+
+		MessageEmbed infoEm = new EmbedBuilder()
+				.setColor(Color.GRAY)
+				.setTitle("__Bot Info__")
+				.addField("Prefix:", QOTDBot.config.getPrefix(), true)
+				.addBlankField(true)
+				.addField("Interval:", QOTDBot.config.getInterval() + " minute(s)", true)
+				.addField("Perm role ID:", QOTDBot.config.getPermRoleID(), true)
+				.addBlankField(true)
+				.addField("Manager role ID:", QOTDBot.config.getManagerRoleID(), true)
+				.addField("Manager review status:", QOTDBot.config.getManagerReview()+"", true)
+				.addBlankField(true)
+				.addField("Manager review channel:", QOTDBot.config.getReviewChannel(), true)
+				.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+				.setFooter(format.format(LocalDateTime.now()), e.getAuthor().getAvatarUrl())
+				.build();
+		e.getMessage().replyEmbeds(infoEm).queue();
+	}
 
 	private void qotdManager(String raw) {
 		// qotd managerrole
@@ -562,7 +590,7 @@ public class CMD extends ListenerAdapter{
 		// qotd help
 		e.getMessage().reply(
 				"**Commands**"
-						+ "\n`" + QOTDBot.config.getPrefix() + " help` - This"
+						+ "\n`" + QOTDBot.config.getPrefix() + " help` - This message"
 						+ "\n**Perm commands**"
 						+ "\n`" + QOTDBot.config.getPrefix() + " add <question 500 char>-=-<footer 100 char>` - Adds/Requests a QTOD question"
 						+ "\n`" + QOTDBot.config.getPrefix() + " addpoll <question 500 char>-=-<footer 100 char>` - Adds/Requests a QTOD poll"
