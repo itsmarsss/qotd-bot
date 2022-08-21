@@ -270,15 +270,6 @@ public class QOTDBot {
 		}
 	}
 
-	static boolean prepUploadJSON() {
-		try (FileWriter file = new FileWriter(parent + "/upload.json")) {
-			file.write("{\"questions\": []}");
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-	}
-
 	@SuppressWarnings("unchecked")
 	private static void writeQuestionsJSON() {
 		JSONObject questions = new JSONObject();
@@ -301,6 +292,32 @@ public class QOTDBot {
 		}
 	}
 
+	static boolean prepUploadJSON() {
+		try (FileWriter file = new FileWriter(parent + "/upload.json")) {
+			file.write("{\"questions\": []}");
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
+	private static void startThread(int wait) {
+		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+		exec.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				postQOTD();	
+			}
+		}, wait, config.getInterval(), TimeUnit.MINUTES);
+	}
+
+	static void setPause(boolean status) {
+		isPaused = status;
+	}
+	static boolean getPause() {
+		return isPaused;
+	}
+	
 	static void postQOTD() {
 		if (isPaused)
 			return;
@@ -327,23 +344,6 @@ public class QOTDBot {
 		System.out.println("=============================");
 		System.out.println(q);
 		writeQuestionsJSON();
-	}
-
-	private static void startThread(int wait) {
-		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-		exec.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				postQOTD();	
-			}
-		}, wait, config.getInterval(), TimeUnit.MINUTES);
-	}
-
-	static void setPause(boolean status) {
-		isPaused = status;
-	}
-	static boolean getPause() {
-		return isPaused;
 	}
 
 	private static int calculateWaitTime() {
