@@ -342,6 +342,9 @@ public class QOTDBot {
 	static void setPause(boolean status) {
 		isPaused = status;
 	}
+	static boolean getPause() {
+		return isPaused;
+	}
 
 	private static int calculateWaitTime() {
 		int current = LocalDateTime.now().getHour()*60 + LocalDateTime.now().getMinute();

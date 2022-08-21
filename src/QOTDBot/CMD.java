@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -74,10 +75,10 @@ public class CMD extends ListenerAdapter{
 				qotdTest();
 				break;
 			case "postnext":
-				qotdNext();
+				postNext();
 				break;
 			case "qotdchannel":
-				qotdChannel(raw);
+				setQOTDChannel(raw);
 				break;
 			case "pause":
 				setPause(true);
@@ -86,7 +87,13 @@ public class CMD extends ListenerAdapter{
 				setPause(false);
 				break;
 			case "prefix":
-				qotdPrefix(raw);
+				setPrefix(raw);
+				break;
+			case "managerreview":
+				setManagerReview(raw);
+				break;
+			case "reviewchannel":
+				setReviewChannel(raw);
 				break;
 			}
 		}
@@ -152,8 +159,8 @@ public class CMD extends ListenerAdapter{
 						.build();
 				try {
 					e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
-				}catch(Exception ex) {
-					e.getMessage().reply(req).queue();
+				}catch(Exception e) {
+					this.e.getMessage().reply(req).queue();
 				}
 			}
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
@@ -276,13 +283,13 @@ public class CMD extends ListenerAdapter{
 
 	private void uploadFile() {
 		// qotd upload
-		if(this.e.getMessage().getAttachments().isEmpty()) {
-			this.e.getMessage().reply("No json file attached.").queue();
+		if(e.getMessage().getAttachments().isEmpty()) {
+			e.getMessage().reply("No json file attached.").queue();
 			return;
 		}
-		Attachment attachment = this.e.getMessage().getAttachments().get(0);
+		Attachment attachment = e.getMessage().getAttachments().get(0);
 		if(!attachment.getFileExtension().equalsIgnoreCase("json")) {
-			this.e.getMessage().reply("File must be in json format, `" + QOTDBot.config.getPrefix() + " format` for example").queue();
+			e.getMessage().reply("File must be in json format, `" + QOTDBot.config.getPrefix() + " format` for example").queue();
 			return;
 		}
 
@@ -294,7 +301,7 @@ public class CMD extends ListenerAdapter{
 			System.out.println("~~~~~~~~~~~~~");
 			System.out.println("File uploaded: " + QOTDBot.getParent() + "\\upload.json");
 
-			this.e.getMessage().reply("Downloaded file, please run `" + QOTDBot.config.getPrefix() + " readfile` to load all questions in.").queue();
+			e.getMessage().reply("Downloaded file, please run `" + QOTDBot.config.getPrefix() + " readfile` to load all questions in.").queue();
 		}catch(Exception e) {
 			this.e.getMessage().reply("Unable to read file.").queue();
 		}
@@ -305,7 +312,7 @@ public class CMD extends ListenerAdapter{
 		QOTDBot.readQuestionsJSON("upload.json");
 
 		diff = QOTDBot.getQuestions().size() - diff;
-		this.e.getMessage().reply("File read; **" + diff + "** questions appended. *(Invalid questions were not added.)*").queue();
+		e.getMessage().reply("File read; **" + diff + "** questions appended. *(Invalid questions were not added.)*").queue();
 
 		QOTDBot.prepUploadJSON();
 	}
@@ -330,7 +337,7 @@ public class CMD extends ListenerAdapter{
 				+ "\t\t}\r\n"
 				+ "\t]\r\n"
 				+ "}```";
-		this.e.getMessage().reply(format).queue();
+		e.getMessage().reply(format).queue();
 	}
 
 	private void removeQuestion(String raw) {
@@ -411,12 +418,12 @@ public class CMD extends ListenerAdapter{
 		});
 	}
 
-	private void qotdNext() {
+	private void postNext() {
 		// qotd postnext
 		QOTDBot.postQOTD();
 	}
 
-	private void qotdChannel(String raw) {
+	private void setQOTDChannel(String raw) {
 		// qotd qotdchannel
 		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+11).trim();
 		boolean exists = false;
@@ -436,10 +443,10 @@ public class CMD extends ListenerAdapter{
 	private void setPause(boolean status) {
 		// qotd pause
 		QOTDBot.setPause(status);
-		this.e.getMessage().reply("QOTD bot paused: **" + status + "**").queue();
+		e.getMessage().reply("QOTD bot paused: **" + QOTDBot.getPause() + "**").queue();
 	}
 
-	private void qotdPrefix(String raw) {
+	private void setPrefix(String raw) {
 		// qotd prefix
 		try {
 			String param = raw.split(" ")[2].trim();
@@ -448,6 +455,44 @@ public class CMD extends ListenerAdapter{
 			QOTDBot.jda.getPresence().setActivity(Activity.watching("for '" + QOTDBot.config.getPrefix() + " help'"));
 		}catch(Exception e) {
 			this.e.getMessage().reply("Invalid prefix.");
+		}
+	}
+
+	private void setManagerReview(String raw) {
+		// qotd managerreview
+		try {
+			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+13).trim();
+			boolean setTo;
+			if(param.equalsIgnoreCase("true")) {
+				setTo = true;
+			}else if(param.equalsIgnoreCase("false")) {
+				setTo = false;
+			}else {
+				e.getMessage().reply("Invalid parameter").queue();
+				return;
+			}
+			QOTDBot.config.setManagerReview(setTo);
+			e.getMessage().reply("QOTD manager review: **" + QOTDBot.config.getManagerReview() + "**").queue();
+		}catch(Exception e) {
+			this.e.getMessage().reply("Invalid parameter").queue();
+		}
+	}
+
+	private void setReviewChannel(String raw) {
+		// qotd reviewchannel
+		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+13).trim();
+		boolean exists = false;
+		for(TextChannel r : e.getGuild().getTextChannels()) {
+			if(r.getId().equals(param)) {
+				exists = true;
+				break;
+			}
+		}
+		if(exists) {
+			QOTDBot.config.setReviewChannel(param);
+			e.getMessage().reply("QOTD review channel been changed to <#" + param + ">.").queue();
+		}else {
+			e.getMessage().reply("Invalid channel id.").queue();
 		}
 	}
 
@@ -460,6 +505,7 @@ public class CMD extends ListenerAdapter{
 		for(Role r : e.getGuild().getRoles()) {
 			if(r.getId().equals(param)) {
 				exists = true;
+				break;
 			}
 		}
 		if(exists) {
@@ -482,6 +528,7 @@ public class CMD extends ListenerAdapter{
 		for(Role r : e.getGuild().getRoles()) {
 			if(r.getId().equals(param)) {
 				exists = true;
+				break;
 			}
 		}
 		if(exists) {
@@ -520,6 +567,8 @@ public class CMD extends ListenerAdapter{
 						+ "\n`" + QOTDBot.config.getPrefix() + " pause`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " unpause`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " prefix <prefix, no space>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " managerreview <boolean>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " reviewchannel <channel id>`"
 						+ "\n**Admin commands:**"
 						+ "\n`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " managerrole <role id/'everyone'>`").queue();

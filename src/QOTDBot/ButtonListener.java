@@ -4,10 +4,23 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.concurrent.TimeUnit;
 
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 
 public class ButtonListener extends ListenerAdapter {
+	private ButtonClickEvent e;
 	public void onButtonClick(ButtonClickEvent event) {
+		if(!event.getGuild().getId().equals(QOTDBot.config.getServerID()))
+			return;
+
+		e = event;
+
+		if(!(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
+			e.reply("No permission").setEphemeral(true).queue();
+			return;
+		}
+
 		String id = event.getButton().getId();
 		if(id.startsWith("delete-notif")) {
 			event.getMessage().delete().queue();
@@ -39,4 +52,20 @@ public class ButtonListener extends ListenerAdapter {
 			event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
 		}
 	}
+
+	private boolean hasPerm(String ID) {
+		if(ID.equals("everyone"))
+			return true;
+		for(Role r : e.getMember().getRoles()) {
+			if(r.getId().equals(ID)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isAdmin() {
+		return e.getMember().hasPermission(Permission.ADMINISTRATOR);
+	}
+
 }
