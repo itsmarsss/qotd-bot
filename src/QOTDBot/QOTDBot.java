@@ -45,9 +45,10 @@ public class QOTDBot {
 	private static LinkedList<Question> questions = new LinkedList<Question>();
 	private static boolean isPaused = false;
 
-	private static final String version = "2.7.1";
+	private static final String version = "2.7.2";
 	private static String parent;
 	private static final EnumSet<GatewayIntent> intent = EnumSet.of(GatewayIntent.GUILD_MESSAGES);
+	
 	public static void main(String[] args) throws UnsupportedEncodingException, URISyntaxException, FileNotFoundException, LoginException, InterruptedException {
 		System.out.println("  ____   ____ _______ _____    ____   ____ _______ ");
 		System.out.println(" / __ \\ / __ \\__   __|  __ \\  |  _ \\ / __ \\__   __|");
@@ -231,7 +232,6 @@ public class QOTDBot {
 			}
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 	}
@@ -255,7 +255,6 @@ public class QOTDBot {
 					newq.setDate(time);
 					add(newq);
 				}catch(Exception e) {
-					e.printStackTrace();
 					continue;
 				}
 			}
@@ -265,7 +264,6 @@ public class QOTDBot {
 			return true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 	}
