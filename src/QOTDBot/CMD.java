@@ -378,13 +378,13 @@ public class CMD extends ListenerAdapter{
 		try {
 			int param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+4).trim());
 			Question q = QOTDBot.getQuestions().get(param);
-			
+
 			Button deleteButton = Button.secondary("delete", "Delete");
 			Message message = new MessageBuilder()
 					.append("**__QOTD #" + param + ";__**\n" + q)
 					.setActionRows(ActionRow.of(deleteButton))
 					.build();
-			
+
 			e.getMessage().reply(message).queue();
 		}catch(Exception e) {
 			this.e.getMessage().reply("Invalid index.").queue();
@@ -409,7 +409,7 @@ public class CMD extends ListenerAdapter{
 					.append(out)
 					.setActionRows(ActionRow.of(deleteButton))
 					.build();
-			
+
 			e.getMessage().reply(message).queue();
 		}catch(Exception e) {
 			this.e.getMessage().reply("Too large lol.").queue();
@@ -562,27 +562,28 @@ public class CMD extends ListenerAdapter{
 		// qotd help
 		e.getMessage().reply(
 				"**Commands**"
-						+ "\n`" + QOTDBot.config.getPrefix() + " help`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " help` - This"
 						+ "\n**Perm commands**"
-						+ "\n`" + QOTDBot.config.getPrefix() + " add <question 500 char>-=-<footer 100 char>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " addpoll <question 500 char>-=-<footer 100 char>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " add <question 500 char>-=-<footer 100 char>` - Adds/Requests a QTOD question"
+						+ "\n`" + QOTDBot.config.getPrefix() + " addpoll <question 500 char>-=-<footer 100 char>` - Adds/Requests a QTOD poll"
 						+ "\n**Manager commands:**"
-						+ "\n`" + QOTDBot.config.getPrefix() + " upload [attached json file]`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " readfile`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " format`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " remove <index>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " bremove <Start index>-<End index>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " view <index>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " queue`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " qotdtest`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " postnext`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " pause`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " unpause`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " prefix <prefix, no space>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " managerreview <true|false>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " reviewchannel <channel id>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " upload [attached json file]` - Uploads a json file"
+						+ "\n`" + QOTDBot.config.getPrefix() + " readfile` - Reads the cached json file"
+						+ "\n`" + QOTDBot.config.getPrefix() + " format` - Sends json file format"
+						+ "\n`" + QOTDBot.config.getPrefix() + " remove <index>` - Remove QOTD at a specific index"
+						+ "\n`" + QOTDBot.config.getPrefix() + " bremove <Start index>-<End index>` - Remove QOTD in an inclusive range"
+						+ "\n`" + QOTDBot.config.getPrefix() + " view <index>` - View details of QOTD at a specific index"
+						+ "\n`" + QOTDBot.config.getPrefix() + " queue` - View QOTD queue"
+						+ "\n`" + QOTDBot.config.getPrefix() + " qotdtest` - Send a sample QOTD"
+						+ "\n`" + QOTDBot.config.getPrefix() + " postnext` - Post next QOTD"
+						+ "\n`" + QOTDBot.config.getPrefix() + " pause` - Pause QOTD posting"
+						+ "\n`" + QOTDBot.config.getPrefix() + " unpause` - Unpause QOTD posting"
+						+ "\n`" + QOTDBot.config.getPrefix() + " prefix <prefix, no space>` - Change bot prefix"
+						+ "\n`" + QOTDBot.config.getPrefix() + " managerreview <true|false>` - Toggle QOTD manager review"
+						+ "\n`" + QOTDBot.config.getPrefix() + " reviewchannel <channel id>` - Set QOTD request channel"
 						+ "\n**Admin commands:**"
-						+ "\n`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " managerrole <role id/'everyone'>`").queue();
+						+ "\n`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>` - Set QOTD permission role"
+						+ "\n`" + QOTDBot.config.getPrefix() + " managerrole <role id/'everyone'>` - Set QOTD manager role")
+		.queue();
 	}
 }
