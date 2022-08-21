@@ -22,6 +22,9 @@ public class ButtonListener extends ListenerAdapter {
 		}
 
 		String id = event.getButton().getId();
+		if(id.equals("delete")) {
+				event.getMessage().delete().queue();
+		}
 		if(id.startsWith("delete-notif")) {
 			event.getMessage().delete().queue();
 

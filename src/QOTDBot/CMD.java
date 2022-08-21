@@ -378,7 +378,14 @@ public class CMD extends ListenerAdapter{
 		try {
 			int param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+4).trim());
 			Question q = QOTDBot.getQuestions().get(param);
-			e.getMessage().reply("**__QOTD #" + param + ";__**\n" + q).queue();
+			
+			Button deleteButton = Button.secondary("delete", "Delete");
+			Message message = new MessageBuilder()
+					.append("**__QOTD #" + param + ";__**\n" + q)
+					.setActionRows(ActionRow.of(deleteButton))
+					.build();
+			
+			e.getMessage().reply(message).queue();
 		}catch(Exception e) {
 			this.e.getMessage().reply("Invalid number.").queue();
 		}
@@ -397,7 +404,13 @@ public class CMD extends ListenerAdapter{
 			c++;
 		}
 		try {
-			e.getMessage().reply(out).queue();
+			Button deleteButton = Button.secondary("delete", "Delete");
+			Message message = new MessageBuilder()
+					.append(out)
+					.setActionRows(ActionRow.of(deleteButton))
+					.build();
+			
+			e.getMessage().reply(message).queue();
 		}catch(Exception e) {
 			this.e.getMessage().reply("Too large lol.").queue();
 		}
