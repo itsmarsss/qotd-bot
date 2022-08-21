@@ -105,11 +105,12 @@ public class CMD extends ListenerAdapter{
 		}
 		if(isAdmin()) {
 			switch(rawSplit[1]) {
+			case "permrole":
+				qotdPerm(raw);
+				break;
 			case "managerrole":
 				qotdManager(raw);
 				break;
-			case "permrole":
-				qotdPerm(raw);
 			}
 		}
 	}
@@ -283,19 +284,19 @@ public class CMD extends ListenerAdapter{
 				}
 			}
 		}else {
-			e.getMessage().reply("Invalid parameters.").queue();
+			e.getMessage().replyEmbeds(se("Invalid parameters.")).queue();
 		}
 	}
 
 	private void uploadFile() {
 		// qotd upload
 		if(e.getMessage().getAttachments().isEmpty()) {
-			e.getMessage().reply("No json file attached.").queue();
+			e.getMessage().replyEmbeds(se("No json file attached.")).queue();
 			return;
 		}
 		Attachment attachment = e.getMessage().getAttachments().get(0);
 		if(!attachment.getFileExtension().equalsIgnoreCase("json")) {
-			e.getMessage().reply("File must be in json format, `" + QOTDBot.config.getPrefix() + " format` for example").queue();
+			e.getMessage().replyEmbeds(se("File must be in json format, `" + QOTDBot.config.getPrefix() + " format` for example")).queue();
 			return;
 		}
 
@@ -307,9 +308,9 @@ public class CMD extends ListenerAdapter{
 			System.out.println("~~~~~~~~~~~~~");
 			System.out.println("File uploaded: " + QOTDBot.getParent() + "\\upload.json");
 
-			e.getMessage().reply("Downloaded file, please run `" + QOTDBot.config.getPrefix() + " readfile` to load all questions in.").queue();
+			e.getMessage().replyEmbeds(se("Downloaded file, please run `" + QOTDBot.config.getPrefix() + " readfile` to load all questions in.")).queue();
 		}catch(Exception e) {
-			this.e.getMessage().reply("Unable to read file.").queue();
+			this.e.getMessage().replyEmbeds(se("Unable to read file.")).queue();
 		}
 	}
 
@@ -318,7 +319,7 @@ public class CMD extends ListenerAdapter{
 		QOTDBot.readQuestionsJSON("upload.json");
 
 		diff = QOTDBot.getQuestions().size() - diff;
-		e.getMessage().reply("File read; **" + diff + "** questions appended. *(Invalid questions were not added.)*").queue();
+		e.getMessage().replyEmbeds(se("File read; **" + diff + "** questions appended. *(Invalid questions were not added.)*")).queue();
 
 		QOTDBot.prepUploadJSON();
 	}
@@ -343,7 +344,7 @@ public class CMD extends ListenerAdapter{
 				+ "\t\t}\r\n"
 				+ "\t]\r\n"
 				+ "}```";
-		e.getMessage().reply(format).queue();
+		e.getMessage().replyEmbeds(se(format)).queue();
 	}
 
 	private void removeQuestion(String raw) {
@@ -352,12 +353,12 @@ public class CMD extends ListenerAdapter{
 			int param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+6).trim());
 			int status = QOTDBot.remove(param);
 			if(status == -1) {
-				e.getMessage().reply("Invalid number.").queue();
+				e.getMessage().replyEmbeds(se("Invalid number.")).queue();
 			}else{
-				e.getMessage().reply("Index " + param + " has been removed from the queue.").queue();
+				e.getMessage().replyEmbeds(se("Index **" + param + "** has been removed from the queue.")).queue();
 			}
 		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid index.").queue();
+			this.e.getMessage().replyEmbeds(se("Invalid index.")).queue();
 		}
 	}
 
@@ -370,12 +371,12 @@ public class CMD extends ListenerAdapter{
 
 			int status = QOTDBot.bremove(start, end);
 			if(status == -1) {
-				e.getMessage().reply("Invalid numbers.").queue();
+				e.getMessage().replyEmbeds(se("Invalid numbers.")).queue();
 			}else{
-				e.getMessage().reply("Index " + start + " to " + end + " has been removed from the queue.").queue();
+				e.getMessage().replyEmbeds(se("Indexes **" + start + "** to **" + end + "** have been removed from the queue.")).queue();
 			}
 		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid range.").queue();
+			this.e.getMessage().replyEmbeds(se("Invalid range.")).queue();
 		}
 	}
 
@@ -387,13 +388,13 @@ public class CMD extends ListenerAdapter{
 
 			Button deleteButton = Button.secondary("delete", "Delete");
 			Message message = new MessageBuilder()
-					.append("**__QOTD #" + param + ";__**\n" + q)
+					.setEmbeds(se("**__QOTD #" + param + ";__**\n" + q))
 					.setActionRows(ActionRow.of(deleteButton))
 					.build();
 
 			e.getMessage().reply(message).queue();
 		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid index.").queue();
+			this.e.getMessage().replyEmbeds(se("Invalid index.")).queue();
 		}
 	}
 
@@ -418,7 +419,7 @@ public class CMD extends ListenerAdapter{
 
 			e.getMessage().reply(message).queue();
 		}catch(Exception e) {
-			this.e.getMessage().reply("Too large lol.").queue();
+			this.e.getMessage().replyEmbeds(se("Too large lol.")).queue();
 		}
 	}
 
@@ -452,16 +453,16 @@ public class CMD extends ListenerAdapter{
 		}
 		if(exists) {
 			QOTDBot.config.setChannelID(param);
-			e.getMessage().reply("QOTD channel has been changed to <#" + param + ">.").queue();
+			e.getMessage().replyEmbeds(se("QOTD channel has been changed to <#" + param + ">.")).queue();
 		}else{
-			e.getMessage().reply("Invalid channel id.").queue();
+			e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
 		}
 	}
 
 	private void setPause(boolean status) {
 		// qotd pause
 		QOTDBot.setPause(status);
-		e.getMessage().reply("QOTD bot paused: **" + QOTDBot.getPause() + "**").queue();
+		e.getMessage().replyEmbeds(se("QOTD bot paused: **" + QOTDBot.getPause() + "**")).queue();
 	}
 
 	private void setPrefix(String raw) {
@@ -469,10 +470,10 @@ public class CMD extends ListenerAdapter{
 		try {
 			String param = raw.split(" ")[2].trim();
 			QOTDBot.config.setPrefix(param);
-			e.getMessage().reply("QOTD prefix has been changed to `" + param + "`.").queue();
+			e.getMessage().replyEmbeds(se("QOTD prefix has been changed to `" + param + "`.")).queue();
 			QOTDBot.jda.getPresence().setActivity(Activity.watching("for '" + QOTDBot.config.getPrefix() + " help'"));
 		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid prefix.");
+			this.e.getMessage().replyEmbeds(se("Invalid prefix."));
 		}
 	}
 
@@ -486,13 +487,13 @@ public class CMD extends ListenerAdapter{
 			}else if(param.equalsIgnoreCase("false")) {
 				setTo = false;
 			}else {
-				e.getMessage().reply("Invalid parameter").queue();
+				e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
 				return;
 			}
 			QOTDBot.config.setManagerReview(setTo);
-			e.getMessage().reply("QOTD manager review: **" + QOTDBot.config.getManagerReview() + "**").queue();
+			e.getMessage().replyEmbeds(se("QOTD manager review: **" + QOTDBot.config.getManagerReview() + "**")).queue();
 		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid parameter").queue();
+			this.e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
 		}
 	}
 
@@ -508,9 +509,9 @@ public class CMD extends ListenerAdapter{
 		}
 		if(exists) {
 			QOTDBot.config.setReviewChannel(param);
-			e.getMessage().reply("QOTD review channel been changed to <#" + param + ">.").queue();
+			e.getMessage().replyEmbeds(se("QOTD review channel been changed to <#" + param + ">.")).queue();
 		}else {
-			e.getMessage().reply("Invalid channel id.").queue();
+			e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
 		}
 	}
 	
@@ -524,16 +525,39 @@ public class CMD extends ListenerAdapter{
 				.addField("Prefix:", QOTDBot.config.getPrefix(), true)
 				.addBlankField(true)
 				.addField("Interval:", QOTDBot.config.getInterval() + " minute(s)", true)
-				.addField("Perm role ID:", QOTDBot.config.getPermRoleID(), true)
+				.addField("Perm role ID:", QOTDBot.config.getPermRoleID().equals("everyone") ? "everyone" : "<@&" + QOTDBot.config.getPermRoleID() + ">", true)
 				.addBlankField(true)
-				.addField("Manager role ID:", QOTDBot.config.getManagerRoleID(), true)
+				.addField("Manager role ID:",  QOTDBot.config.getManagerRoleID().equals("everyone") ? "everyone" : "<@&" + QOTDBot.config.getManagerRoleID() + ">", true)
 				.addField("Manager review status:", QOTDBot.config.getManagerReview()+"", true)
 				.addBlankField(true)
-				.addField("Manager review channel:", QOTDBot.config.getReviewChannel(), true)
+				.addField("Manager review channel:", "<#" + QOTDBot.config.getReviewChannel() + ">", true)
 				.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 				.setFooter(format.format(LocalDateTime.now()), e.getAuthor().getAvatarUrl())
 				.build();
 		e.getMessage().replyEmbeds(infoEm).queue();
+	}
+
+	private void qotdPerm(String raw) {
+		// qotd permrole
+		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim();
+		if(param.equalsIgnoreCase("everyone")) {
+			e.getMessage().replyEmbeds(se("QOTD perm role has been changed; `everyone` can post questions.")).queue();
+			QOTDBot.config.setPermRoleID("everyone");
+			return;
+		}
+		boolean exists = false;
+		for(Role r : e.getGuild().getRoles()) {
+			if(r.getId().equals(param)) {
+				exists = true;
+				break;
+			}
+		}
+		if(exists) {
+			QOTDBot.config.setPermRoleID(param);
+			e.getMessage().replyEmbeds(se("QOTD perm role has been changed to <@&" + param + ">.")).queue();
+		}else {
+			e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
+		}
 	}
 
 	private void qotdManager(String raw) {
@@ -550,35 +574,15 @@ public class CMD extends ListenerAdapter{
 		}
 		if(exists) {
 			QOTDBot.config.setManagerRoleID(param);
-			e.getMessage().reply("QOTD manager role has been changed to <@&" + param + ">.").queue();
+			e.getMessage().replyEmbeds(se("QOTD manager role has been changed to <@&" + param + ">.")).queue();
 		}else {
-			e.getMessage().reply("Invalid role id.").queue();
+			e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
 		}
 	}
-
-	private void qotdPerm(String raw) {
-		// qotd permrole
-		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim();
-		if(param.equalsIgnoreCase("everyone")) {
-			e.getMessage().reply("QOTD perm role has been changed; `everyone` can post questions.").queue();
-			QOTDBot.config.setPermRoleID("everyone");
-			return;
-		}
-		boolean exists = false;
-		for(Role r : e.getGuild().getRoles()) {
-			if(r.getId().equals(param)) {
-				exists = true;
-				break;
-			}
-		}
-		if(exists) {
-			QOTDBot.config.setPermRoleID(param);
-			e.getMessage().reply("QOTD perm role has been changed to <@&" + param + ">.").queue();
-		}else {
-			e.getMessage().reply("Invalid role id.").queue();
-		}
+	
+	private MessageEmbed se(String desc) {
+		return new EmbedBuilder().setDescription(desc).build();
 	}
-
 
 
 
