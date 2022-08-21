@@ -100,7 +100,11 @@ public class Question {
 		if(isPoll()) {
 			iswhat = "Poll";
 		}
-		return "**" + iswhat + ":** " + getQuestion() + "\n**Footer:** " + getFooter() + "\n**Author:** " + getAuthor() + "\n**Date:** " + getDate();
+		return 
+				"**" + iswhat + ":** " + getQuestion()
+				+ "\n**Footer:** " + getFooter()
+				+ "\n**Author:** " + getAuthor()
+				+ "\n**Date:** " + getDate();
 	}
 	
 	public String toString2() {
@@ -108,7 +112,13 @@ public class Question {
 		if(isPoll()) {
 			iswhat = "Poll";
 		}
-		return "__**The Following QOTD Was Requested:**__" + "\n" + iswhat + "\n" + getQuestion() + "\n" + getFooter() + "\n" + getAuthor() + "\n" + getDate();
+		return 
+				"__**The Following QOTD Was Requested:**__"
+		+ "\n" + iswhat
+		+ "\n" + getQuestion()
+		+ "\n" + getFooter()
+		+ "\n" + getAuthor()
+		+ "\n" + getDate();
 	}
 	
 }
