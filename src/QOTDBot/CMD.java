@@ -68,7 +68,7 @@ public class CMD extends ListenerAdapter{
 			case "view":
 				viewQuestion(raw);
 				break;
-			case "viewqueue":
+			case "queue":
 				viewQueue();
 				break;
 			case "qotdtest":
@@ -351,7 +351,7 @@ public class CMD extends ListenerAdapter{
 				e.getMessage().reply("Index " + param + " has been removed from the queue.").queue();
 			}
 		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid number.").queue();
+			this.e.getMessage().reply("Invalid index.").queue();
 		}
 	}
 
@@ -369,7 +369,7 @@ public class CMD extends ListenerAdapter{
 				e.getMessage().reply("Index " + start + " to " + end + " has been removed from the queue.").queue();
 			}
 		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid numbers.").queue();
+			this.e.getMessage().reply("Invalid range.").queue();
 		}
 	}
 
@@ -387,7 +387,7 @@ public class CMD extends ListenerAdapter{
 			
 			e.getMessage().reply(message).queue();
 		}catch(Exception e) {
-			this.e.getMessage().reply("Invalid number.").queue();
+			this.e.getMessage().reply("Invalid index.").queue();
 		}
 	}
 
@@ -573,13 +573,13 @@ public class CMD extends ListenerAdapter{
 						+ "\n`" + QOTDBot.config.getPrefix() + " remove <index>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " bremove <Start index>-<End index>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " view <index>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " viewqueue`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " queue`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " qotdtest`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " postnext`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " pause`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " unpause`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " prefix <prefix, no space>`"
-						+ "\n`" + QOTDBot.config.getPrefix() + " managerreview <boolean>`"
+						+ "\n`" + QOTDBot.config.getPrefix() + " managerreview <true|false>`"
 						+ "\n`" + QOTDBot.config.getPrefix() + " reviewchannel <channel id>`"
 						+ "\n**Admin commands:**"
 						+ "\n`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>`"
