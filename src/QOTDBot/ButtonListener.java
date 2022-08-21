@@ -24,8 +24,7 @@ public class ButtonListener extends ListenerAdapter {
 		String id = event.getButton().getId();
 		if(id.equals("delete")) {
 				event.getMessage().delete().queue();
-		}
-		if(id.startsWith("delete-notif")) {
+		}else if(id.startsWith("delete-notif")) {
 			event.getMessage().delete().queue();
 
 			String commandId = event.getButton().getId().replace("delete-notif-", "");
@@ -36,8 +35,7 @@ public class ButtonListener extends ListenerAdapter {
 					message.addReaction("🚫").queue();
 				}
 			});
-		}
-		if(id.equals("approve-qotd")) {
+		}else if(id.equals("approve-qotd")) {
 			String[]content = event.getMessage().getContentRaw().split("\r?\n|\r");
 			boolean isPoll = false;
 
@@ -50,8 +48,7 @@ public class ButtonListener extends ListenerAdapter {
 			QOTDBot.add(q);
 
 			event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
-		}
-		if(id.equals("deny-qotd")) {
+		}else if(id.equals("deny-qotd")) {
 			event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
 		}
 	}
