@@ -53,7 +53,7 @@ public class ButtonListener extends ListenerAdapter {
 				event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
 			}
 		}catch(Exception e) {
-			this.e.reply("Request unsuccessful").setEphemeral(true).queue();
+			this.e.reply("Request unsuccessful *(Hint: Embed possibly removed?)*").setEphemeral(true).queue();
 		}
 	}
 
