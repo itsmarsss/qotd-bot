@@ -518,7 +518,7 @@ public class CMD extends ListenerAdapter{
 		MessageEmbed infoEm = new EmbedBuilder()
 				.setColor(Color.GRAY)
 				.setTitle("__Bot Info__")
-				.setDescription("*Version: " + QOTDBot.version + "*")
+				.setDescription("[ *Version: " + QOTDBot.version + "* ]")
 				.addField("Prefix:", QOTDBot.config.getPrefix(), true)
 				.addBlankField(true)
 				.addField("Interval:", QOTDBot.config.getInterval() + " minute(s)", true)
