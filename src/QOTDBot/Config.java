@@ -5,17 +5,21 @@ public class Config {
 	private String serverID;
 	private String channelID;
 	private String prefix;
-	
+
 	private int interval;
 	private int hour;
 	private int minute;
-	
+
 	private String permRoleID;
 	private String managerRoleID;
-	
+
+	private boolean dynamicConfig;
+
 	private boolean managerReview;
 	private String reviewChannel;
 	
+	private boolean initialized;
+
 	public Config() {}
 
 	public String getBotToken() {
@@ -35,12 +39,17 @@ public class Config {
 	}
 	public void setChannelID(String channelID) {
 		this.channelID = channelID;
+		writeYML();
 	}
 	public String getPrefix() {
 		return prefix;
 	}
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
+		writeYML();
+	}
+	public int getInterval() {
+		return interval;
 	}
 	public void setInterval(int interval) {
 		this.interval = interval;
@@ -62,48 +71,71 @@ public class Config {
 	}
 	public void setPermRoleID(String permRoleID) {
 		this.permRoleID = permRoleID;
+		writeYML();
 	}
 	public String getManagerRoleID() {
 		return managerRoleID;
 	}
 	public void setManagerRoleID(String managerRoleID) {
 		this.managerRoleID = managerRoleID;
+		writeYML();
 	}
-	public int getInterval() {
-		return interval;
+	public boolean getDynamicConfig() {
+		return dynamicConfig;
+	}
+	public void setDynamicConfig(boolean dynamicConfig) {
+		this.dynamicConfig = dynamicConfig;
+		writeYML();
 	}
 	public boolean getManagerReview() {
 		return managerReview;
 	}
 	public void setManagerReview(boolean managerReview) {
 		this.managerReview = managerReview;
+		writeYML();
 	}
 	public String getReviewChannel() {
 		return reviewChannel;
 	}
 	public void setReviewChannel(String reviewChannel) {
 		this.reviewChannel = reviewChannel;
+		writeYML();
+	}
+
+	
+	public boolean getInitialized() {
+		return initialized;
+	}
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
 	}
 	
+
 	public boolean isValid() {
 		if(botToken.isBlank())
 			return false;
-		
+
 		if(serverID.isBlank())
 			return false;
-		
+
 		if(channelID.isBlank())
 			return false;
-		
+
 		if(prefix.isBlank())
 			return false;
-		
+
 		if(interval < 1 || interval > 1440)
 			return false;
-		
+
 		if(hour < 0 || hour > 24 || minute < 0 || minute > 59)
 			return false;
-		
+
 		return true;
+	}
+	
+	private void writeYML() {
+		if(dynamicConfig && getInitialized()) {
+			QOTDBot.writeConfigYML();
+		}
 	}
 }
