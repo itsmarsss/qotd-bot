@@ -139,10 +139,10 @@ public class CMD extends ListenerAdapter{
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
 			Question q = new Question(param[0], user.getAsTag(), false);
 
-			String title = "**__Added the following;__**\n";
+			String title = "**__Added the following:__**\n";
 
 			if(QOTDBot.config.getManagerReview()) {
-				title = "**__Requested the following;__**\n";
+				title = "**__Requested the following:__**\n";
 			}else {
 				QOTDBot.add(q);
 			}
@@ -172,10 +172,10 @@ public class CMD extends ListenerAdapter{
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
 			Question q = new Question(param[0], param[1], user.getAsTag(), false);
 
-			String title = "**__Added the following;__**\n";
+			String title = "**__Added the following:__**\n";
 
 			if(QOTDBot.config.getManagerReview()) {
-				title = "**__Requested the following;__**\n";
+				title = "**__Requested the following:__**\n";
 			}else {
 				QOTDBot.add(q);
 			}
@@ -216,10 +216,10 @@ public class CMD extends ListenerAdapter{
 		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
 			Question q = new Question(param[0], user.getAsTag(), true);
 
-			String title = "**__Added the following poll;__**\n";
+			String title = "**__Added the following poll:__**\n";
 
 			if(QOTDBot.config.getManagerReview()) {
-				title = "**__Requested the following poll;__**\n";
+				title = "**__Requested the following poll:__**\n";
 			}else {
 				QOTDBot.add(q);
 			}
@@ -249,10 +249,10 @@ public class CMD extends ListenerAdapter{
 		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
 			Question q = new Question(param[0], param[1], user.getAsTag(), true);
 
-			String title = "**__Added the following poll;__**\n";
+			String title = "**__Added the following poll:__**\n";
 
 			if(QOTDBot.config.getManagerReview()) {
-				title = "**__Requested the following poll;__**\n";
+				title = "**__Requested the following poll:__**\n";
 			}else {
 				QOTDBot.add(q);
 			}
