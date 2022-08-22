@@ -111,6 +111,12 @@ public class CMD extends ListenerAdapter{
 			case "managerrole":
 				qotdManager(raw);
 				break;
+			case "dynamicconfig":
+				setDynConfig(raw);
+				break;
+			case "updateconfig":
+				updateConfig();
+				break;
 			}
 		}
 	}
@@ -510,7 +516,7 @@ public class CMD extends ListenerAdapter{
 			e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
 		}
 	}
-	
+
 	private void sendInfo() {
 		// qotd info
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
@@ -576,7 +582,41 @@ public class CMD extends ListenerAdapter{
 			e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
 		}
 	}
-	
+
+	private void setDynConfig(String raw) {
+		// qotd dynamicconfig
+		try {
+			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+13).trim();
+			boolean setTo;
+			if(param.equalsIgnoreCase("true")) {
+				setTo = true;
+			}else if(param.equalsIgnoreCase("false")) {
+				setTo = false;
+			}else {
+				e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
+				return;
+			}
+			QOTDBot.config.setDynamicConfig(setTo);
+			e.getMessage().replyEmbeds(se("QOTD dynamic config: **" + QOTDBot.config.getManagerReview() + "**")).queue();
+		}catch(Exception e) {
+			this.e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
+		}
+	}
+
+	private void updateConfig() {
+		// qotd updateconfig
+		if(QOTDBot.writeConfigYML()) {
+			e.getMessage().replyEmbeds(se("Config.yml updated")).queue();
+		}else {
+			e.getMessage().replyEmbeds(se("Config.yml failed to update")).queue();
+		}
+	}
+
+
+
+
+
+
 	private MessageEmbed se(String desc) {
 		return new EmbedBuilder().setDescription(desc).build();
 	}
@@ -597,28 +637,28 @@ public class CMD extends ListenerAdapter{
 				.addBlankField(true)
 				.addField("Perm commands",
 						"`" + QOTDBot.config.getPrefix() + " add <question 500 char>-=-<footer 100 char>` - Adds/Requests a QTOD question" + "\n`" + 
-						QOTDBot.config.getPrefix() + " addpoll <question 500 char>-=-<footer 100 char>` - Adds/Requests a QTOD poll", false)
+								QOTDBot.config.getPrefix() + " addpoll <question 500 char>-=-<footer 100 char>` - Adds/Requests a QTOD poll", false)
 				.addBlankField(true)
 				.addField("Manager commands",
 						"`" + QOTDBot.config.getPrefix() + " upload [attached json file]` - Uploads a json file" + "\n`" + 
-						QOTDBot.config.getPrefix() + " readfile` - Reads the cached json file" + "\n`" + 
-						QOTDBot.config.getPrefix() + " format` - Sends json file format" + "\n`" + 
-						QOTDBot.config.getPrefix() + " remove <index>` - Remove QOTD at a specific index" + "\n`" + 
-						QOTDBot.config.getPrefix() + " bremove <Start index>-<End index>` - Remove QOTD in an inclusive range" + "\n`" + 
-						QOTDBot.config.getPrefix() + " view <index>` - View details of QOTD at a specific index" + "\n`" + 
-						QOTDBot.config.getPrefix() + " queue` - View QOTD queue" + "\n`" + 
-						QOTDBot.config.getPrefix() + " qotdtest` - Send a sample QOTD" + "\n`" + 
-						QOTDBot.config.getPrefix() + " postnext` - Post next QOTD" + "\n`" + 
-						QOTDBot.config.getPrefix() + " pause` - Pause QOTD posting" + "\n`" + 
-						QOTDBot.config.getPrefix() + " unpause` - Unpause QOTD posting" + "\n`" + 
-						QOTDBot.config.getPrefix() + " prefix <prefix, no space>` - Change bot prefix" + "\n`" + 
-						QOTDBot.config.getPrefix() + " managerreview <true|false>` - Toggle QOTD manager review" + "\n`" + 
-						QOTDBot.config.getPrefix() + " reviewchannel <channel id>` - Set QOTD request channel" + "\n`" + 
-						QOTDBot.config.getPrefix() + " info` - See bot info", false)
+								QOTDBot.config.getPrefix() + " readfile` - Reads the cached json file" + "\n`" + 
+								QOTDBot.config.getPrefix() + " format` - Sends json file format" + "\n`" + 
+								QOTDBot.config.getPrefix() + " remove <index>` - Remove QOTD at a specific index" + "\n`" + 
+								QOTDBot.config.getPrefix() + " bremove <Start index>-<End index>` - Remove QOTD in an inclusive range" + "\n`" + 
+								QOTDBot.config.getPrefix() + " view <index>` - View details of QOTD at a specific index" + "\n`" + 
+								QOTDBot.config.getPrefix() + " queue` - View QOTD queue" + "\n`" + 
+								QOTDBot.config.getPrefix() + " qotdtest` - Send a sample QOTD" + "\n`" + 
+								QOTDBot.config.getPrefix() + " postnext` - Post next QOTD" + "\n`" + 
+								QOTDBot.config.getPrefix() + " pause` - Pause QOTD posting" + "\n`" + 
+								QOTDBot.config.getPrefix() + " unpause` - Unpause QOTD posting" + "\n`" + 
+								QOTDBot.config.getPrefix() + " prefix <prefix, no space>` - Change bot prefix" + "\n`" + 
+								QOTDBot.config.getPrefix() + " managerreview <true|false>` - Toggle QOTD manager review" + "\n`" + 
+								QOTDBot.config.getPrefix() + " reviewchannel <channel id>` - Set QOTD request channel" + "\n`" + 
+								QOTDBot.config.getPrefix() + " info` - See bot info", false)
 				.addBlankField(true)
 				.addField("Admin commands",
 						"`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>` - Set QOTD permission role" + "\n`" + 
-						QOTDBot.config.getPrefix() + " managerrole <role id/'everyone'>` - Set QOTD manager role", false)
+								QOTDBot.config.getPrefix() + " managerrole <role id/'everyone'>` - Set QOTD manager role", false)
 				.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 				.build()).queue();
 	}
