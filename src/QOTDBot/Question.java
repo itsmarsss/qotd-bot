@@ -54,13 +54,14 @@ public class Question {
 		isPoll = p;
 	}
 	public void setAuthor(String a) {
-		author = a;
+		author = escape(a);
 	}
+
 	public void setFooter(String f) {
-		footer = f;
+		footer = escape(f);
 	}
 	public void setQuestion(String q) {
-		question = q;
+		question = escape(q);
 	}
 	
 	boolean isPoll() {
@@ -80,6 +81,30 @@ public class Question {
 	}
 	String getQuestion() {
 		return question;
+	}
+	
+	private String escape(String s) {
+		String escaped = "";
+		int i = 0;
+		while(i < s.length()) {
+			if(s.charAt(i) == '*') {
+				escaped+="\\*";
+			}else if(s.charAt(i) == '_') {
+				escaped+="\\_";
+			}else if(s.charAt(i) == '|') {
+				escaped+="\\|";
+			}else if(s.charAt(i) == '>') {
+				escaped+="\\>";
+			}else if(s.charAt(i) == '`') {
+				escaped+="\\`";
+			}else if(s.charAt(i) == '~') {
+				escaped+="\\~";
+			}else {
+				escaped+=s.charAt(i);
+			}
+			i++;
+		}
+		return escaped;
 	}
 	
 	public MessageEmbed createEmbed() {
