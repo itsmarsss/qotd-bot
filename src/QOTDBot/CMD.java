@@ -150,8 +150,7 @@ public class CMD extends ListenerAdapter{
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
 
 			Message message = new MessageBuilder()
-					.append(title)
-					.append(q)
+					.setEmbeds(new EmbedBuilder().setTitle(title).setDescription(q.toString()).build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
@@ -161,7 +160,7 @@ public class CMD extends ListenerAdapter{
 				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
 
 				Message req = new MessageBuilder()
-						.append(q.toString2())
+						.setEmbeds(se(q.toString2()))
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
 				try {
@@ -184,8 +183,7 @@ public class CMD extends ListenerAdapter{
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
 
 			Message message = new MessageBuilder()
-					.append(title)
-					.append(q)
+					.setEmbeds(new EmbedBuilder().setTitle(title).setDescription(q.toString()).build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
@@ -195,7 +193,7 @@ public class CMD extends ListenerAdapter{
 				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
 
 				Message req = new MessageBuilder()
-						.append(q.toString2())
+						.setEmbeds(se(q.toString2()))
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
 				try {
@@ -205,7 +203,7 @@ public class CMD extends ListenerAdapter{
 				}
 			}
 		}else {
-			e.getMessage().reply("Invalid parameters.").queue();
+			e.getMessage().replyEmbeds(se("Invalid parameters.")).queue();
 		}
 	}
 
@@ -229,8 +227,7 @@ public class CMD extends ListenerAdapter{
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
 
 			Message message = new MessageBuilder()
-					.append(title)
-					.append(q)
+					.setEmbeds(new EmbedBuilder().setTitle(title).setDescription(q.toString()).build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
@@ -240,7 +237,7 @@ public class CMD extends ListenerAdapter{
 				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
 
 				Message req = new MessageBuilder()
-						.append(q.toString2())
+						.setEmbeds(se(q.toString2()))
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
 				try {
@@ -263,8 +260,7 @@ public class CMD extends ListenerAdapter{
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
 
 			Message message = new MessageBuilder()
-					.append(title)
-					.append(q)
+					.setEmbeds(new EmbedBuilder().setTitle(title).setDescription(q.toString()).build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
@@ -274,7 +270,7 @@ public class CMD extends ListenerAdapter{
 				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
 
 				Message req = new MessageBuilder()
-						.append(q.toString2())
+						.setEmbeds(se(q.toString2()))
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
 				try {
