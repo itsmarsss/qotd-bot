@@ -33,7 +33,7 @@ public class ButtonListener extends ListenerAdapter {
 					try {
 						message.delete().queue();
 					}catch(Exception e) {
-						message.addReaction("🚫").queue();
+						message.addReaction("\uF6AB").queue();
 					}
 				});
 			}else if(id.equals("approve-qotd")) {

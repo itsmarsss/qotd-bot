@@ -89,7 +89,7 @@ public class Question {
 		}
 		EmbedBuilder QOTDEmbed = new EmbedBuilder();
 		QOTDEmbed.setAuthor("Added by: " + getAuthor())
-		.setTitle("❔❓ QOTD For Today! ❔❓\n**" + iswhat + ":** " + getQuestion())
+		.setTitle(":grey_question::question: QOTD For Today! :grey_question::question:\n**" + iswhat + ":** " + getQuestion())
 		.setDescription("*" + getFooter() + "*")
 		.setFooter("Added on: " + getDate())
 		.setColor(new Color(230, 33, 39));
