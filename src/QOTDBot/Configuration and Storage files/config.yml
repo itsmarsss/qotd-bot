@@ -27,6 +27,9 @@ permRoleID: 1234567890
 # Set a manager role, these members can manage QOTDs (write everyone if everyone)
 managerRoleID: 1234567890
 
+# Dynamic config.yml, config.yml is changed as its values are changed
+dynamicConfig: true
+
 # QOTD submission review settings
 # Set to true if you want QOTD submissions to go through bot manager review
 managerReview: false
