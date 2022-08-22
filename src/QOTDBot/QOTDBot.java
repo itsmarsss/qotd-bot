@@ -333,8 +333,8 @@ public class QOTDBot {
 		Question q = getNext();
 		if(q.isPoll()) {
 			jda.getTextChannelById(config.getChannelID()).sendMessageEmbeds(q.createEmbed()).queue(msg -> {
-				msg.addReaction("✅").queue();
-				msg.addReaction("❎").queue();
+				msg.addReaction("\u2705").queue();
+				msg.addReaction("\u274E").queue();
 			});
 		}else {
 			jda.getTextChannelById(config.getChannelID()).sendMessageEmbeds(q.createEmbed()).queue();

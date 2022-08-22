@@ -428,8 +428,8 @@ public class CMD extends ListenerAdapter{
 		.setFooter("Added on: *date here*")
 		.setColor(new Color(230, 33, 39));
 		e.getMessage().replyEmbeds(QOTDEmbed.build()).queue(msg -> {
-			msg.addReaction("✅");
-			msg.addReaction("❎");
+			msg.addReaction("\u2705").queue();
+			msg.addReaction("\u274E").queue();
 		});
 	}
 
