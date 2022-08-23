@@ -165,6 +165,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Footer", q.getFooter(), false)
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
+							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
@@ -182,6 +183,7 @@ public class CMD extends ListenerAdapter{
 								.addField("Footer", q.getFooter(), false)
 								.addField("Author", q.getAuthor(), false)
 								.addField("Date", q.getDate(), false)
+								.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
@@ -211,6 +213,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Footer", q.getFooter(), false)
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
+							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
@@ -228,6 +231,7 @@ public class CMD extends ListenerAdapter{
 								.addField("Footer", q.getFooter(), false)
 								.addField("Author", q.getAuthor(), false)
 								.addField("Date", q.getDate(), false)
+								.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
@@ -268,6 +272,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Footer", q.getFooter(), false)
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
+							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
@@ -285,6 +290,7 @@ public class CMD extends ListenerAdapter{
 								.addField("Footer", q.getFooter(), false)
 								.addField("Author", q.getAuthor(), false)
 								.addField("Date", q.getDate(), false)
+								.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
@@ -314,6 +320,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Footer", q.getFooter(), false)
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
+							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
@@ -331,6 +338,7 @@ public class CMD extends ListenerAdapter{
 								.addField("Footer", q.getFooter(), false)
 								.addField("Author", q.getAuthor(), false)
 								.addField("Date", q.getDate(), false)
+								.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
@@ -451,6 +459,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Footer", q.getFooter(), false)
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
+							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 							.build())
 					.setActionRows(ActionRow.of(deleteButton))
 					.build();
