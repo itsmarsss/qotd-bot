@@ -54,11 +54,13 @@ public class Question {
 		isPoll = p;
 	}
 	public void setAuthor(String a) {
+		author = a;
 	}
-
 	public void setFooter(String f) {
+		footer = f;
 	}
 	public void setQuestion(String q) {
+		question = q;
 	}
 	
 	boolean isPoll() {
