@@ -168,6 +168,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
 							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+							.setColor(QOTDBot.config.getColor())
 							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
@@ -186,6 +187,7 @@ public class CMD extends ListenerAdapter{
 								.addField("Author", q.getAuthor(), false)
 								.addField("Date", q.getDate(), false)
 								.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+								.setColor(QOTDBot.config.getColor())
 								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
@@ -216,6 +218,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
 							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+							.setColor(QOTDBot.config.getColor())
 							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
@@ -234,6 +237,7 @@ public class CMD extends ListenerAdapter{
 								.addField("Author", q.getAuthor(), false)
 								.addField("Date", q.getDate(), false)
 								.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+								.setColor(QOTDBot.config.getColor())
 								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
@@ -275,6 +279,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
 							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+							.setColor(QOTDBot.config.getColor())
 							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
@@ -293,6 +298,7 @@ public class CMD extends ListenerAdapter{
 								.addField("Author", q.getAuthor(), false)
 								.addField("Date", q.getDate(), false)
 								.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+								.setColor(QOTDBot.config.getColor())
 								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
@@ -323,6 +329,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
 							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+							.setColor(QOTDBot.config.getColor())
 							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
@@ -341,6 +348,7 @@ public class CMD extends ListenerAdapter{
 								.addField("Author", q.getAuthor(), false)
 								.addField("Date", q.getDate(), false)
 								.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+								.setColor(QOTDBot.config.getColor())
 								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
@@ -462,6 +470,7 @@ public class CMD extends ListenerAdapter{
 							.addField("Author", q.getAuthor(), false)
 							.addField("Date", q.getDate(), false)
 							.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+							.setColor(QOTDBot.config.getColor())
 							.build())
 					.setActionRows(ActionRow.of(deleteButton))
 					.build();
@@ -631,6 +640,7 @@ public class CMD extends ListenerAdapter{
 				.addField("Dynamic Config:", QOTDBot.config.getDynamicConfig()+"", false)
 				.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 				.setFooter(format.format(LocalDateTime.now()), e.getAuthor().getAvatarUrl())
+				.setColor(QOTDBot.config.getColor())
 				.build();
 		e.getMessage().replyEmbeds(infoEm).queue();
 	}
@@ -645,6 +655,7 @@ public class CMD extends ListenerAdapter{
 						.replace("[There is a newer version of QOTD Bot]", "__**[There is a newer version of QOTD Bot]**__")
 						.replace("Author's Note:", "**Author's Note:**")
 						.replace("New version:", "**New version:**"))
+				.setColor(QOTDBot.config.getColor())
 				.build())
 		.queue();
 	}
@@ -735,7 +746,10 @@ public class CMD extends ListenerAdapter{
 
 
 	private MessageEmbed se(String desc) {
-		return new EmbedBuilder().setDescription(desc).build();
+		return new EmbedBuilder()
+				.setDescription(desc)
+				.setColor(QOTDBot.config.getColor())
+				.build();
 	}
 
 
@@ -781,6 +795,7 @@ public class CMD extends ListenerAdapter{
 								QOTDBot.config.getPrefix() + " dynamicconfig <true|false>` - Toggle QOTD config.yml dynamic state" + "\n`" + 
 								QOTDBot.config.getPrefix() + " updateconfig` - Update config.yml to match current settings", false)
 				.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
+				.setColor(QOTDBot.config.getColor())
 				.build()).queue();
 	}
 }
