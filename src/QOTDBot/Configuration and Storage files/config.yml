@@ -35,3 +35,6 @@ dynamicConfig: true
 managerReview: false
 # Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed
 reviewChannel: 1234567890
+
+# Embed color
+QOTDColor: sclfkjghj

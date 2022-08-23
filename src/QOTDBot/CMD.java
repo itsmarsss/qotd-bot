@@ -600,7 +600,6 @@ public class CMD extends ListenerAdapter{
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
 
 		MessageEmbed infoEm = new EmbedBuilder()
-				.setColor(Color.GRAY)
 				.setTitle("__Bot Info__")
 				.setDescription("[ *Version: " + QOTDBot.version + "* ]")
 				.addField("Prefix:", QOTDBot.config.getPrefix(), true)

@@ -1,5 +1,7 @@
 package QOTDBot;
 
+import java.awt.Color;
+
 public class Config {
 	private String botToken;
 	private String serverID;
@@ -17,6 +19,10 @@ public class Config {
 
 	private boolean managerReview = false;
 	private String reviewChannel;
+	
+	private String QOTDColor;
+	
+	private Color color = new Color(230, 33, 39);
 	
 	private boolean initialized;
 
@@ -101,7 +107,22 @@ public class Config {
 		this.reviewChannel = reviewChannel;
 		writeYML(false);
 	}
+	public String getQOTDColor() {
+		return QOTDColor;
+	}
+	public void setQOTDColor(String QOTDColor) {
+		this.QOTDColor = QOTDColor;
+		color = Color.decode(QOTDColor);
+	}
+
 	
+	public Color getColor() {
+		return color;
+	}
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
 	public boolean getInitialized() {
 		return initialized;
 	}
