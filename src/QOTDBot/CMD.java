@@ -597,15 +597,20 @@ public class CMD extends ListenerAdapter{
 			this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
 		}
 	}
-	
+
 	private void setColor(String raw) {
-		// qotd qotdcolor
+		// qotd embedcolor
 		try {
-			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+9).trim();
+			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+10).trim().replace("#", "");
 			QOTDBot.config.setColor(Color.decode(param));
 			QOTDBot.config.setQOTDColor(param);
+			this.e.getMessage().replyEmbeds(new EmbedBuilder()
+					.setDescription("Set embed color to **#" + QOTDBot.config.getQOTDColor() + "**.")
+					.setColor(QOTDBot.config.getColor())
+					.build())
+			.queue();
 		}catch(Exception e) {
-			this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
+			this.e.getMessage().replyEmbeds(se("Unable to set color.")).queue();
 		}
 	}
 
