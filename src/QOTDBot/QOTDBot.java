@@ -281,12 +281,16 @@ public class QOTDBot {
 		String serverID = config.getServerID();
 		String channelID = config.getChannelID();
 		String prefix = config.getPrefix();
+		
 		int interval = config.getInterval();
 		int hour = config.getHour();
 		int minute = config.getMinute();
+		
 		String permRoleID = config.getPermRoleID();
 		String managerRoleID = config.getManagerRoleID();
+		
 		boolean dynamicConfig = config.getDynamicConfig();
+		
 		boolean managerReview = config.getManagerReview();
 		String reviewChannel = config.getReviewChannel();
 		
