@@ -19,16 +19,23 @@ public class ButtonListener extends ListenerAdapter {
 
 			e = event;
 
-			if(!(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
-				e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
-				return;
-			}
-
 			String id = event.getButton().getId();
 			if(id.equals("delete")) {
+				
+				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
+					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					return;
+				}
+				
 				event.getMessage().delete().queue();
 				e.reply("Request successful").setEphemeral(true).queue();
 			}else if(id.startsWith("delete-notif")) {
+				
+				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
+					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					return;
+				}
+
 				event.getMessage().delete().queue();
 
 				String commandId = event.getButton().getId().replace("delete-notif-", "");
@@ -42,6 +49,12 @@ public class ButtonListener extends ListenerAdapter {
 
 				e.reply("Request successful").setEphemeral(true).queue();
 			}else if(id.equals("approve-qotd")) {
+
+				if(!(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
+					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					return;
+				}
+
 				List<Field>flds = event.getMessage().getEmbeds().get(0).getFields();
 				boolean isPoll = false;
 
@@ -57,6 +70,12 @@ public class ButtonListener extends ListenerAdapter {
 
 				e.reply("Request successful").setEphemeral(true).queue();
 			}else if(id.equals("deny-qotd")) {
+
+				if(!(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
+					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					return;
+				}
+
 				event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
 
 				e.reply("Request successful").setEphemeral(true).queue();
