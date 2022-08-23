@@ -88,7 +88,7 @@ public class QOTDBot {
 			+ "reviewChannel: %s\r\n"
 			+ "\r\n"
 			+ "# QOTD Embed color in hex (Do not include \"#\")\r\n"
-			+ "QOTDColor: E62127\r\n"
+			+ "QOTDColor: %s\r\n"
 			+ "";
 	
 	public static void main(String[] args) throws UnsupportedEncodingException, URISyntaxException, FileNotFoundException, LoginException, InterruptedException {
@@ -299,8 +299,10 @@ public class QOTDBot {
 		boolean managerReview = config.getManagerReview();
 		String reviewChannel = config.getReviewChannel();
 		
+		String colorHex = config.getQOTDColor();
+		
 		try (FileWriter file = new FileWriter(parent + "/config.yml")) {
-			file.write(String.format(template, token, serverID, channelID, prefix, interval, hour, minute, permRoleID, managerRoleID, dynamicConfig, managerReview, reviewChannel));
+			file.write(String.format(template, token, serverID, channelID, prefix, interval, hour, minute, permRoleID, managerRoleID, dynamicConfig, managerReview, reviewChannel, colorHex));
 			return true;
 		} catch (Exception e) {
 			return false;
