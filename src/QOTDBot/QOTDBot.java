@@ -276,7 +276,11 @@ public class QOTDBot {
 				+ "# Set to true if you want QOTD submissions to go through bot manager review\r\n"
 				+ "managerReview: %s\r\n"
 				+ "# Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed\r\n"
-				+ "reviewChannel: %s\r\n";
+				+ "reviewChannel: %s\r\n"
+				+ "\r\n"
+				+ "# QOTD title (256 characters)\r\n"
+				+ "QOTDTitle: %s \r\n"
+				+ "";
 		
 		String token = config.getBotToken();
 		String serverID = config.getServerID();
@@ -295,8 +299,10 @@ public class QOTDBot {
 		boolean managerReview = config.getManagerReview();
 		String reviewChannel = config.getReviewChannel();
 		
+		String qotdTitle = config.getQOTDTitle();
+		
 		try (FileWriter file = new FileWriter(parent + "/config.yml")) {
-			file.write(String.format(template, token, serverID, channelID, prefix, interval, hour, minute, permRoleID, managerRoleID, dynamicConfig, managerReview, reviewChannel));
+			file.write(String.format(template, token, serverID, channelID, prefix, interval, hour, minute, permRoleID, managerRoleID, dynamicConfig, managerReview, reviewChannel, qotdTitle));
 			return true;
 		} catch (Exception e) {
 			return false;
