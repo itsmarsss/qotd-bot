@@ -1,5 +1,6 @@
 package QOTDBot;
 
+import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -96,6 +97,9 @@ public class CMD extends ListenerAdapter{
 				break;
 			case "reviewchannel":
 				setReviewChannel(raw);
+				break;
+			case "embedcolor":
+				setColor(raw);
 				break;
 			case "info":
 				sendInfo();
@@ -593,6 +597,17 @@ public class CMD extends ListenerAdapter{
 			this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
 		}
 	}
+	
+	private void setColor(String raw) {
+		// qotd qotdcolor
+		try {
+			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+9).trim();
+			QOTDBot.config.setColor(Color.decode(param));
+			QOTDBot.config.setQOTDColor(param);
+		}catch(Exception e) {
+			this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
+		}
+	}
 
 	private void sendInfo() {
 		// qotd info
@@ -753,6 +768,7 @@ public class CMD extends ListenerAdapter{
 								QOTDBot.config.getPrefix() + " prefix <prefix, no space>` - Change bot prefix" + "\n`" + 
 								QOTDBot.config.getPrefix() + " managerreview <true|false>` - Toggle QOTD manager review" + "\n`" + 
 								QOTDBot.config.getPrefix() + " reviewchannel <channel id>` - Set QOTD request channel" + "\n`" + 
+								QOTDBot.config.getPrefix() + " qotdcolor <color in hex>` - Set QOTD embed color" + "\n`" + 
 								QOTDBot.config.getPrefix() + " info` - See bot info" + "\n`" + 
 								QOTDBot.config.getPrefix() + " version` - See bot version", false)
 				.addBlankField(true)
