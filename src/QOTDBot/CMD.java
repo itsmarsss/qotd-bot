@@ -545,6 +545,7 @@ public class CMD extends ListenerAdapter{
 				.addField("Manager review status:", QOTDBot.config.getManagerReview()+"", true)
 				.addBlankField(true)
 				.addField("Manager review channel:", "<#" + QOTDBot.config.getReviewChannel() + ">", true)
+				.addField("Dynamic Config:", QOTDBot.config.getDynamicConfig()+"", false)
 				.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 				.setFooter(format.format(LocalDateTime.now()), e.getAuthor().getAvatarUrl())
 				.build();
