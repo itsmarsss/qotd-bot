@@ -25,7 +25,7 @@ public class Question {
 		setIsPoll(p);
 		updateDate();
 	}
-	
+
 	public Question(String q, String a, boolean p) {
 		setQuestion(q);
 		setFooter("n/a");
@@ -34,7 +34,7 @@ public class Question {
 		updateDate();
 	}
 
-	
+
 	public void updateDate() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		String now = LocalDateTime.now().format(dtf);
@@ -62,7 +62,7 @@ public class Question {
 	public void setQuestion(String q) {
 		question = q;
 	}
-	
+
 	boolean isPoll() {
 		return isPoll;
 	}
@@ -81,7 +81,7 @@ public class Question {
 	String getQuestion() {
 		return question;
 	}
-	
+
 	public MessageEmbed createEmbed() {
 		String iswhat = "Question";
 		if(isPoll()) {
@@ -89,8 +89,7 @@ public class Question {
 		}
 		EmbedBuilder QOTDEmbed = new EmbedBuilder();
 		QOTDEmbed.setAuthor("Added by: " + getAuthor())
-		.setTitle(QOTDBot.config.getQOTDTitle() + "\n**"
-		+ iswhat + ":** " + getQuestion())
+		.setTitle("**" + iswhat + ":** " + getQuestion())
 		.setDescription("*" + getFooter() + "*")
 		.setFooter("Added on: " + getDate())
 		.setColor(new Color(230, 33, 39));

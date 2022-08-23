@@ -18,8 +18,6 @@ public class Config {
 	private boolean managerReview = false;
 	private String reviewChannel;
 	
-	private String QOTDTitle;
-	
 	private boolean initialized;
 
 	public Config() {}
@@ -102,16 +100,6 @@ public class Config {
 	public void setReviewChannel(String reviewChannel) {
 		this.reviewChannel = reviewChannel;
 		writeYML(false);
-	}
-	public String getQOTDTitle() {
-		return QOTDTitle;
-	}
-	public void setQOTDTitle(String qOTDTitle) {
-		QOTDTitle = qOTDTitle;
-	}
-
-	public void setQOTDTitleDefault() {
-		QOTDTitle = ":grey_question::question: QOTD For Today! :grey_question::question:";
 	}
 	
 	public boolean getInitialized() {

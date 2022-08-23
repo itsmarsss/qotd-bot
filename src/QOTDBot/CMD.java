@@ -499,8 +499,7 @@ public class CMD extends ListenerAdapter{
 		// qotd testqotd
 		EmbedBuilder QOTDEmbed = new EmbedBuilder();
 		QOTDEmbed.setAuthor("Added by: *author here*", null, QOTDBot.jda.getSelfUser().getAvatarUrl())
-		.setTitle(QOTDBot.config.getQOTDTitle()
-				+ "\n**Question/Poll:** *question here*")
+		.setTitle("**Question/Poll:** *question here*")
 		.setDescription("*footer here*")
 		.setFooter("Added on: *date here*")
 		.setColor(new Color(230, 33, 39));
