@@ -112,7 +112,7 @@ public class Config {
 	}
 	public void setQOTDColor(String QOTDColor) {
 		this.QOTDColor = QOTDColor;
-		color = Color.decode(QOTDColor);
+		color = Color.decode("#" + QOTDColor);
 	}
 
 	
