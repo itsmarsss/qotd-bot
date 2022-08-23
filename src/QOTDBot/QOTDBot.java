@@ -49,6 +49,45 @@ public class QOTDBot {
 	private static String parent;
 	private static final EnumSet<GatewayIntent> intent = EnumSet.of(GatewayIntent.GUILD_MESSAGES);
 	
+	private final static String template = "# IMPORTANT - Mandatory fields:\r\n"
+			+ "# Input the bot's token here, this can be found in Developers Portal > Applications > [Bot Profile] > Bot > Token > [Copy]\r\n"
+			+ "botToken: %s\r\n"
+			+ "\r\n"
+			+ "# Turn on developers mode in Settings > Advanced > Developer Mode, right click your Discord Server and click on [Copy ID]\r\n"
+			+ "serverID: %s\r\n"
+			+ "\r\n"
+			+ "# Right click your QOTD channel and click on [Copy ID]\r\n"
+			+ "channelID: %s\r\n"
+			+ "\r\n"
+			+ "# Set a prefix here for the bot, this is what members use to use the bot (e.g. qotd help)\r\n"
+			+ "prefix: %s\r\n"
+			+ "\r\n"
+			+ "# Input number of minute(s) until another QOTD is sent ( 1 to 1440 [24 hours] )\r\n"
+			+ "interval: %s\r\n"
+			+ "\r\n"
+			+ "# Start time, this dictates what time of the day your QOTD will be sent (24 hours time, local server time)\r\n"
+			+ "# Hours\r\n"
+			+ "hour: %s\r\n"
+			+ "# Minutes\r\n"
+			+ "minute: %s\r\n"
+			+ "\r\n"
+			+ "# Not mandatory fields:\r\n"
+			+ "# Set a perm role, these members can add QOTDs (write everyone if everyone)\r\n"
+			+ "permRoleID: %s\r\n"
+			+ "\r\n"
+			+ "# Set a manager role, these members can manage QOTDs (write everyone if everyone)\r\n"
+			+ "managerRoleID: %s\r\n"
+			+ "\r\n"
+			+ "# Dynamic config.yml, config.yml is changed as its values are changed\r\n"
+			+ "dynamicConfig: %s\r\n"
+			+ "\r\n"
+			+ "# QOTD submission review settings\r\n"
+			+ "# Set to true if you want QOTD submissions to go through bot manager review\r\n"
+			+ "managerReview: %s\r\n"
+			+ "# Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed\r\n"
+			+ "reviewChannel: %s\r\n"
+			+ "";
+	
 	public static void main(String[] args) throws UnsupportedEncodingException, URISyntaxException, FileNotFoundException, LoginException, InterruptedException {
 		System.out.println("  ____   ____ _______ _____    ____   ____ _______ ");
 		System.out.println(" / __ \\ / __ \\__   __|  __ \\  |  _ \\ / __ \\__   __|");
@@ -240,45 +279,6 @@ public class QOTDBot {
 	}
 	
 	static boolean writeConfigYML() {
-		String template = "# IMPORTANT - Mandatory fields:\r\n"
-				+ "# Input the bot's token here, this can be found in Developers Portal > Applications > [Bot Profile] > Bot > Token > [Copy]\r\n"
-				+ "botToken: %s\r\n"
-				+ "\r\n"
-				+ "# Turn on developers mode in Settings > Advanced > Developer Mode, right click your Discord Server and click on [Copy ID]\r\n"
-				+ "serverID: %s\r\n"
-				+ "\r\n"
-				+ "# Right click your QOTD channel and click on [Copy ID]\r\n"
-				+ "channelID: %s\r\n"
-				+ "\r\n"
-				+ "# Set a prefix here for the bot, this is what members use to use the bot (e.g. qotd help)\r\n"
-				+ "prefix: %s\r\n"
-				+ "\r\n"
-				+ "# Input number of minute(s) until another QOTD is sent ( 1 to 1440 [24 hours] )\r\n"
-				+ "interval: %s\r\n"
-				+ "\r\n"
-				+ "# Start time, this dictates what time of the day your QOTD will be sent (24 hours time, local server time)\r\n"
-				+ "# Hours\r\n"
-				+ "hour: %s\r\n"
-				+ "# Minutes\r\n"
-				+ "minute: %s\r\n"
-				+ "\r\n"
-				+ "# Not mandatory fields:\r\n"
-				+ "# Set a perm role, these members can add QOTDs (write everyone if everyone)\r\n"
-				+ "permRoleID: %s\r\n"
-				+ "\r\n"
-				+ "# Set a manager role, these members can manage QOTDs (write everyone if everyone)\r\n"
-				+ "managerRoleID: %s\r\n"
-				+ "\r\n"
-				+ "# Dynamic config.yml, config.yml is changed as its values are changed\r\n"
-				+ "dynamicConfig: %s\r\n"
-				+ "\r\n"
-				+ "# QOTD submission review settings\r\n"
-				+ "# Set to true if you want QOTD submissions to go through bot manager review\r\n"
-				+ "managerReview: %s\r\n"
-				+ "# Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed\r\n"
-				+ "reviewChannel: %s\r\n"
-				+ "";
-		
 		String token = config.getBotToken();
 		String serverID = config.getServerID();
 		String channelID = config.getChannelID();
