@@ -101,6 +101,9 @@ public class CMD extends ListenerAdapter{
 			case "info":
 				sendInfo();
 				break;
+			case "version":
+				checkVersion();
+				break;
 			}
 		}
 		if(isAdmin()) {
@@ -538,6 +541,16 @@ public class CMD extends ListenerAdapter{
 				.setFooter(format.format(LocalDateTime.now()), e.getAuthor().getAvatarUrl())
 				.build();
 		e.getMessage().replyEmbeds(infoEm).queue();
+	}
+
+	private void checkVersion() {
+		// qotd version
+		e.getMessage().replyEmbeds(se(QOTDBot.versionCheck()
+				.replaceAll("#", "")
+				.replace("[There is a newer version of QOTD Bot]", "__**[There is a newer version of QOTD Bot]**__")
+				.replaceFirst("Author's Note:", "**Author's Note:**")
+				.replaceFirst("New version:", "**New version:**")))
+		.queue();
 	}
 
 	private void qotdPerm(String raw) {
