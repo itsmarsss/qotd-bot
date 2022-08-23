@@ -22,7 +22,7 @@ public class Config {
 	
 	private String QOTDColor;
 	
-	private Color color = new Color(230, 33, 39);
+	private Color color = Color.decode("#E62127");
 	
 	private boolean initialized;
 
