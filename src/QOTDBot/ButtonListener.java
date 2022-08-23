@@ -27,6 +27,7 @@ public class ButtonListener extends ListenerAdapter {
 			String id = event.getButton().getId();
 			if(id.equals("delete")) {
 				event.getMessage().delete().queue();
+				e.reply("Request successful").setEphemeral(true).queue();
 			}else if(id.startsWith("delete-notif")) {
 				event.getMessage().delete().queue();
 
@@ -38,6 +39,8 @@ public class ButtonListener extends ListenerAdapter {
 						message.addReaction("\uF6AB").queue();
 					}
 				});
+
+				e.reply("Request successful").setEphemeral(true).queue();
 			}else if(id.equals("approve-qotd")) {
 				List<Field>flds = event.getMessage().getEmbeds().get(0).getFields();
 				boolean isPoll = false;
@@ -51,8 +54,12 @@ public class ButtonListener extends ListenerAdapter {
 				QOTDBot.add(q);
 
 				event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
+
+				e.reply("Request successful").setEphemeral(true).queue();
 			}else if(id.equals("deny-qotd")) {
 				event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
+
+				e.reply("Request successful").setEphemeral(true).queue();
 			}
 		}catch(Exception e) {
 			this.e.reply("Request unsuccessful *(Hint: Embed possibly removed?)*").setEphemeral(true).queue();
