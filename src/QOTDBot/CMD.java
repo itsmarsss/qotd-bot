@@ -159,7 +159,13 @@ public class CMD extends ListenerAdapter{
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
 
 			Message message = new MessageBuilder()
-					.setEmbeds(new EmbedBuilder().setTitle(title).setDescription(q.toString()).build())
+					.setEmbeds(new EmbedBuilder()
+							.setTitle(title)
+							.addField("Question", q.getQuestion(), false)
+							.addField("Footer", q.getFooter(), false)
+							.addField("Author", q.getAuthor(), false)
+							.addField("Date", q.getDate(), false)
+							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
@@ -169,7 +175,14 @@ public class CMD extends ListenerAdapter{
 				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
 
 				Message req = new MessageBuilder()
-						.setEmbeds(se(q.toString2()))
+						.setEmbeds(new EmbedBuilder()
+								.setTitle("__**The Following QOTD Was Requested:**__")
+								.addField("Type", q.isPoll() ? "Poll" : "Question", false)
+								.addField("Question", q.getQuestion(), false)
+								.addField("Footer", q.getFooter(), false)
+								.addField("Author", q.getAuthor(), false)
+								.addField("Date", q.getDate(), false)
+								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
 				try {
@@ -192,7 +205,13 @@ public class CMD extends ListenerAdapter{
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
 
 			Message message = new MessageBuilder()
-					.setEmbeds(new EmbedBuilder().setTitle(title).setDescription(q.toString()).build())
+					.setEmbeds(new EmbedBuilder()
+							.setTitle(title)
+							.addField("Question", q.getQuestion(), false)
+							.addField("Footer", q.getFooter(), false)
+							.addField("Author", q.getAuthor(), false)
+							.addField("Date", q.getDate(), false)
+							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
@@ -202,7 +221,14 @@ public class CMD extends ListenerAdapter{
 				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
 
 				Message req = new MessageBuilder()
-						.setEmbeds(se(q.toString2()))
+						.setEmbeds(new EmbedBuilder()
+								.setTitle("__**The Following QOTD Was Requested:**__")
+								.addField("Type", q.isPoll() ? "Poll" : "Question", false)
+								.addField("Question", q.getQuestion(), false)
+								.addField("Footer", q.getFooter(), false)
+								.addField("Author", q.getAuthor(), false)
+								.addField("Date", q.getDate(), false)
+								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
 				try {
@@ -236,7 +262,13 @@ public class CMD extends ListenerAdapter{
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
 
 			Message message = new MessageBuilder()
-					.setEmbeds(new EmbedBuilder().setTitle(title).setDescription(q.toString()).build())
+					.setEmbeds(new EmbedBuilder()
+							.setTitle(title)
+							.addField("Poll", q.getQuestion(), false)
+							.addField("Footer", q.getFooter(), false)
+							.addField("Author", q.getAuthor(), false)
+							.addField("Date", q.getDate(), false)
+							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
@@ -246,7 +278,14 @@ public class CMD extends ListenerAdapter{
 				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
 
 				Message req = new MessageBuilder()
-						.setEmbeds(se(q.toString2()))
+						.setEmbeds(new EmbedBuilder()
+								.setTitle("__**The Following QOTD Was Requested:**__")
+								.addField("Type", q.isPoll() ? "Poll" : "Question", false)
+								.addField("Question", q.getQuestion(), false)
+								.addField("Footer", q.getFooter(), false)
+								.addField("Author", q.getAuthor(), false)
+								.addField("Date", q.getDate(), false)
+								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
 				try {
@@ -269,7 +308,13 @@ public class CMD extends ListenerAdapter{
 			Button removeButton = Button.primary("delete-notif-" + e.getMessageId(), "Delete this Message");
 
 			Message message = new MessageBuilder()
-					.setEmbeds(new EmbedBuilder().setTitle(title).setDescription(q.toString()).build())
+					.setEmbeds(new EmbedBuilder()
+							.setTitle(title)
+							.addField("Poll", q.getQuestion(), false)
+							.addField("Footer", q.getFooter(), false)
+							.addField("Author", q.getAuthor(), false)
+							.addField("Date", q.getDate(), false)
+							.build())
 					.setActionRows(ActionRow.of(removeButton))
 					.build();
 			e.getMessage().reply(message).queue();
@@ -279,7 +324,14 @@ public class CMD extends ListenerAdapter{
 				Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
 
 				Message req = new MessageBuilder()
-						.setEmbeds(se(q.toString2()))
+						.setEmbeds(new EmbedBuilder()
+								.setTitle("__**The Following QOTD Was Requested:**__")
+								.addField("Type", q.isPoll() ? "Poll" : "Question", false)
+								.addField("Question", q.getQuestion(), false)
+								.addField("Footer", q.getFooter(), false)
+								.addField("Author", q.getAuthor(), false)
+								.addField("Date", q.getDate(), false)
+								.build())
 						.setActionRows(ActionRow.of(approveButton, denyButton))
 						.build();
 				try {
@@ -393,7 +445,13 @@ public class CMD extends ListenerAdapter{
 
 			Button deleteButton = Button.secondary("delete", "Delete");
 			Message message = new MessageBuilder()
-					.setEmbeds(se("**__QOTD #" + param + ";__**\n" + q))
+					.setEmbeds(new EmbedBuilder()
+							.setTitle("**__QOTD #" + param + ";__**")
+							.addField("Question", q.getQuestion(), false)
+							.addField("Footer", q.getFooter(), false)
+							.addField("Author", q.getAuthor(), false)
+							.addField("Date", q.getDate(), false)
+							.build())
 					.setActionRows(ActionRow.of(deleteButton))
 					.build();
 
@@ -557,11 +615,11 @@ public class CMD extends ListenerAdapter{
 		e.getMessage().replyEmbeds(new EmbedBuilder()
 				.setTitle(QOTDBot.version)
 				.setDescription(QOTDBot.versionCheck()
-				.replaceAll("#", "")
-				.replace("This program is up to date!", "__**This program is up to date!**__")
-				.replace("[There is a newer version of QOTD Bot]", "__**[There is a newer version of QOTD Bot]**__")
-				.replace("Author's Note:", "**Author's Note:**")
-				.replace("New version:", "**New version:**"))
+						.replaceAll("#", "")
+						.replace("This program is up to date!", "__**This program is up to date!**__")
+						.replace("[There is a newer version of QOTD Bot]", "__**[There is a newer version of QOTD Bot]**__")
+						.replace("Author's Note:", "**Author's Note:**")
+						.replace("New version:", "**New version:**"))
 				.build())
 		.queue();
 	}
