@@ -189,7 +189,7 @@ public class QOTDBot {
 		return questions;
 	}
 
-	private static String versionCheck() {
+	static String versionCheck() {
 		URL url = null;
 		String newest = "";
 		String note = "Author's Note: ";
@@ -213,7 +213,7 @@ public class QOTDBot {
 			return "   [There is a newer version of QOTD Bot]" +
 					"\n\t##############################################" +
 					"\n\t   " + version + "(current) >> " + newest + "(newer)" + 
-					"\nNew version: https://github.com/itsmarsss/QOTD Bot/releases" +
+					"\nNew version: https://github.com/itsmarsss/QOTD-Bot/releases" +
 					"\n\t##############################################" +
 					"\n" + note;
 		}
