@@ -230,7 +230,7 @@ public class QOTDBot {
 			if(!config.isValid()) {
 				return false;
 			}
-			config.setInitialized(true);
+			config.setInitializedY(true);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
