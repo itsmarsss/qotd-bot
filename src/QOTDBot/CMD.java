@@ -1,6 +1,5 @@
 package QOTDBot;
 
-import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
