@@ -145,7 +145,7 @@ public class CMD extends ListenerAdapter{
 		for(int i = 0; i < param.length; i++) {
 			param[i] = param[i].trim();
 		}
-		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
+		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 245) {
 			Question q = new Question(param[0], user.getAsTag(), false);
 
 			String title = "**__Added the following:__**\n";
@@ -193,7 +193,7 @@ public class CMD extends ListenerAdapter{
 					this.e.getMessage().reply(req).queue();
 				}
 			}
-		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
+		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 245 && param[1].length() < 100) {
 			Question q = new Question(param[0], param[1], user.getAsTag(), false);
 
 			String title = "**__Added the following:__**\n";
@@ -252,7 +252,7 @@ public class CMD extends ListenerAdapter{
 		for(int i = 0; i < param.length; i++) {
 			param[i] = param[i].trim();
 		}
-		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 500) {
+		if(param.length == 1 && !param[0].isBlank() && param[0].length() < 245) {
 			Question q = new Question(param[0], user.getAsTag(), true);
 
 			String title = "**__Added the following poll:__**\n";
@@ -300,7 +300,7 @@ public class CMD extends ListenerAdapter{
 					e.getMessage().reply(req).queue();
 				}
 			}
-		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 500 && param[1].length() < 100) {
+		}else if(param.length == 2 && !param[0].isBlank() && param[0].length() < 245 && param[1].length() < 100) {
 			Question q = new Question(param[0], param[1], user.getAsTag(), true);
 
 			String title = "**__Added the following poll:__**\n";
@@ -737,8 +737,8 @@ public class CMD extends ListenerAdapter{
 						"`" + QOTDBot.config.getPrefix() + " help` - This message", false)
 				.addBlankField(true)
 				.addField("Perm commands",
-						"`" + QOTDBot.config.getPrefix() + " add <question 500 char>-=-<footer 100 char>` - Adds/Requests a QTOD question" + "\n`" + 
-								QOTDBot.config.getPrefix() + " addpoll <question 500 char>-=-<footer 100 char>` - Adds/Requests a QTOD poll", false)
+						"`" + QOTDBot.config.getPrefix() + " add <question 245 char>-=-<footer 100 char>` - Adds/Requests a QTOD question" + "\n`" + 
+								QOTDBot.config.getPrefix() + " addpoll <question 245 char>-=-<footer 100 char>` - Adds/Requests a QTOD poll", false)
 				.addBlankField(true)
 				.addField("Manager commands",
 						"`" + QOTDBot.config.getPrefix() + " upload [attached json file]` - Uploads a json file" + "\n`" + 
