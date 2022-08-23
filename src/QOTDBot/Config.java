@@ -39,14 +39,14 @@ public class Config {
 	}
 	public void setChannelID(String channelID) {
 		this.channelID = channelID;
-		writeYML();
+		writeYML(false);
 	}
 	public String getPrefix() {
 		return prefix;
 	}
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
-		writeYML();
+		writeYML(false);
 	}
 	public int getInterval() {
 		return interval;
@@ -71,35 +71,35 @@ public class Config {
 	}
 	public void setPermRoleID(String permRoleID) {
 		this.permRoleID = permRoleID;
-		writeYML();
+		writeYML(false);
 	}
 	public String getManagerRoleID() {
 		return managerRoleID;
 	}
 	public void setManagerRoleID(String managerRoleID) {
 		this.managerRoleID = managerRoleID;
-		writeYML();
+		writeYML(false);
 	}
 	public boolean getDynamicConfig() {
 		return dynamicConfig;
 	}
 	public void setDynamicConfig(boolean dynamicConfig) {
 		this.dynamicConfig = dynamicConfig;
-		writeYML();
+		writeYML(true);
 	}
 	public boolean getManagerReview() {
 		return managerReview;
 	}
 	public void setManagerReview(boolean managerReview) {
 		this.managerReview = managerReview;
-		writeYML();
+		writeYML(false);
 	}
 	public String getReviewChannel() {
 		return reviewChannel;
 	}
 	public void setReviewChannel(String reviewChannel) {
 		this.reviewChannel = reviewChannel;
-		writeYML();
+		writeYML(false);
 	}
 
 	
@@ -139,8 +139,8 @@ public class Config {
 		return true;
 	}
 	
-	private void writeYML() {
-		if(dynamicConfig && getInitialized()) {
+	private void writeYML(boolean exception) {
+		if((dynamicConfig || exception) && getInitialized()) {
 			QOTDBot.writeConfigYML();
 		}
 	}
