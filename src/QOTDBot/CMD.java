@@ -1,6 +1,5 @@
 package QOTDBot;
 
-import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -602,7 +601,6 @@ public class CMD extends ListenerAdapter{
 		// qotd embedcolor
 		try {
 			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+10).trim().replace("#", "");
-			QOTDBot.config.setColor(Color.decode(param));
 			QOTDBot.config.setQOTDColor(param);
 			this.e.getMessage().replyEmbeds(new EmbedBuilder()
 					.setDescription("Set embed color to **#" + QOTDBot.config.getQOTDColor() + "**.")
