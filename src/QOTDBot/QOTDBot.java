@@ -45,7 +45,7 @@ public class QOTDBot {
 	private static LinkedList<Question> questions = new LinkedList<Question>();
 	private static boolean isPaused = false;
 
-	static final String version = "2.8.6";
+	static final String version = "2.8.7";
 	private static String parent;
 	private static final EnumSet<GatewayIntent> intent = EnumSet.of(GatewayIntent.GUILD_MESSAGES);
 	
@@ -231,6 +231,7 @@ public class QOTDBot {
 				return false;
 			}
 			config.setInitializedY(true);
+			writeConfigYML();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
