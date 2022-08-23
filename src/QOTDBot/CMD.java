@@ -449,18 +449,22 @@ public class CMD extends ListenerAdapter{
 
 	private void setQOTDChannel(String raw) {
 		// qotd qotdchannel
-		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+11).trim();
-		boolean exists = false;
-		for(GuildChannel ch : e.getGuild().getChannels()) {
-			if(ch.getId().equals(param)) {
-				exists = true;
+		try {
+			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+11).trim();
+			boolean exists = false;
+			for(GuildChannel ch : e.getGuild().getChannels()) {
+				if(ch.getId().equals(param)) {
+					exists = true;
+				}
 			}
-		}
-		if(exists) {
-			QOTDBot.config.setChannelID(param);
-			e.getMessage().replyEmbeds(se("QOTD channel has been changed to <#" + param + ">.")).queue();
-		}else{
-			e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
+			if(exists) {
+				QOTDBot.config.setChannelID(param);
+				e.getMessage().replyEmbeds(se("QOTD channel has been changed to <#" + param + ">.")).queue();
+			}else{
+				e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
+			}
+		}catch(Exception e) {
+			this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
 		}
 	}
 
@@ -504,19 +508,23 @@ public class CMD extends ListenerAdapter{
 
 	private void setReviewChannel(String raw) {
 		// qotd reviewchannel
-		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+13).trim();
-		boolean exists = false;
-		for(TextChannel r : e.getGuild().getTextChannels()) {
-			if(r.getId().equals(param)) {
-				exists = true;
-				break;
+		try {
+			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+13).trim();
+			boolean exists = false;
+			for(TextChannel r : e.getGuild().getTextChannels()) {
+				if(r.getId().equals(param)) {
+					exists = true;
+					break;
+				}
 			}
-		}
-		if(exists) {
-			QOTDBot.config.setReviewChannel(param);
-			e.getMessage().replyEmbeds(se("QOTD review channel been changed to <#" + param + ">.")).queue();
-		}else {
-			e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
+			if(exists) {
+				QOTDBot.config.setReviewChannel(param);
+				e.getMessage().replyEmbeds(se("QOTD review channel been changed to <#" + param + ">.")).queue();
+			}else {
+				e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
+			}
+		}catch(Exception e) {
+			this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
 		}
 	}
 
@@ -556,44 +564,52 @@ public class CMD extends ListenerAdapter{
 
 	private void qotdPerm(String raw) {
 		// qotd permrole
-		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim();
-		if(param.equalsIgnoreCase("everyone")) {
-			e.getMessage().replyEmbeds(se("QOTD perm role has been changed; `everyone` can post questions.")).queue();
-			QOTDBot.config.setPermRoleID("everyone");
-			return;
-		}
-		boolean exists = false;
-		for(Role r : e.getGuild().getRoles()) {
-			if(r.getId().equals(param)) {
-				exists = true;
-				break;
+		try {
+			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+8).trim();
+			if(param.equalsIgnoreCase("everyone")) {
+				e.getMessage().replyEmbeds(se("QOTD perm role has been changed; `everyone` can post questions.")).queue();
+				QOTDBot.config.setPermRoleID("everyone");
+				return;
 			}
-		}
-		if(exists) {
-			QOTDBot.config.setPermRoleID(param);
-			e.getMessage().replyEmbeds(se("QOTD perm role has been changed to <@&" + param + ">.")).queue();
-		}else {
-			e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
+			boolean exists = false;
+			for(Role r : e.getGuild().getRoles()) {
+				if(r.getId().equals(param)) {
+					exists = true;
+					break;
+				}
+			}
+			if(exists) {
+				QOTDBot.config.setPermRoleID(param);
+				e.getMessage().replyEmbeds(se("QOTD perm role has been changed to <@&" + param + ">.")).queue();
+			}else {
+				e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
+			}
+		}catch(Exception e) {
+			this.e.getMessage().replyEmbeds(se("Unable to look for role.")).queue();
 		}
 	}
 
 	private void qotdManager(String raw) {
 		// qotd managerrole
-		String param = raw.substring(QOTDBot.config.getPrefix().length()+1+11).trim();
-		if(param.equalsIgnoreCase("everyone"))
-			return;
-		boolean exists = false;
-		for(Role r : e.getGuild().getRoles()) {
-			if(r.getId().equals(param)) {
-				exists = true;
-				break;
+		try {
+			String param = raw.substring(QOTDBot.config.getPrefix().length()+1+11).trim();
+			if(param.equalsIgnoreCase("everyone"))
+				return;
+			boolean exists = false;
+			for(Role r : e.getGuild().getRoles()) {
+				if(r.getId().equals(param)) {
+					exists = true;
+					break;
+				}
 			}
-		}
-		if(exists) {
-			QOTDBot.config.setManagerRoleID(param);
-			e.getMessage().replyEmbeds(se("QOTD manager role has been changed to <@&" + param + ">.")).queue();
-		}else {
-			e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
+			if(exists) {
+				QOTDBot.config.setManagerRoleID(param);
+				e.getMessage().replyEmbeds(se("QOTD manager role has been changed to <@&" + param + ">.")).queue();
+			}else {
+				e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
+			}
+		}catch(Exception e) {
+			this.e.getMessage().replyEmbeds(se("Unable to look for role.")).queue();
 		}
 	}
 
@@ -611,7 +627,7 @@ public class CMD extends ListenerAdapter{
 				return;
 			}
 			QOTDBot.config.setDynamicConfig(setTo);
-			e.getMessage().replyEmbeds(se("QOTD dynamic config: **" + QOTDBot.config.getManagerReview() + "**")).queue();
+			e.getMessage().replyEmbeds(se("QOTD dynamic config: **" + QOTDBot.config.getDynamicConfig() + "**")).queue();
 		}catch(Exception e) {
 			this.e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
 		}

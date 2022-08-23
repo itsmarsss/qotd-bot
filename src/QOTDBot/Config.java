@@ -13,9 +13,9 @@ public class Config {
 	private String permRoleID;
 	private String managerRoleID;
 
-	private boolean dynamicConfig;
+	private boolean dynamicConfig = false;
 
-	private boolean managerReview;
+	private boolean managerReview = false;
 	private String reviewChannel;
 	
 	private boolean initialized;
@@ -130,6 +130,12 @@ public class Config {
 		if(hour < 0 || hour > 24 || minute < 0 || minute > 59)
 			return false;
 
+		if(permRoleID.isBlank())
+			return false;
+		
+		if(managerRoleID.isBlank())
+			return false;
+		
 		return true;
 	}
 	

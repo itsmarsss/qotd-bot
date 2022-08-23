@@ -268,6 +268,9 @@ public class QOTDBot {
 				+ "# Set a manager role, these members can manage QOTDs (write everyone if everyone)\r\n"
 				+ "managerRoleID: %s\r\n"
 				+ "\r\n"
+				+ "# Dynamic config.yml, config.yml is changed as its values are changed\r\n"
+				+ "dynamicConfig: %s\r\n"
+				+ "\r\n"
 				+ "# QOTD submission review settings\r\n"
 				+ "# Set to true if you want QOTD submissions to go through bot manager review\r\n"
 				+ "managerReview: %s\r\n"
@@ -283,11 +286,12 @@ public class QOTDBot {
 		int minute = config.getMinute();
 		String permRoleID = config.getPermRoleID();
 		String managerRoleID = config.getManagerRoleID();
+		boolean dynamicConfig = config.getDynamicConfig();
 		boolean managerReview = config.getManagerReview();
 		String reviewChannel = config.getReviewChannel();
 		
 		try (FileWriter file = new FileWriter(parent + "/config.yml")) {
-			file.write(String.format(template, token, serverID, channelID, prefix, interval, hour, minute, permRoleID, managerRoleID, managerReview, reviewChannel));
+			file.write(String.format(template, token, serverID, channelID, prefix, interval, hour, minute, permRoleID, managerRoleID, dynamicConfig, managerReview, reviewChannel));
 			return true;
 		} catch (Exception e) {
 			return false;
