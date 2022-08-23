@@ -36,5 +36,5 @@ managerReview: false
 # Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed
 reviewChannel: 1234567890
 
-# QOTD Embed color (Do not include "#")
+# QOTD Embed color in hex (Do not include "#")
 QOTDColor: E62127
