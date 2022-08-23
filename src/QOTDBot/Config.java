@@ -111,8 +111,9 @@ public class Config {
 		return QOTDColor;
 	}
 	public void setQOTDColor(String QOTDColor) {
-		this.QOTDColor = QOTDColor;
-		color = Color.decode("#" + QOTDColor);
+		this.QOTDColor = QOTDColor.replace("#", "");
+		color = Color.decode("#" + this.QOTDColor);
+		writeYML(false);
 	}
 
 	
