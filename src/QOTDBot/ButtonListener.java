@@ -2,9 +2,11 @@ package QOTDBot;
 
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 
@@ -37,15 +39,15 @@ public class ButtonListener extends ListenerAdapter {
 					}
 				});
 			}else if(id.equals("approve-qotd")) {
-				String[]content = event.getMessage().getEmbeds().get(0).getDescription().split("\r?\n|\r");
+				List<Field>flds = event.getMessage().getEmbeds().get(0).getFields();
 				boolean isPoll = false;
 
-				if(content[1].equals("Poll")) {
+				if(flds.get(0).getValue().equals("Poll")) {
 					isPoll = true;
 				}
 
-				Question q = new Question(content[2], content[3], content[4], isPoll);
-				q.setDate(content[5]);
+				Question q = new Question(flds.get(1).getValue(), flds.get(2).getValue(), flds.get(3).getValue(), isPoll);
+				q.setDate(flds.get(4).getValue());
 				QOTDBot.add(q);
 
 				event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
