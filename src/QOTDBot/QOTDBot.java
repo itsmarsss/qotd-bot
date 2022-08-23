@@ -86,6 +86,8 @@ public class QOTDBot {
 			+ "managerReview: %s\r\n"
 			+ "# Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed\r\n"
 			+ "reviewChannel: %s\r\n"
+			+ "# QOTD Embed color in hex (Do not include \"#\")\r\n"
+			+ "QOTDColor: E62127\r\n"
 			+ "";
 	
 	public static void main(String[] args) throws UnsupportedEncodingException, URISyntaxException, FileNotFoundException, LoginException, InterruptedException {
