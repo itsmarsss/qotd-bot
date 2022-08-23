@@ -35,3 +35,7 @@ dynamicConfig: true
 managerReview: false
 # Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed
 reviewChannel: 1234567890
+
+# QOTD title (256 characters)
+QOTDTitle: ":grey_question::question: QOTD For Today! :grey_question::question:" 
+
