@@ -502,7 +502,7 @@ public class CMD extends ListenerAdapter{
 		.setTitle("**Question/Poll:** *question here*")
 		.setDescription("*footer here*")
 		.setFooter("Added on: *date here*")
-		.setColor(new Color(230, 33, 39));
+		.setColor(QOTDBot.config.getColor());
 		e.getMessage().replyEmbeds(QOTDEmbed.build()).queue(msg -> {
 			msg.addReaction("\u2705").queue();
 			msg.addReaction("\u274E").queue();

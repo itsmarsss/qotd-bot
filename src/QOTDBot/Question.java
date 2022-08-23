@@ -92,7 +92,7 @@ public class Question {
 		.setTitle("**" + iswhat + ":** " + getQuestion())
 		.setDescription("*" + getFooter() + "*")
 		.setFooter("Added on: " + getDate())
-		.setColor(new Color(230, 33, 39));
+		.setColor(QOTDBot.config.getColor());
 		return QOTDEmbed.build();
 	}
 	public String toString() {
