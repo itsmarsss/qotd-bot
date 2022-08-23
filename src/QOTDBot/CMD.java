@@ -667,7 +667,8 @@ public class CMD extends ListenerAdapter{
 								QOTDBot.config.getPrefix() + " prefix <prefix, no space>` - Change bot prefix" + "\n`" + 
 								QOTDBot.config.getPrefix() + " managerreview <true|false>` - Toggle QOTD manager review" + "\n`" + 
 								QOTDBot.config.getPrefix() + " reviewchannel <channel id>` - Set QOTD request channel" + "\n`" + 
-								QOTDBot.config.getPrefix() + " info` - See bot info", false)
+								QOTDBot.config.getPrefix() + " info` - See bot info" + "\n`" + 
+								QOTDBot.config.getPrefix() + " version` - See bot version", false)
 				.addBlankField(true)
 				.addField("Admin commands",
 						"`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>` - Set QOTD permission role" + "\n`" + 
