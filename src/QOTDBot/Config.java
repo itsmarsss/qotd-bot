@@ -13,7 +13,7 @@ public class Config {
 	private String permRoleID;
 	private String managerRoleID;
 
-	private boolean dynamicConfig = false;
+	private boolean dynamicConfig = true;
 
 	private boolean managerReview = false;
 	private String reviewChannel;
