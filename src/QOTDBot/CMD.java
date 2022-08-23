@@ -689,7 +689,9 @@ public class CMD extends ListenerAdapter{
 				.addBlankField(true)
 				.addField("Admin commands",
 						"`" + QOTDBot.config.getPrefix() + " permrole <role id/'everyone'>` - Set QOTD permission role" + "\n`" + 
-								QOTDBot.config.getPrefix() + " managerrole <role id/'everyone'>` - Set QOTD manager role", false)
+								QOTDBot.config.getPrefix() + " managerrole <role id/'everyone'>` - Set QOTD manager role" + "\n`" + 
+								QOTDBot.config.getPrefix() + " dynamicconfig <true|false>` - Toggle QOTD config.yml dynamic state" + "\n`" + 
+								QOTDBot.config.getPrefix() + " updateconfig` - Update config.yml to match current settings", false)
 				.setThumbnail(QOTDBot.jda.getSelfUser().getAvatarUrl())
 				.build()).queue();
 	}
