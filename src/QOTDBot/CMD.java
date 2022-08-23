@@ -554,12 +554,15 @@ public class CMD extends ListenerAdapter{
 
 	private void checkVersion() {
 		// qotd version
-		e.getMessage().replyEmbeds(se(QOTDBot.versionCheck()
+		e.getMessage().replyEmbeds(new EmbedBuilder()
+				.setTitle(QOTDBot.version)
+				.setDescription(QOTDBot.versionCheck()
 				.replaceAll("#", "")
 				.replace("This program is up to date!", "__**This program is up to date!**__")
 				.replace("[There is a newer version of QOTD Bot]", "__**[There is a newer version of QOTD Bot]**__")
 				.replace("Author's Note:", "**Author's Note:**")
-				.replace("New version:", "**New version:**")))
+				.replace("New version:", "**New version:**"))
+				.build())
 		.queue();
 	}
 
