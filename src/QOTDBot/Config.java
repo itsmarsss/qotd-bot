@@ -106,7 +106,7 @@ public class Config {
 	public boolean getInitialized() {
 		return initialized;
 	}
-	public void setInitialized(boolean initialized) {
+	public void setInitializedY(boolean initialized) {
 		this.initialized = initialized;
 	}
 	
