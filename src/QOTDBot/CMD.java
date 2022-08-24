@@ -490,14 +490,14 @@ public class CMD extends ListenerAdapter{
 			if(raw.length() > QOTDBot.config.getPrefix().length()+1+5) {
 				param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+5).trim());
 
-				if(param > Math.ceil(q.size()/5)) {
+				if(param > q.size()/5) {
 					e.getMessage().replyEmbeds(se("Invalid page index.")).queue();
 					return;
 				}
 			}
 			String out = "";
-			for(int i = param * 5; i < (q.size() < 5 ? q.size() : 5); i++) {
-				String question = q.get(i).getQuestion();
+			for(int i = 0; i < (q.size()-param*5 < 5 ? q.size()-param*5 : 5); i++) {
+				String question = q.get(i+param*5).getQuestion();
 				if(question.length() > 50) {
 					question = question.substring(0, 48) + "...";
 				}
@@ -794,7 +794,7 @@ public class CMD extends ListenerAdapter{
 								QOTDBot.config.getPrefix() + " remove <index>` - Remove QOTD at a specific index" + "\n`" + 
 								QOTDBot.config.getPrefix() + " bremove <Start index>-<End index>` - Remove QOTD in an inclusive range" + "\n`" + 
 								QOTDBot.config.getPrefix() + " view <index>` - View details of QOTD at a specific index" + "\n`" + 
-								QOTDBot.config.getPrefix() + " queue` - View QOTD queue" + "\n`" + 
+								QOTDBot.config.getPrefix() + " queue <index|nothing>` - View QOTD queue" + "\n`" + 
 								QOTDBot.config.getPrefix() + " qotdtest` - Send a sample QOTD" + "\n`" + 
 								QOTDBot.config.getPrefix() + " postnext` - Post next QOTD" + "\n`" + 
 								QOTDBot.config.getPrefix() + " pause` - Pause QOTD posting" + "\n`" + 
