@@ -489,11 +489,6 @@ public class CMD extends ListenerAdapter{
 			int param = 0;
 			if(raw.length() > QOTDBot.config.getPrefix().length()+1+5) {
 				param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+5).trim());
-
-				if(param > q.size()/5) {
-					e.getMessage().replyEmbeds(se("Invalid page index.")).queue();
-					return;
-				}
 			}
 			String out = "";
 			for(int i = 0; i < (q.size()-param*5 < 5 ? q.size()-param*5 : 5); i++) {
@@ -503,6 +498,12 @@ public class CMD extends ListenerAdapter{
 				}
 				out = out + "\n**" + (i+param*5) + ":** " + question;
 			}
+			
+			if(out.isBlank() && !q.isEmpty()) {
+				e.getMessage().replyEmbeds(se("Invalid page index.")).queue();
+				return;
+			}
+			
 			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
 
 			Button prevButton = Button.primary("prev-"+(param-1), "\u2B05 Prev");
@@ -513,6 +514,7 @@ public class CMD extends ListenerAdapter{
 							.setTitle("**__QOTD Queue:__** *Page " + param + "*")
 							.setDescription(out.isBlank() ? ":open_mouth::dash: Empty" : out)
 							.setFooter(format.format(LocalDateTime.now()), e.getAuthor().getAvatarUrl())
+							.setColor(QOTDBot.config.getColor())
 							.build())
 					.setActionRows(ActionRow.of(prevButton, nextButton, deleteButton))
 					.build();
