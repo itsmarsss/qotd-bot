@@ -31,16 +31,16 @@ public class ButtonListener extends ListenerAdapter {
 			if(id.equals("delete")) {
 
 				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
-					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					e.replyEmbeds(CMD.se("You do not have permission to perform this action")).setEphemeral(true).queue();
 					return;
 				}
 
 				event.getMessage().delete().queue();
-				e.reply("Request successful").setEphemeral(true).queue();
+				e.replyEmbeds(CMD.se("Request successful")).setEphemeral(true).queue();
 			}else if(id.startsWith("delete-notif")) {
 
 				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
-					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					e.replyEmbeds(CMD.se("You do not have permission to perform this action")).setEphemeral(true).queue();
 					return;
 				}
 
@@ -55,11 +55,11 @@ public class ButtonListener extends ListenerAdapter {
 					}
 				});
 
-				e.reply("Request successful").setEphemeral(true).queue();
+				e.replyEmbeds(CMD.se("Request successful")).setEphemeral(true).queue();
 			}else if(id.equals("approve-qotd")) {
 
 				if(!(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
-					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					e.replyEmbeds(CMD.se("You do not have permission to perform this action")).setEphemeral(true).queue();
 					return;
 				}
 
@@ -76,21 +76,21 @@ public class ButtonListener extends ListenerAdapter {
 
 				event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
 
-				e.reply("Request successful").setEphemeral(true).queue();
+				e.replyEmbeds(CMD.se("Request successful")).setEphemeral(true).queue();
 			}else if(id.equals("deny-qotd")) {
 
 				if(!(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
-					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					e.replyEmbeds(CMD.se("You do not have permission to perform this action")).setEphemeral(true).queue();
 					return;
 				}
 
 				event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
 
-				e.reply("Request successful").setEphemeral(true).queue();
+				e.replyEmbeds(CMD.se("Request successful")).setEphemeral(true).queue();
 			}else if(id.startsWith("next-")) {
 
 				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
-					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					e.replyEmbeds(CMD.se("You do not have permission to perform this action")).setEphemeral(true).queue();
 					return;
 				}
 
@@ -131,7 +131,7 @@ public class ButtonListener extends ListenerAdapter {
 			}else if(id.startsWith("prev-")) {
 
 				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
-					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					e.replyEmbeds(CMD.se("You do not have permission to perform this action")).setEphemeral(true).queue();
 					return;
 				}
 
@@ -171,7 +171,7 @@ public class ButtonListener extends ListenerAdapter {
 
 			}
 		}catch(Exception e) {
-			this.e.reply("Request unsuccessful *(Hint: Embed possibly removed?)*").setEphemeral(true).queue();
+			this.e.replyEmbeds(CMD.se("Request unsuccessful *(Hint: Embed possibly removed?)*")).setEphemeral(true).queue();
 		}
 	}
 
