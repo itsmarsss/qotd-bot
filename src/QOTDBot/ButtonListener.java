@@ -98,7 +98,7 @@ public class ButtonListener extends ListenerAdapter {
 
 				LinkedList<Question> q = QOTDBot.getQuestions();
 				
-				if(param > Math.ceil(q.size()/5)) {
+				if(param > q.size()/5) {
 					e.replyEmbeds(CMD.se("No next page.")).setEphemeral(true).queue();
 					return;
 				}
