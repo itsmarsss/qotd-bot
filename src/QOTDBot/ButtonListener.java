@@ -97,11 +97,6 @@ public class ButtonListener extends ListenerAdapter {
 				int param = Integer.parseInt(id.replace("next-", ""));
 
 				LinkedList<Question> q = QOTDBot.getQuestions();
-				
-				if(param > q.size()/5) {
-					e.replyEmbeds(CMD.se("No next page.")).setEphemeral(true).queue();
-					return;
-				}
 
 				String out = "";
 				for(int i = 0; i < (q.size()-param*5 < 5 ? q.size()-param*5 : 5); i++) {
@@ -111,6 +106,12 @@ public class ButtonListener extends ListenerAdapter {
 					}
 					out = out + "\n**" + (i+param*5) + ":** " + question;
 				}
+				
+				if(out.isBlank()) {
+					e.replyEmbeds(CMD.se("No next page.")).setEphemeral(true).queue();
+					return;
+				}
+				
 				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
 
 				Button prevButton = Button.primary("prev-"+(param-1), "\u2B05 Prev");
@@ -121,6 +122,7 @@ public class ButtonListener extends ListenerAdapter {
 								.setTitle("**__QOTD Queue:__** *Page " + param + "*")
 								.setDescription(out)
 								.setFooter(format.format(LocalDateTime.now()), e.getMember().getUser().getAvatarUrl())
+								.setColor(QOTDBot.config.getColor())
 								.build())
 						.setActionRows(ActionRow.of(prevButton, nextButton, deleteButton))
 						.build();
@@ -162,6 +164,7 @@ public class ButtonListener extends ListenerAdapter {
 								.setTitle("**__QOTD Queue:__** *Page " + param + "*")
 								.setDescription(out)
 								.setFooter(format.format(LocalDateTime.now()), e.getMember().getUser().getAvatarUrl())
+								.setColor(QOTDBot.config.getColor())
 								.build())
 						.setActionRows(ActionRow.of(prevButton, nextButton, deleteButton))
 						.build();
