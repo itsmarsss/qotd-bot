@@ -120,9 +120,6 @@ public class Config {
 	public Color getColor() {
 		return color;
 	}
-	public void setColor(Color color) {
-		this.color = color;
-	}
 
 	public boolean getInitialized() {
 		return initialized;
