@@ -1,12 +1,20 @@
 package QOTDBot;
 
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Button;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed.Field;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 
@@ -21,16 +29,16 @@ public class ButtonListener extends ListenerAdapter {
 
 			String id = event.getButton().getId();
 			if(id.equals("delete")) {
-				
+
 				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
 					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
 					return;
 				}
-				
+
 				event.getMessage().delete().queue();
 				e.reply("Request successful").setEphemeral(true).queue();
 			}else if(id.startsWith("delete-notif")) {
-				
+
 				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
 					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
 					return;
@@ -79,6 +87,47 @@ public class ButtonListener extends ListenerAdapter {
 				event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
 
 				e.reply("Request successful").setEphemeral(true).queue();
+			}else if(id.startsWith("next-")) {
+
+				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
+					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					return;
+				}
+
+				int param = Integer.parseInt(id.replace("next-", ""));
+
+				LinkedList<Question> q = QOTDBot.getQuestions();
+				
+				if(param > Math.ceil(q.size()/5)) {
+					e.replyEmbeds(CMD.se("No next page.")).setEphemeral(true).queue();
+					return;
+				}
+
+				String out = "";
+				for(int i = 0; i < (q.size()-param*5 < 5 ? q.size()-param*5 : 5); i++) {
+					String question = q.get(i+param*5).getQuestion();
+					if(question.length() > 50) {
+						question = question.substring(0, 48) + "...";
+					}
+					out = out + "\n**" + (i+param*5) + ":** " + question;
+				}
+				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
+
+				Button prevButton = Button.primary("prev-"+(param-1), "Prev \u2B05");
+				Button nextButton = Button.primary("next-"+(param+1), "Next \u27A1");
+				Button deleteButton = Button.secondary("delete", "Delete");
+				Message message = new MessageBuilder()
+						.setEmbeds(new EmbedBuilder()
+								.setTitle("**__QOTD Queue:__** *Page " + param + "*")
+								.setDescription(out)
+								.setFooter(format.format(LocalDateTime.now()), e.getMember().getAvatarUrl())
+								.build())
+						.setActionRows(ActionRow.of(prevButton, nextButton, deleteButton))
+						.build();
+				
+				e.deferEdit().queue();
+				e.getMessage().editMessage(message).queue();
+
 			}
 		}catch(Exception e) {
 			this.e.reply("Request unsuccessful *(Hint: Embed possibly removed?)*").setEphemeral(true).queue();
