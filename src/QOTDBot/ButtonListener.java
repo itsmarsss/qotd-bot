@@ -113,14 +113,55 @@ public class ButtonListener extends ListenerAdapter {
 				}
 				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
 
-				Button prevButton = Button.primary("prev-"+(param-1), "Prev \u2B05");
+				Button prevButton = Button.primary("prev-"+(param-1), "\u2B05 Prev");
 				Button nextButton = Button.primary("next-"+(param+1), "Next \u27A1");
 				Button deleteButton = Button.secondary("delete", "Delete");
 				Message message = new MessageBuilder()
 						.setEmbeds(new EmbedBuilder()
 								.setTitle("**__QOTD Queue:__** *Page " + param + "*")
 								.setDescription(out)
-								.setFooter(format.format(LocalDateTime.now()), e.getMember().getAvatarUrl())
+								.setFooter(format.format(LocalDateTime.now()), e.getMember().getUser().getAvatarUrl())
+								.build())
+						.setActionRows(ActionRow.of(prevButton, nextButton, deleteButton))
+						.build();
+				
+				e.deferEdit().queue();
+				e.getMessage().editMessage(message).queue();
+
+			}else if(id.startsWith("prev-")) {
+
+				if(!(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
+					e.reply("You do not have permission to perform this action").setEphemeral(true).queue();
+					return;
+				}
+
+				int param = Integer.parseInt(id.replace("prev-", ""));
+
+				LinkedList<Question> q = QOTDBot.getQuestions();
+				
+				if(param < 0) {
+					e.replyEmbeds(CMD.se("No previous page.")).setEphemeral(true).queue();
+					return;
+				}
+
+				String out = "";
+				for(int i = 0; i < (q.size()-param*5 < 5 ? q.size()-param*5 : 5); i++) {
+					String question = q.get(i+param*5).getQuestion();
+					if(question.length() > 50) {
+						question = question.substring(0, 48) + "...";
+					}
+					out = out + "\n**" + (i+param*5) + ":** " + question;
+				}
+				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
+
+				Button prevButton = Button.primary("prev-"+(param-1), "\u2B05 Prev");
+				Button nextButton = Button.primary("next-"+(param+1), "Next \u27A1");
+				Button deleteButton = Button.secondary("delete", "Delete");
+				Message message = new MessageBuilder()
+						.setEmbeds(new EmbedBuilder()
+								.setTitle("**__QOTD Queue:__** *Page " + param + "*")
+								.setDescription(out)
+								.setFooter(format.format(LocalDateTime.now()), e.getMember().getUser().getAvatarUrl())
 								.build())
 						.setActionRows(ActionRow.of(prevButton, nextButton, deleteButton))
 						.build();
