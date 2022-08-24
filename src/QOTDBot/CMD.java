@@ -505,6 +505,7 @@ public class CMD extends ListenerAdapter{
 			}
 			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
 
+			Button prevButton = Button.primary("prev-"+(param-1), "Prev \u2B05");
 			Button nextButton = Button.primary("next-"+(param+1), "Next \u27A1");
 			Button deleteButton = Button.secondary("delete", "Delete");
 			Message message = new MessageBuilder()
@@ -513,13 +514,12 @@ public class CMD extends ListenerAdapter{
 							.setDescription(out.isBlank() ? ":open_mouth::dash: Empty" : out)
 							.setFooter(format.format(LocalDateTime.now()), e.getAuthor().getAvatarUrl())
 							.build())
-					.append(out)
-					.setActionRows(ActionRow.of(nextButton, deleteButton))
+					.setActionRows(ActionRow.of(prevButton, nextButton, deleteButton))
 					.build();
 
 			e.getMessage().reply(message).queue();
 		}catch(Exception e) {
-			this.e.getMessage().replyEmbeds(se("Too large lol.")).queue();
+			this.e.getMessage().replyEmbeds(se("Invalid page index.")).queue();
 		}
 	}
 
@@ -762,7 +762,7 @@ public class CMD extends ListenerAdapter{
 
 
 
-	private MessageEmbed se(String desc) {
+	static MessageEmbed se(String desc) {
 		return new EmbedBuilder()
 				.setDescription(desc)
 				.setColor(QOTDBot.config.getColor())
