@@ -2,6 +2,7 @@ package QOTDBot;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
@@ -71,7 +72,7 @@ public class CMD extends ListenerAdapter{
 				viewQuestion(raw);
 				break;
 			case "queue":
-				viewQueue();
+				viewQueue(raw);
 				break;
 			case "qotdtest":
 				qotdTest();
@@ -481,23 +482,39 @@ public class CMD extends ListenerAdapter{
 		}
 	}
 
-	private void viewQueue() {
+	private void viewQueue(String raw) {
 		// qotd queue
-		String out = "**__QOTD Queue:__**";
-		int c = 0;
-		for(Question q : QOTDBot.getQuestions()) {
-			String question = q.getQuestion();
-			if(question.length() > 50) {
-				question = question.substring(0, 48) + "...";
-			}
-			out = out + "\n**" + c + ":** " + question;
-			c++;
-		}
 		try {
+			LinkedList<Question> q = QOTDBot.getQuestions();
+			int param = 0;
+			if(raw.length() > QOTDBot.config.getPrefix().length()+1+5) {
+				param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+5).trim());
+
+				if(param > Math.ceil(q.size()/5)) {
+					e.getMessage().replyEmbeds(se("Invalid page index.")).queue();
+					return;
+				}
+			}
+			String out = "";
+			for(int i = param * 5; i < (q.size() < 5 ? q.size() : 5); i++) {
+				String question = q.get(i).getQuestion();
+				if(question.length() > 50) {
+					question = question.substring(0, 48) + "...";
+				}
+				out = out + "\n**" + (i+param*5) + ":** " + question;
+			}
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
+
+			Button nextButton = Button.primary("next-"+(param+1), "Next \u27A1");
 			Button deleteButton = Button.secondary("delete", "Delete");
 			Message message = new MessageBuilder()
+					.setEmbeds(new EmbedBuilder()
+							.setTitle("**__QOTD Queue:__** *Page " + param + "*")
+							.setDescription(out.isBlank() ? ":open_mouth::dash: Empty" : out)
+							.setFooter(format.format(LocalDateTime.now()), e.getAuthor().getAvatarUrl())
+							.build())
 					.append(out)
-					.setActionRows(ActionRow.of(deleteButton))
+					.setActionRows(ActionRow.of(nextButton, deleteButton))
 					.build();
 
 			e.getMessage().reply(message).queue();
