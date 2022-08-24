@@ -20,7 +20,7 @@ public class Config {
 	private boolean managerReview = false;
 	private String reviewChannel;
 	
-	private String QOTDColor;
+	private String QOTDColor = "E62127";
 	
 	private Color color = Color.decode("#E62127");
 	
