@@ -505,7 +505,7 @@ public class CMD extends ListenerAdapter{
 			}
 			DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
 
-			Button prevButton = Button.primary("prev-"+(param-1), "Prev \u2B05");
+			Button prevButton = Button.primary("prev-"+(param-1), "\u2B05 Prev");
 			Button nextButton = Button.primary("next-"+(param+1), "Next \u27A1");
 			Button deleteButton = Button.secondary("delete", "Delete");
 			Message message = new MessageBuilder()
