@@ -33,6 +33,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
@@ -138,7 +139,7 @@ public class QOTDBot {
 			System.out.println("Validating token...");
 			jda = JDABuilder.createDefault(config.getBotToken(), intent).build();
 			jda.awaitReady();
-		} catch(Exception e) {
+		} catch(LoginException e) {
 			System.out.println("______________________________________________________");
 			System.out.println("Given token is invalid.");
 			System.out.println("\t- Make sure to enable MESSAGE CONTENT INTENT");
@@ -148,14 +149,20 @@ public class QOTDBot {
 		System.out.println("Setting status message...");
 		jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
 		System.out.println("Setting status...");
-		try {
-			jda.getGuildById(config.getServerID());
-			System.out.println("Checking server ID...");
-		} catch(Exception e) {
+
+		System.out.println("Checking server ID...");
+		boolean found = false;
+		for (Guild guild : jda.getGuilds()) {
+			if(guild.getId().equals(config.getServerID())) {
+				found = true;
+			}
+		}
+		if(!found) {
 			System.out.println("______________________________________________________");
 			System.out.println("Given server ID is invalid.");
 			System.exit(0);
 		}
+		
 		System.out.println("Adding listeners...");
 		jda.addEventListener(new CMD());
 		jda.addEventListener(new ButtonListener());
