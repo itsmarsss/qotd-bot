@@ -154,7 +154,7 @@ public class ButtonListener extends ListenerAdapter {
 					}
 					out = out + "\n**" + (i+param*5) + ":** " + question;
 				}
-				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
+				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy \u2022 hh:mm");
 
 				Button prevButton = Button.primary("prev-"+(param-1), "\u2B05 Prev");
 				Button nextButton = Button.primary("next-"+(param+1), "Next \u27A1");
