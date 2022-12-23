@@ -44,7 +44,7 @@ public class QOTDBot {
 	private static final LinkedList<Question> questions = new LinkedList<>();
 	private static boolean isPaused = false;
 
-	static final String version = "2.9.7";
+	static final String version = "2.9.8";
 	private static String parent;
 	private static final EnumSet<GatewayIntent> intent = EnumSet.of(GatewayIntent.GUILD_MESSAGES);
 	
