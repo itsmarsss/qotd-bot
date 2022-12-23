@@ -36,14 +36,12 @@ public class Question {
 
 	public void updateDate() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-		String now = LocalDateTime.now().format(dtf);
-		date = now;
+		date = LocalDateTime.now().format(dtf);
 		millis = System.currentTimeMillis();
 	}
 	public void setDate(long millis) {
 		DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		String date = df.format(new Date(millis));
-		this.date = date;
+		this.date = df.format(new Date(millis));
 		this.millis = millis;
 	}
 	public void setDate(String date) {

@@ -17,10 +17,11 @@ import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class ButtonListener extends ListenerAdapter {
 	private ButtonClickEvent e;
-	public void onButtonClick(ButtonClickEvent event) {
+	public void onButtonClick(@NotNull ButtonClickEvent event) {
 		try {
 			if(!event.getGuild().getId().equals(QOTDBot.config.getServerID()))
 				return;
@@ -64,11 +65,7 @@ public class ButtonListener extends ListenerAdapter {
 				}
 
 				List<Field>flds = event.getMessage().getEmbeds().get(0).getFields();
-				boolean isPoll = false;
-
-				if(flds.get(0).getValue().equals("Poll")) {
-					isPoll = true;
-				}
+				boolean isPoll = flds.get(0).getValue().equals("Poll");
 
 				Question q = new Question(flds.get(1).getValue(), flds.get(2).getValue(), flds.get(3).getValue(), isPoll);
 				q.setDate(flds.get(4).getValue());
@@ -98,16 +95,16 @@ public class ButtonListener extends ListenerAdapter {
 
 				LinkedList<Question> q = QOTDBot.getQuestions();
 
-				String out = "";
-				for(int i = 0; i < (q.size()-param*5 < 5 ? q.size()-param*5 : 5); i++) {
+				StringBuilder out = new StringBuilder();
+				for(int i = 0; i < (Math.min(q.size() - param * 5, 5)); i++) {
 					String question = q.get(i+param*5).getQuestion();
 					if(question.length() > 50) {
 						question = question.substring(0, 48) + "...";
 					}
-					out = out + "\n**" + (i+param*5) + ":** " + question;
+					out.append("\n**").append(i + param * 5).append(":** ").append(question);
 				}
 				
-				if(out.isBlank()) {
+				if(out.toString().isBlank()) {
 					e.replyEmbeds(CMD.se("No next page.")).setEphemeral(true).queue();
 					return;
 				}
@@ -120,7 +117,7 @@ public class ButtonListener extends ListenerAdapter {
 				Message message = new MessageBuilder()
 						.setEmbeds(new EmbedBuilder()
 								.setTitle("**__QOTD Queue:__** *Page " + param + "*")
-								.setDescription(out)
+								.setDescription(out.toString())
 								.setFooter(format.format(LocalDateTime.now()), e.getMember().getUser().getAvatarUrl())
 								.setColor(QOTDBot.config.getColor())
 								.build())
@@ -146,13 +143,13 @@ public class ButtonListener extends ListenerAdapter {
 					return;
 				}
 
-				String out = "";
-				for(int i = 0; i < (q.size()-param*5 < 5 ? q.size()-param*5 : 5); i++) {
+				StringBuilder out = new StringBuilder();
+				for(int i = 0; i < (Math.min(q.size() - param * 5, 5)); i++) {
 					String question = q.get(i+param*5).getQuestion();
 					if(question.length() > 50) {
 						question = question.substring(0, 48) + "...";
 					}
-					out = out + "\n**" + (i+param*5) + ":** " + question;
+					out.append("\n**").append(i + param * 5).append(":** ").append(question);
 				}
 				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy \u2022 hh:mm");
 
@@ -162,7 +159,7 @@ public class ButtonListener extends ListenerAdapter {
 				Message message = new MessageBuilder()
 						.setEmbeds(new EmbedBuilder()
 								.setTitle("**__QOTD Queue:__** *Page " + param + "*")
-								.setDescription(out)
+								.setDescription(out.toString())
 								.setFooter(format.format(LocalDateTime.now()), e.getMember().getUser().getAvatarUrl())
 								.setColor(QOTDBot.config.getColor())
 								.build())

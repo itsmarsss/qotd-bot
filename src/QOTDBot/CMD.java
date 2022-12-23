@@ -34,10 +34,8 @@ public class CMD extends ListenerAdapter{
 		}
 		e = event;
 
-		switch(rawSplit[1]) {
-		case "help":
+		if ("help".equals(rawSplit[1])) {
 			help();
-			break;
 		}
 
 		if(hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin()) {
@@ -490,16 +488,16 @@ public class CMD extends ListenerAdapter{
 			if(raw.length() > QOTDBot.config.getPrefix().length()+1+5) {
 				param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length()+1+5).trim());
 			}
-			String out = "";
-			for(int i = 0; i < (q.size()-param*5 < 5 ? q.size()-param*5 : 5); i++) {
+			StringBuilder out = new StringBuilder();
+			for(int i = 0; i < (Math.min(q.size() - param * 5, 5)); i++) {
 				String question = q.get(i+param*5).getQuestion();
 				if(question.length() > 50) {
 					question = question.substring(0, 48) + "...";
 				}
-				out = out + "\n**" + (i+param*5) + ":** " + question;
+				out.append("\n**").append(i + param * 5).append(":** ").append(question);
 			}
 			
-			if(out.isBlank() && !q.isEmpty()) {
+			if(out.toString().isBlank() && !q.isEmpty()) {
 				e.getMessage().replyEmbeds(se("Invalid page index.")).queue();
 				return;
 			}
@@ -512,7 +510,7 @@ public class CMD extends ListenerAdapter{
 			Message message = new MessageBuilder()
 					.setEmbeds(new EmbedBuilder()
 							.setTitle("**__QOTD Queue:__** *Page " + param + "*")
-							.setDescription(out.isBlank() ? ":open_mouth::dash: Empty" : out)
+							.setDescription(out.toString().isBlank() ? ":open_mouth::dash: Empty" : out.toString())
 							.setFooter(format.format(LocalDateTime.now()), e.getAuthor().getAvatarUrl())
 							.setColor(QOTDBot.config.getColor())
 							.build())
@@ -579,7 +577,7 @@ public class CMD extends ListenerAdapter{
 			e.getMessage().replyEmbeds(se("QOTD prefix has been changed to `" + param + "`.")).queue();
 			QOTDBot.jda.getPresence().setActivity(Activity.watching("for '" + QOTDBot.config.getPrefix() + " help'"));
 		}catch(Exception e) {
-			this.e.getMessage().replyEmbeds(se("Invalid prefix."));
+			this.e.getMessage().replyEmbeds(se("Invalid prefix.")).queue();
 		}
 	}
 

@@ -150,11 +150,8 @@ public class Config {
 
 		if(permRoleID.isBlank())
 			return false;
-		
-		if(managerRoleID.isBlank())
-			return false;
-		
-		return true;
+
+		return !managerRoleID.isBlank();
 	}
 	
 	private void writeYML(boolean exception) {

@@ -3,13 +3,11 @@ package QOTDBot;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -43,7 +41,7 @@ public class QOTDBot {
 
 	static long lastQOTD = 0;
 
-	private static LinkedList<Question> questions = new LinkedList<Question>();
+	private static final LinkedList<Question> questions = new LinkedList<>();
 	private static boolean isPaused = false;
 
 	static final String version = "2.9.7";
@@ -92,7 +90,7 @@ public class QOTDBot {
 			+ "QOTDColor: %s\r\n"
 			+ "";
 	
-	public static void main(String[] args) throws UnsupportedEncodingException, URISyntaxException, FileNotFoundException, LoginException, InterruptedException {
+	public static void main(String[] args) throws URISyntaxException, InterruptedException {
 		System.out.println("  ____   ____ _______ _____    ____   ____ _______ ");
 		System.out.println(" / __ \\ / __ \\__   __|  __ \\  |  _ \\ / __ \\__   __|");
 		System.out.println("| |  | | |  | | | |  | |  | | | |_) | |  | | | |  "); 
@@ -170,7 +168,7 @@ public class QOTDBot {
 
 		int wait = calculateWaitTime();
 
-		lastQOTD = (System.currentTimeMillis() + (wait * 60000)) - config.getInterval()*60000;
+		lastQOTD = (System.currentTimeMillis() + (wait * 60000L)) - config.getInterval()* 60000L;
 
 		startThread(wait);
 
@@ -220,13 +218,10 @@ public class QOTDBot {
 		if (s > e) {
 			return -1;
 		}
-		if((s < 0 || s >= questions.size()) ||
-				(e < 0 || e >= questions.size()))
+		if(s < 0 || s >= questions.size() || e >= questions.size())
 			return -1;
 
-		for(int i = e; i >= s; i--) {
-			questions.remove(i);
-		}
+		questions.subList(s, e + 1).clear();
 		writeQuestionsJSON();
 		return 0;
 	}
@@ -239,21 +234,21 @@ public class QOTDBot {
 	}
 
 	static String versionCheck() {
-		URL url = null;
-		String newest = "";
-		String note = "Author's Note: ";
+		URL url;
+		String newest;
+		StringBuilder note = new StringBuilder("Author's Note: ");
 		try {
 			url = new URL("https://raw.githubusercontent.com/itsmarsss/QOTD-Bot/main/newestversion");
 			URLConnection uc;
 			uc = url.openConnection();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 			newest = reader.readLine();
-			String line = null;
+			String line;
 			while ((line = reader.readLine()) != null)
-				note+= line + "\n";
+				note.append(line).append("\n");
 
-			if(note.equals("Author's Note: "))
-				note = "";
+			if(note.toString().equals("Author's Note: "))
+				note = new StringBuilder();
 
 		}catch(Exception e) {
 			return "Unable to check for version and creator's note";
@@ -273,7 +268,7 @@ public class QOTDBot {
 	private static boolean readConfigYML() {
 		InputStream is;
 		try {
-			is = new FileInputStream(new File(parent + "/config.yml"));
+			is = new FileInputStream(parent + "/config.yml");
 			Yaml yml = new Yaml(new Constructor(Config.class));
 			config = yml.load(is);
 			if(!config.isValid()) {
@@ -335,7 +330,6 @@ public class QOTDBot {
 					newq.setDate(time);
 					add(newq);
 				}catch(Exception e) {
-					continue;
 				}
 			}
 			reader.close();
@@ -366,7 +360,6 @@ public class QOTDBot {
 		try (FileWriter file = new FileWriter(parent + "/questions.json")) {
 			file.write(questions.toJSONString());
 		} catch (Exception e) {
-			return;
 		}
 	}
 
@@ -381,12 +374,7 @@ public class QOTDBot {
 
 	private static void startThread(int wait) {
 		ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-		exec.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				postQOTD();	
-			}
-		}, wait, config.getInterval(), TimeUnit.MINUTES);
+		exec.scheduleAtFixedRate(() -> postQOTD(), wait, config.getInterval(), TimeUnit.MINUTES);
 	}
 
 	static void setPause(boolean status) {
