@@ -1,5 +1,9 @@
 # QOTD-Bot
 Simple Question Of The Day (QOTD) Discord Bot you can add to your server. 
+
+## NOTICE
+> :warning: :warning: :warning: **WARNING:** This project is no longer maintained; there may be bugs and issues. Feel free to fork this repository, pull requests *may* be accepted. :warning: :warning: :warning:
+
 ## What is this bot for?
 QOTD stands for Question Of The Day and is usually used to keep servers active and members talking.
 ## What does it do?
