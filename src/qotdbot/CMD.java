@@ -23,18 +23,23 @@ import net.dv8tion.jda.api.interactions.components.Button;
 public class CMD extends ListenerAdapter{
 	private GuildMessageReceivedEvent e;
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+		System.out.println("b1");
 		if(event.getAuthor().isBot() || !event.getGuild().getId().equals(QOTDBot.config.getServerID()))
 			return;
+		System.out.println("b2");
 		Message msg = event.getMessage();
 		String raw = msg.getContentRaw();
 		String[]rawSplit = raw.toLowerCase().split(" ");
 		// [prefix - 0] [cmd - 1] [parameter - 2 to ???]
 		if(!rawSplit[0].equals(QOTDBot.config.getPrefix()) || rawSplit.length == 1) {
+
+			System.out.println(rawSplit[0]);
 			return;
 		}
 		e = event;
 
 		if ("help".equals(rawSplit[1])) {
+			System.out.println("b4");
 			help();
 		}
 
@@ -784,8 +789,8 @@ public class CMD extends ListenerAdapter{
 						"`" + QOTDBot.config.getPrefix() + " help` - This message", false)
 				.addBlankField(true)
 				.addField("Perm commands",
-						"`" + QOTDBot.config.getPrefix() + " add <question 245 char>-=-<footer 100 char>` - Adds/Requests a QTOD question" + "\n`" + 
-								QOTDBot.config.getPrefix() + " addpoll <question 245 char>-=-<footer 100 char>` - Adds/Requests a QTOD poll", false)
+						"`" + QOTDBot.config.getPrefix() + " add <question 245 char>-=-<footer 100 char>` - Adds/Requests a QOTD question" + "\n`" +
+								QOTDBot.config.getPrefix() + " addpoll <question 245 char>-=-<footer 100 char>` - Adds/Requests a QOTD poll", false)
 				.addBlankField(true)
 				.addField("Manager commands",
 						"`" + QOTDBot.config.getPrefix() + " upload [attached json file]` - Uploads a json file" + "\n`" + 
