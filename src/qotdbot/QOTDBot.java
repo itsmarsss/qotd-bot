@@ -111,7 +111,7 @@ public class QOTDBot {
 		System.out.println();
 		System.out.println("Version:" + versionCheck());
 		System.out.println();
-		parent = new File(ClassLoader.getSystemClassLoader().getResource(".").toURI()).getPath();
+		parent = new File(QOTDBot.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
 		System.out.println("Path: " + parent);
 		if(parent == null) {
 			System.out.println("______________________________________________________");
