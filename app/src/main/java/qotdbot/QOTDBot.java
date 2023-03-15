@@ -81,7 +81,7 @@ public class QOTDBot {
             + "QOTDColor: %s\r\n"
             + "";
 
-    public static void main(String[] args) throws URISyntaxException, InterruptedException {
+    public static void main(String[] args) throws URISyntaxException {
         System.out.println("  ____   ____ _______ _____    ____   ____ _______ ");
         System.out.println(" / __ \\ / __ \\__   __|  __ \\  |  _ \\ / __ \\__   __|");
         System.out.println("| |  | | |  | | | |  | |  | | | |_) | |  | | | |  ");
@@ -370,7 +370,7 @@ public class QOTDBot {
 
     private static void startThread(int wait) {
         ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-        exec.scheduleAtFixedRate(() -> postQOTD(), wait, config.getInterval(), TimeUnit.MINUTES);
+        exec.scheduleAtFixedRate(QOTDBot::postQOTD, wait, config.getInterval(), TimeUnit.MINUTES);
     }
 
     static void setPause(boolean status) {
