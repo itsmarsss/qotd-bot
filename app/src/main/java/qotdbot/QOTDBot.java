@@ -257,7 +257,8 @@ public class QOTDBot {
                     "\n" + note;
         }
         return " This program is up to date!" +
-                "\n" + note;
+                "\n" + note +
+                "\n[https://github.com/itsmarsss/QOTD-Bot/releases]";
     }
 
     private static boolean readConfigYML() {
