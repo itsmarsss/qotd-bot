@@ -460,7 +460,7 @@ public class CMD extends ListenerAdapter {
             int param = Integer.parseInt(raw.substring(QOTDBot.config.getPrefix().length() + 1 + 4).trim());
             Question q = QOTDBot.getQuestions().get(param);
 
-            Button deleteButton = Button.secondary("delete", "Delete");
+            Button deleteButton = Button.secondary("delete", "Delete this Message");
             MessageCreateData message = new MessageCreateBuilder()
                     .setEmbeds(new EmbedBuilder()
                             .setTitle("**__QOTD #" + param + ";__**")
@@ -506,7 +506,7 @@ public class CMD extends ListenerAdapter {
 
             Button prevButton = Button.primary("prev-" + (param - 1), "\u2B05 Prev");
             Button nextButton = Button.primary("next-" + (param + 1), "Next \u27A1");
-            Button deleteButton = Button.secondary("delete", "Delete");
+            Button deleteButton = Button.secondary("delete", "Delete this Message");
             MessageCreateData message = new MessageCreateBuilder()
                     .setEmbeds(new EmbedBuilder()
                             .setTitle("**__QOTD Queue:__** *Page " + param + "*")
