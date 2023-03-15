@@ -37,7 +37,10 @@ public class QOTDBot {
 
     static final String version = "2.9.8";
     private static String parent;
-    private static final EnumSet<GatewayIntent> intent = EnumSet.of(GatewayIntent.GUILD_MESSAGES);
+    private static final EnumSet<GatewayIntent> intent = EnumSet.of(
+            GatewayIntent.GUILD_MESSAGES,
+            GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
+            GatewayIntent.MESSAGE_CONTENT);
 
     private final static String template = "# IMPORTANT - Mandatory fields:\r\n"
             + "# Input the bot's token here, this can be found in Developers Portal > Applications > [Bot Profile] > Bot > Token > [Copy]\r\n"
