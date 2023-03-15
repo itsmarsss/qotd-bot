@@ -1,0 +1,2 @@
+rootProject.name = 'QOTDBot'
+include('app')
