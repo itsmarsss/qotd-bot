@@ -4,7 +4,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "8.1.0"
 }
 
-mainClassName = 'qotdbot.QOTDBot'
+mainClassName = 'com.marsss.qotdbot.QOTDBot'
 sourceCompatibility = 11
 
 repositories {
@@ -22,7 +22,7 @@ repositories {
 
 jar {
     manifest {
-        attributes "Main-Class": "qotdbot.QOTDBot"
+        attributes "Main-Class": "com.marsss.qotdbot.QOTDBot"
     }
 
     from {

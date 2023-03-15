@@ -1,4 +1,4 @@
-package qotdbot;
+package com.marsss.qotdbot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

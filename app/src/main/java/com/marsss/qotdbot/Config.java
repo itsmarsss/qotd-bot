@@ -1,4 +1,4 @@
-package qotdbot;
+package com.marsss.qotdbot;
 
 import java.awt.Color;
 

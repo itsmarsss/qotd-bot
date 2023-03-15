@@ -1,4 +1,4 @@
-package qotdbot;
+package com.marsss.qotdbot;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
