@@ -22,23 +22,19 @@ public class CMD extends ListenerAdapter {
     private MessageReceivedEvent e;
 
     public void onMessageReceived(MessageReceivedEvent event) {
-        System.out.println("b1");
         if (event.getAuthor().isBot() || !event.getGuild().getId().equals(QOTDBot.config.getServerID()))
             return;
-        System.out.println("b2");
+
         Message msg = event.getMessage();
         String raw = msg.getContentRaw();
         String[] rawSplit = raw.toLowerCase().split(" ");
         // [prefix - 0] [cmd - 1] [parameter - 2 to ???]
         if (!rawSplit[0].equals(QOTDBot.config.getPrefix()) || rawSplit.length == 1) {
-
-            System.out.println(rawSplit[0]);
             return;
         }
         e = event;
 
         if ("help".equals(rawSplit[1])) {
-            System.out.println("b4");
             help();
         }
 
