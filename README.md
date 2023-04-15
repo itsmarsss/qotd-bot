@@ -45,5 +45,10 @@ Simply follow a tutorial to create a Discord bot and run the code. Pass in the b
 - Toggle dynamic config state
 - Update config file
 
+## Video Demonstration
+<p align="center">Video Demonstration: https://www.youtube.com/watch?v=iJrDy7_vNNA</p>
+
+[![Image Link](https://img.youtube.com/vi/iJrDy7_vNNA/maxresdefault.jpg)](https://www.youtube.com/watch?v=iJrDy7_vNNA)
+
 ### NOTICE
 > :warning: :warning: :warning: **WARNING:** This project is no longer maintained; there may be bugs and issues. Feel free to fork this repository, pull requests *may* be accepted. :warning: :warning: :warning:
