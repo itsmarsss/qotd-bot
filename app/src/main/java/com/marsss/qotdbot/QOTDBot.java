@@ -14,6 +14,7 @@ import org.json.simple.parser.JSONParser;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -35,7 +36,7 @@ public class QOTDBot {
     private static final LinkedList<Question> questions = new LinkedList<>();
     private static boolean isPaused = false;
 
-    static final String version = "3.0.0";
+    static final String version = "3.1.0";
     private static String parent;
     private static final EnumSet<GatewayIntent> intent = EnumSet.of(
             GatewayIntent.GUILD_MESSAGES,
@@ -85,6 +86,25 @@ public class QOTDBot {
             + "";
 
     public static void main(String[] args) throws URISyntaxException {
+        boolean head = true;
+
+        if (args.length > 0) {
+            if (args[0].equalsIgnoreCase("--nohead")) {
+                head = false;
+            }
+        }
+        if (head) {
+            System.out.println("Loading UI...");
+
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            new ConsoleMirror();
+        }
+
         System.out.println("  ____   ____ _______ _____    ____   ____ _______ ");
         System.out.println(" / __ \\ / __ \\__   __|  __ \\  |  _ \\ / __ \\__   __|");
         System.out.println("| |  | | |  | | | |  | |  | | | |_) | |  | | | |  ");
@@ -122,10 +142,14 @@ public class QOTDBot {
         }
         System.out.println("~ Successfully read config.yml ~");
         System.out.println();
-        System.out.println("** Press [enter] to start the bot **");
+        System.out.println(head ? "** Click [Start] button to start the bot **" : "** Press [enter] to start the bot **");
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
         sc.close();
+        start();
+    }
+
+    static void start() {
         try {
             System.out.println("Connecting to Discord...");
             System.out.println("Validating token...");
@@ -192,7 +216,6 @@ public class QOTDBot {
 
         System.out.println();
         System.out.println("Finished!");
-
     }
 
     static Question getNext() {
