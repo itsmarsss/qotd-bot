@@ -9,11 +9,19 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
 public class Webserver {
-    public static void startServer() throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 8000), 0);
+
+    private int port;
+
+    public int getPort() {
+        return port;
+    }
+
+    public void startServer() throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 0), 0);
         server.createContext("/", new WebControlHandler());
         server.setExecutor(null);
         server.start();
+        port = server.getAddress().getPort();
     }
 
     static class WebControlHandler implements HttpHandler {

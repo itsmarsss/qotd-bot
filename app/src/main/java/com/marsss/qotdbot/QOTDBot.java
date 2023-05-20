@@ -15,7 +15,9 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -258,6 +260,30 @@ public class QOTDBot {
 
         System.out.println();
         System.out.println("Finished!");
+
+        setupWebpage();
+    }
+
+    static void setupWebpage() {
+        System.out.println();
+        System.out.println("Starting Webserver...");
+        try {
+            Webserver server = new Webserver();
+            server.startServer();
+
+            System.out.println("Webpage setup completed!");
+            System.out.println("\tOn port: " + server.getPort());
+
+            System.out.println();
+            System.out.println("Opening control panel...");
+
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                Desktop.getDesktop().browse(new URI("http://localhost:" + server.getPort()));
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to start Webserver.");
+            System.out.println("\tError message: " + e.getMessage());
+        }
     }
 
     static Question getNext() {
