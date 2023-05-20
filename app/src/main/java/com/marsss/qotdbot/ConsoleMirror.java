@@ -2,6 +2,8 @@ package com.marsss.qotdbot;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 
 public class ConsoleMirror extends JFrame {
@@ -26,6 +28,13 @@ public class ConsoleMirror extends JFrame {
         JPanel buttonPanel = new JPanel();
 
         JButton startButton = new JButton("Start");
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                QOTDBot.start();
+            }
+        });
+
         buttonPanel.add(startButton, BorderLayout.WEST);
 
         JButton editButton = new JButton("Edit [config.yml]");

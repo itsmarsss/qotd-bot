@@ -87,14 +87,15 @@ public class QOTDBot {
 
     public static void main(String[] args) throws URISyntaxException {
         boolean head = true;
+
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase("--nohead")) {
                 head = false;
             }
         }
-
         if (head) {
             System.out.println("Loading UI...");
+
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ex) {
@@ -141,10 +142,14 @@ public class QOTDBot {
         }
         System.out.println("~ Successfully read config.yml ~");
         System.out.println();
-        System.out.println("** Press [enter] to start the bot **");
+        System.out.println(head ? "** Click [Start] button to start the bot **" : "** Press [enter] to start the bot **");
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
         sc.close();
+        start();
+    }
+
+    static void start() {
         try {
             System.out.println("Connecting to Discord...");
             System.out.println("Validating token...");
@@ -211,7 +216,6 @@ public class QOTDBot {
 
         System.out.println();
         System.out.println("Finished!");
-
     }
 
     static Question getNext() {
