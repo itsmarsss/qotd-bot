@@ -86,14 +86,23 @@ public class QOTDBot {
             + "";
 
     public static void main(String[] args) throws URISyntaxException {
-
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
+        boolean head = true;
+        if (args.length > 0) {
+            if (args[0].equalsIgnoreCase("--nohead")) {
+                head = false;
+            }
         }
 
-        new ConsoleMirror();
+        if (head) {
+            System.out.println("Loading UI...");
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            new ConsoleMirror();
+        }
 
         System.out.println("  ____   ____ _______ _____    ____   ____ _______ ");
         System.out.println(" / __ \\ / __ \\__   __|  __ \\  |  _ \\ / __ \\__   __|");
