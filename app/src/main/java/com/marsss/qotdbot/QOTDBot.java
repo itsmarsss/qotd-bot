@@ -14,6 +14,7 @@ import org.json.simple.parser.JSONParser;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -85,6 +86,15 @@ public class QOTDBot {
             + "";
 
     public static void main(String[] args) throws URISyntaxException {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        new ConsoleMirror();
+
         System.out.println("  ____   ____ _______ _____    ____   ____ _______ ");
         System.out.println(" / __ \\ / __ \\__   __|  __ \\  |  _ \\ / __ \\__   __|");
         System.out.println("| |  | | |  | | | |  | |  | | | |_) | |  | | | |  ");
