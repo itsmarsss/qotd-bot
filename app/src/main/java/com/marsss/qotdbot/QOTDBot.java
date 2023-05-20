@@ -36,12 +36,14 @@ public class QOTDBot {
     private static final LinkedList<Question> questions = new LinkedList<>();
     private static boolean isPaused = false;
 
-    static final String version = "3.1.0";
+    static final String version = "3.1.1";
     private static String parent;
     private static final EnumSet<GatewayIntent> intent = EnumSet.of(
             GatewayIntent.GUILD_MESSAGES,
             GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
             GatewayIntent.MESSAGE_CONTENT);
+
+    private static boolean head = true;
 
     private final static String template = "# IMPORTANT - Mandatory fields:\r\n"
             + "# Input the bot's token here, this can be found in Developers Portal > Applications > [Bot Profile] > Bot > Token > [Copy]\r\n"
@@ -86,8 +88,6 @@ public class QOTDBot {
             + "";
 
     public static void main(String[] args) throws URISyntaxException {
-        boolean head = true;
-
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase("--nohead")) {
                 head = false;
@@ -127,19 +127,41 @@ public class QOTDBot {
         System.out.println();
         parent = new File(QOTDBot.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
         System.out.println("Path: " + parent);
+
+        boolean parentPass = true;
         if (parent == null) {
             System.out.println("______________________________________________________");
             System.out.println("Unable to obtain path.");
-            System.exit(0);
+            if (!head) {
+                System.exit(0);
+            }
+            parentPass = false;
         }
+
+        if (parentPass) {
+            readConfig();
+        }
+    }
+
+    static void readConfig() {
         System.out.println();
+        boolean configPass = true;
         if (!readConfigYML()) {
             System.out.println("______________________________________________________");
             System.out.println("There was an error with config.yml");
             System.out.println("\t1. Make sure config.yml template exists");
             System.out.println("\t2. Make sure config.yml values are correctly inputted");
-            System.exit(0);
+            if (!head) {
+                System.exit(0);
+            }
+            configPass = false;
         }
+        if (configPass) {
+            prompt();
+        }
+    }
+
+    static void prompt() {
         System.out.println("~ Successfully read config.yml ~");
         System.out.println();
         System.out.println(head ? "** Click [Start] button to start the bot **" : "** Press [enter] to start the bot **");
@@ -150,6 +172,7 @@ public class QOTDBot {
     }
 
     static void start() {
+        boolean setupPass = true;
         try {
             System.out.println("Connecting to Discord...");
             System.out.println("Validating token...");
@@ -159,8 +182,17 @@ public class QOTDBot {
             System.out.println("______________________________________________________");
             System.out.println("Given token is invalid.");
             System.out.println("\t- Make sure to enable MESSAGE CONTENT INTENT");
-            System.exit(0);
+            if (!head) {
+                System.exit(0);
+            }
+            setupPass = false;
         }
+        if (setupPass) {
+            activate();
+        }
+    }
+
+    static void activate() {
         jda.getPresence().setActivity(Activity.watching("for " + config.getPrefix() + " help"));
         System.out.println("Setting status message...");
         jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
@@ -173,12 +205,22 @@ public class QOTDBot {
                 found = true;
             }
         }
+
+        boolean serverIDPass = true;
         if (!found) {
             System.out.println("______________________________________________________");
             System.out.println("Given server ID is invalid.");
-            System.exit(0);
+            if (!head) {
+                System.exit(0);
+            }
+            serverIDPass = false;
         }
+        if (serverIDPass) {
+            complete();
+        }
+    }
 
+    static void complete() {
         System.out.println("Adding listeners...");
         jda.addEventListener(new CMD());
         jda.addEventListener(new ButtonListener());
