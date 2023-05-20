@@ -2,12 +2,10 @@ package com.marsss.qotdbot;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 
 public class ConsoleMirror extends JFrame {
-    private JTextArea textArea;
+    private final JTextArea textArea;
 
     public ConsoleMirror() {
         super("QOTD Bot Console");
@@ -28,16 +26,30 @@ public class ConsoleMirror extends JFrame {
         JPanel buttonPanel = new JPanel();
 
         JButton startButton = new JButton("Start");
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                QOTDBot.start();
-            }
-        });
+        startButton.addActionListener(actionEvent -> QOTDBot.start());
 
         buttonPanel.add(startButton, BorderLayout.WEST);
 
         JButton editButton = new JButton("Edit [config.yml]");
+        editButton.addActionListener(actionEvent -> {
+            ProcessBuilder pb = new ProcessBuilder("Notepad.exe", QOTDBot.getParent() + "/config.yml");
+            try {
+                pb.start();
+            } catch (IOException e) {
+                System.out.println("Notepad.exe not found:");
+                System.out.println("\tUnable to open: " + QOTDBot.getParent() + "/config.yml");
+                JOptionPane.showMessageDialog(null,
+                        "Notepad.exe not found: Unable to open: " + QOTDBot.getParent() + "/config.yml",
+                        "QOTD BOT Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+            System.out.println("You will need to restart the program for new changes to take place.");
+            JOptionPane.showMessageDialog(null,
+                    "You will need to restart the program for new changes to take place.",
+                    "QOTD BOT Warning",
+                    JOptionPane.WARNING_MESSAGE);
+        });
         buttonPanel.add(editButton, BorderLayout.EAST);
 
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
@@ -48,14 +60,14 @@ public class ConsoleMirror extends JFrame {
 }
 
 class ConsoleOutputStream extends OutputStream {
-    private JTextArea textArea;
+    private final JTextArea textArea;
 
     public ConsoleOutputStream(JTextArea textArea) {
         this.textArea = textArea;
     }
 
     @Override
-    public void write(int b) throws IOException {
+    public void write(int b) {
         textArea.append(String.valueOf((char) b));
 
         textArea.setCaretPosition(textArea.getDocument().getLength());
