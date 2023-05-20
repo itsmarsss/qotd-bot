@@ -32,9 +32,16 @@ public class ConsoleMirror extends JFrame {
 
         JButton editButton = new JButton("Edit [config.yml]");
         editButton.addActionListener(actionEvent -> {
+            System.out.println();
             ProcessBuilder pb = new ProcessBuilder("Notepad.exe", QOTDBot.getParent() + "/config.yml");
             try {
                 pb.start();
+
+                System.out.println("You will need to restart the program for new changes to take place.");
+                JOptionPane.showMessageDialog(null,
+                        "You will need to restart the program for new changes to take place.",
+                        "QOTD BOT Warning",
+                        JOptionPane.WARNING_MESSAGE);
             } catch (IOException e) {
                 System.out.println("Notepad.exe not found:");
                 System.out.println("\tUnable to open: " + QOTDBot.getParent() + "/config.yml");
@@ -43,12 +50,6 @@ public class ConsoleMirror extends JFrame {
                         "QOTD BOT Error",
                         JOptionPane.ERROR_MESSAGE);
             }
-
-            System.out.println("You will need to restart the program for new changes to take place.");
-            JOptionPane.showMessageDialog(null,
-                    "You will need to restart the program for new changes to take place.",
-                    "QOTD BOT Warning",
-                    JOptionPane.WARNING_MESSAGE);
         });
         buttonPanel.add(editButton, BorderLayout.EAST);
 
