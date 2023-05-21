@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <script type="text/javascript" src="index.js"></script>
     <link rel="stylesheet" href="index.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,32 +11,66 @@
 
 <body>
     <h1>QOTD Bot Control Panel</h1>
-    <div class="questions">
-        <div class="tabs">
-            <button class="tab-button">Queue</button>
-            <button class="tab-button">Review</button>
+    <main>
+        <div class="qotd-config">
+
         </div>
-        <div class="question">
-            <div class="main">
-                <div class="header">
-                    <h3>Added by: userhere#0000</h3>
-                </div>
-                <div class="title">
-                    <h2>Question/Poll: Question/Poll heasdasdasdaarsadasdasdsadadse</h2>
-                </div>
-                <div class="description">
-                    <h3>Footer here</h3>
-                </div>
-                <div class="footer">
-                    <h4>Added on: 1970/01/15 01:56:07</h4>
+
+        <div class="qotd-queue">
+            <div class="tabs">
+                <button class="tab-button" id="queue">Queue</button>
+                <button class="tab-button" id="review">Review</button>
+            </div>
+            <div class="questions" id="question-queue">
+                <div class="question">
+                    <div class="main">
+                        <div class="header">
+                            <h3>Added by: userhere#0000</h3>
+                        </div>
+                        <div class="title">
+                            <h2>Question/Poll: Question/Poll heasdasdasdaarsadasdasdsadadse</h2>
+                        </div>
+                        <div class="description">
+                            <h3>Footer here</h3>
+                        </div>
+                        <div class="footer">
+                            <h4>Added on: 1970/01/15 01:56:07</h4>
+                        </div>
+                    </div>
+
+                    <div class="aside">
+                        <button class="delete" title="Remove">&#128465;&#65039;</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="aside">
-                <button class="delete">&#128465;&#65039;</button>
+            <div class="questions" id="question-review">
+                <div class="question">
+                    <div class="main">
+                        <div class="header">
+                            <h3>Added by: userhere#0000</h3>
+                        </div>
+                        <div class="title">
+                            <h2>Question/Poll: Question/Poll heasdasdasdaarsadasdasdsadadse</h2>
+                        </div>
+                        <div class="description">
+                            <h3>Footer here</h3>
+                        </div>
+                        <div class="footer">
+                            <h4>Added on: 1970/01/15 01:56:07</h4>
+                        </div>
+                    </div>
+
+                    <div class="aside">
+                        <button class="deny" id="deny" title="Deny">&#10060;</button>
+                        <button class="approve" id="approve" title="Approve">&#9989;</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 </body>
 
 </html>
+
+<script type="text/javascript" src="index.js"></script>

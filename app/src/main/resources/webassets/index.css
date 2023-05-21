@@ -33,40 +33,63 @@ h1 {
     text-align: center;
 }
 
-.questions {
-    padding: 20px;
-    width: 95%;
-    height: 95%;
-    margin: auto;
-    margin-top: 20px;
+main {
+    display: flex;
+    height: 100%;
+}
+
+.qotd-config {
+    background: #2b2d31;
     border-radius: 15px;
-    overflow-y: scroll;
-    background: #2e3035;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    transition: 200ms;
+    width: 20%;
+    margin-right: 10px;
+    height: 100%;
+}
+
+.qotd-queue {
+    width: 80%;
 }
 
 .tabs {
     width: 100%;
     position: sticky;
     display: flex;
+    margin-top: 20px;
 }
 
 .tab-button {
+    background: #404249;
+    color: #f2f3f5;
     width: 50%;
     height: 100px;
     font-size: 25px;
-    border-radius: 15px;
+    border-radius: 10px;
     cursor: pointer;
     transition: 200ms;
+    border: none;
+    margin-left: 5px;
+}
+
+.tab-button:hover {
+    background: #36383e;
+}
+
+.tab-button:active {
+    background: #4b4e56;
 }
 
 .tab-button:active {
     transform: scale(0.95);
 }
 
-.questions:hover {
-    box-shadow: none;
+.questions {
+    padding: 20px;
+    width: 95%;
+    height: 75%;
+    margin: auto;
+    border-radius: 15px;
+    overflow-y: auto;
+    transition: 200ms;
 }
 
 .question {
@@ -107,6 +130,54 @@ h1 {
 
 .delete:active {
     background: #ff000061;
+}
+
+.question:hover .approve,
+.question.hover .approve,
+.question:hover .deny,
+.question.hover .deny {
+    transform: translateX(0);
+}
+
+.deny {
+    transform: translateX(100px);
+    float: right;
+    transition: 200ms;
+    background: transparent;
+    color: #ff0000;
+    border: 1px solid #ff0000;
+    padding: 3px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.deny:hover {
+    background: #ff00008f;
+}
+
+.deny:active {
+    background: #ff000061;
+}
+
+.approve {
+    transform: translateX(100px);
+    float: right;
+    transition: 200ms;
+    background: transparent;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 3px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.approve:hover {
+    background: #00ff008f;
+}
+
+.approve:active {
+    background: #00ff0061;
 }
 
 .header {
