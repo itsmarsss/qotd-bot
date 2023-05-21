@@ -280,8 +280,15 @@ public class QOTDBot {
             System.out.println();
             System.out.println("Opening control panel...");
 
-            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(new URI("http://localhost:" + server.getPort()));
+            try {
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(new URI("http://localhost:" + server.getPort()));
+                }
+                System.out.println("Successfully sent user to control panel...");
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Failed to open website.");
+                System.out.println("\tVisit http://localhost:" + server.getPort() + " to access control panel.");
             }
         } catch (Exception e) {
             e.printStackTrace();
