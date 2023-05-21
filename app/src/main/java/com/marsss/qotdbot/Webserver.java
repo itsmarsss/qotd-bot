@@ -4,8 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
 
 public class Webserver {
@@ -22,6 +21,30 @@ public class Webserver {
         server.setExecutor(null);
         server.start();
         port = server.getAddress().getPort();
+
+        loadFile("webassets/index.html");
+        loadFile("webassets/index.js");
+        loadFile("webassets/index.css");
+    }
+
+    private void loadFile(String path) {
+        InputStream inputStream = Webserver.class.getResourceAsStream(path);
+
+        if (inputStream != null) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+                System.out.println("File found: " + path);
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("File not found: " + path);
+        }
     }
 
     static class WebControlHandler implements HttpHandler {
