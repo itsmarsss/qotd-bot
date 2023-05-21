@@ -20,14 +20,22 @@ public class Webserver {
 
     public void startServer() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 0), 0);
-        server.createContext("/", new WebControlHandler());
+        server.createContext("/", new MainPage());
+        server.createContext("/index.js", new JS());
+        server.createContext("/index.css", new CSS());
         server.setExecutor(null);
         server.start();
         port = server.getAddress().getPort();
 
         html = loadFile("webassets/index.html");
-        js = "<script>" + loadFile("webassets/index.js") + "</script>";
-        css = "<style>" + loadFile("webassets/index.css") +"</style>";
+        js = loadFile("webassets/index.js");
+        css = loadFile("webassets/index.css");
+
+        System.out.println(html);
+
+        System.out.println(js);
+
+        System.out.println(css);
     }
 
     private String loadFile(String path) {
@@ -58,10 +66,39 @@ public class Webserver {
         return "";
     }
 
-    private class WebControlHandler implements HttpHandler {
+    private class MainPage implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
-            String response = html + js + css;
+            System.out.println(he.getRequestURI());
+            System.out.println(html);
+
+            String response = html;
+            he.sendResponseHeaders(200, response.length());
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private class JS implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            System.out.println(he.getRequestURI());
+
+            String response = js;
+            he.sendResponseHeaders(200, response.length());
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private class CSS implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            System.out.println(he.getRequestURI());
+
+            String response = css;
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());
