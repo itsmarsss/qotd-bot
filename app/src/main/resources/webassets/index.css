@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+html {
+    background: #313338;
+    color: #f2f3f5;
+    font-family: "Noto Sans";
+    height: 100%;
+}
+
+body {
+    height: 80%
+}
+
+h1 {
+    margin: auto;
+    text-align: center;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    padding: 0px;
+    margin: 0px;
+}
+
+.questions {
+    margin-top: 20px;
+    padding: 10px;
+    width: 75%;
+    height: 75%;
+    float: right;
+    overflow-y: scroll;
+    background: #2e3035;
+}
+
+.question {
+    background: #2b2d31;
+    border-radius: 15px;
+    padding: 5px;
+    overflow: auto;
+}
+
+.question * {
+    position: relative;
+}
+
+.header {
+    top: 0px;
+}
+
+.footer {
+    bottom: 0px;
+}
