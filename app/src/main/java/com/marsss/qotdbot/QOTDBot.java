@@ -102,6 +102,8 @@ public class QOTDBot {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ex) {
                 ex.printStackTrace();
+                System.out.println("Failed to set look and feel");
+                System.out.println("\tYou can ignore this");
             }
 
             new ConsoleMirror();
@@ -181,6 +183,7 @@ public class QOTDBot {
             jda = JDABuilder.createDefault(config.getBotToken(), intent).build();
             jda.awaitReady();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("______________________________________________________");
             System.out.println("Given token is invalid.");
             System.out.println("\t- Make sure to enable MESSAGE CONTENT INTENT");
@@ -281,6 +284,7 @@ public class QOTDBot {
                 Desktop.getDesktop().browse(new URI("http://localhost:" + server.getPort()));
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Failed to start Webserver.");
             System.out.println("\tError message: " + e.getMessage());
         }
@@ -340,6 +344,7 @@ public class QOTDBot {
                 note = new StringBuilder();
 
         } catch (Exception e) {
+            e.printStackTrace();
             return "Unable to check for version and creator's note";
         }
         if (!newest.equals(version)) {
@@ -397,6 +402,7 @@ public class QOTDBot {
             file.write(String.format(template, token, serverID, channelID, prefix, interval, hour, minute, permRoleID, managerRoleID, dynamicConfig, managerReview, reviewChannel, colorHex));
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -420,6 +426,7 @@ public class QOTDBot {
                     newq.setDate(time);
                     add(newq);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             reader.close();
@@ -428,6 +435,7 @@ public class QOTDBot {
             return true;
 
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -450,6 +458,7 @@ public class QOTDBot {
         try (FileWriter file = new FileWriter(parent + "/questions.json")) {
             file.write(questions.toJSONString());
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -457,6 +466,7 @@ public class QOTDBot {
         try (FileWriter file = new FileWriter(parent + "/upload.json")) {
             file.write("{\"questions\": []}");
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;

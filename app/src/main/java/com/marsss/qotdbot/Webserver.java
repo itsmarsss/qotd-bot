@@ -10,6 +10,9 @@ import java.net.InetSocketAddress;
 public class Webserver {
 
     private int port;
+    private String html;
+    private String js;
+    private String css;
 
     public int getPort() {
         return port;
@@ -22,35 +25,43 @@ public class Webserver {
         server.start();
         port = server.getAddress().getPort();
 
-        loadFile("webassets/index.html");
-        loadFile("webassets/index.js");
-        loadFile("webassets/index.css");
+        html = loadFile("webassets/index.html");
+        js = "<script>" + loadFile("webassets/index.js") + "</script>";
+        css = "<style>" + loadFile("webassets/index.css") +"</style>";
     }
 
-    private void loadFile(String path) {
-        InputStream inputStream = Webserver.class.getResourceAsStream(path);
+    private String loadFile(String path) {
+        InputStream inputStream = Webserver.class.getClassLoader().getResourceAsStream(path);
 
         if (inputStream != null) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
                 System.out.println("File found: " + path);
 
+                StringBuilder file = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
+                    file.append(line);
                 }
+
+                System.out.println("File loaded: " + path);
+
+                return file.toString();
             } catch (IOException e) {
                 e.printStackTrace();
+                System.out.println("Encountered an error reading: " + path);
             }
         } else {
             System.out.println("File not found: " + path);
         }
+
+        return "";
     }
 
-    static class WebControlHandler implements HttpHandler {
+    private class WebControlHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
-            String response = "Response";
+            String response = html + js + css;
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());

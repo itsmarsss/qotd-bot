@@ -43,6 +43,7 @@ public class ConsoleMirror extends JFrame {
                         "QOTD BOT Warning",
                         JOptionPane.WARNING_MESSAGE);
             } catch (IOException e) {
+                e.printStackTrace();
                 System.out.println("Notepad.exe not found:");
                 System.out.println("\tUnable to open: " + QOTDBot.getParent() + "/config.yml");
                 JOptionPane.showMessageDialog(null,
