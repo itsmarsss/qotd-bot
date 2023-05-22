@@ -20,13 +20,13 @@ var qotdColor = "#000";
 
 function deleteQOTD(type, uuid) {
     httpPostAsync(`/api/v1/delete`, `{"type":"${type}", "uuid":"${uuid}"}`, (res) => {
-        window.location.reload();
+        window.location = window.location.origin + (type === 'review' ? "?tab=review" : "");
     });
 }
 
 function approveQOTD(uuid) {
     httpPostAsync(`/api/v1/approve`, `{"uuid":"${uuid}"}`, (res) => {
-        window.location.reload();
+        window.location = window.location.origin + "?tab=review";
     });
 }
 
@@ -235,4 +235,14 @@ function formatDate(date) {
 }
 
 getConfig();
-queue.click();
+
+const urlParams = new URLSearchParams(window.location.search);
+const selectedTab = urlParams.get('tab');
+
+console.log(selectedTab);
+
+if (selectedTab === "review") {
+    review.click();
+} else {
+    queue.click();
+}
