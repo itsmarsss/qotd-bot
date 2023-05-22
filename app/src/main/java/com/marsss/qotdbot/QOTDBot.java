@@ -331,15 +331,14 @@ public class QOTDBot {
         return 0;
     }
 
-    static int remove(String uuid) {
+    static void remove(String uuid) {
         int index = uuids.indexOf(uuid);
         if (index == -1)
-            return -1;
+            return;
 
         uuids.remove(index);
         questions.remove(uuid);
         writeQuestionsJSON();
-        return 0;
     }
 
     static void add(Question q) {
