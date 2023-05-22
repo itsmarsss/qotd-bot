@@ -9,6 +9,8 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Webserver {
 
@@ -109,16 +111,16 @@ public class Webserver {
         @Override
         public void handle(HttpExchange he) throws IOException {
             String response = String.format("""
-            {
-                "prefix": "%s",
-                "managerreview": "%s",
-                "reviewchannel": "%s",
-                "embedcolor": "#%s",
-                
-                "permissionrole": "%s",
-                "managerrole": "%s"
-            }
-            """,
+                            {
+                                "prefix": "%s",
+                                "managerreview": "%s",
+                                "reviewchannel": "%s",
+                                "embedcolor": "#%s",
+                                
+                                "permissionrole": "%s",
+                                "managerrole": "%s"
+                            }
+                            """,
                     QOTDBot.config.getPrefix(),
                     QOTDBot.config.getManagerReview(),
                     QOTDBot.config.getReviewChannel(),
@@ -141,7 +143,7 @@ public class Webserver {
             JSONParser parser = new JSONParser();
             JSONObject data;
             try {
-                 data = (JSONObject) parser.parse(body);
+                data = (JSONObject) parser.parse(body);
                 System.out.println();
                 System.out.println("QOTD Bot config has been updated:");
                 System.out.println("\t" + body);
@@ -170,7 +172,34 @@ public class Webserver {
     private class GetQueue implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
-            String response = "Success"; // get queue
+
+            HashMap<String, Question> questions = QOTDBot.getQueueWithUUID();
+            LinkedList<String> uuids = QOTDBot.getUUIDs();
+
+            final String template = """
+                    {
+                        "question": "%s",
+                        "footer": "%s",
+                        "user": "%s",
+                        "time": %s,
+                        "poll": %s
+                    },
+                    
+                    """;
+
+            StringBuilder data = new StringBuilder();
+
+            for (String uuid : uuids) {
+                Question q = questions.get(uuid);
+                data.append(String.format(template,
+                        q.getQuestion(),
+                        q.getFooter(),
+                        q.getAuthor(),
+                        q.getMillis(),
+                        q.isPoll()));
+            }
+
+            String response = data.toString();
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());

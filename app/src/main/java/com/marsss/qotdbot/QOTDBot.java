@@ -332,6 +332,14 @@ public class QOTDBot {
         return questionsList;
     }
 
+    static HashMap<String, Question> getQueueWithUUID() {
+        return questions;
+    }
+
+    static LinkedList<String> getUUIDs() {
+        return uuids;
+    }
+
     static String versionCheck() {
         URL url;
         String newest;
