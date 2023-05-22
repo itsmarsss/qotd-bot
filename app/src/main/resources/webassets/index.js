@@ -34,8 +34,12 @@ review.addEventListener("click", function () {
     list_title_text.innerHTML = "Review:";
 });
 
+updateconfig.addEventListener("click", function () {
+    setConfig();
+});
+
 function getConfig() {
-    httpGetAsync("/api/v1/getconfig", (res) => {
+    httpGetAsync("/api/v1/getconfig", null, (res) => {
         console.log(res);
 
         const data = JSON.parse(res);
@@ -53,12 +57,25 @@ function getConfig() {
 
 
 function setConfig() {
-    httpGetAsync(`/api/v1/setconfig?prefix=${prefix.value}&managerreview=${managerreview.value}&reviewchannel=${reviewchannel.value}&embedcolor=${embedcolor.value}&permissionrole=${permissionrole.value}&managerrole=${managerrole.value}`, (res) => {
+    const body = `
+    {
+        "prefix": "${prefix.value}",
+        "managerreview": "${managerreview.value}",
+        "reviewchannel": "${reviewchannel.value}",
+        "embedcolor": "${embedcolor.value}",
+        
+        "permissionrole": "${permissionrole.value}",
+        "managerrole": "${managerrole.value}"
+    }
+    `;
 
+    console.log(body);
+    httpGetAsync(`/api/v1/setconfig`, body, (res) => {
+        window.location.reload();
     });
 }
 
-function httpGetAsync(url, callback) {
+function httpGetAsync(url, body, callback) {
     console.log(url);
 
     var xmlHttp = new XMLHttpRequest();
@@ -68,7 +85,8 @@ function httpGetAsync(url, callback) {
         }
     }
     xmlHttp.open("GET", url, true);
-    xmlHttp.send(null);
+    xmlHttp.send(body);
 }
 
 queue.click();
+getConfig();
