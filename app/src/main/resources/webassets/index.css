@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap');
 
 html {
     background: #313338;
@@ -44,6 +45,11 @@ main {
     width: 20%;
     margin-right: 10px;
     height: 100%;
+    padding-left: 20px;
+}
+
+.config-title {
+    color: #919ba4;
 }
 
 .qotd-queue {
