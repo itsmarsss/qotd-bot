@@ -80,7 +80,8 @@ main {
     color: #919ba4;
 }
 
-input {
+input,
+#managerreview {
     color: #fff;
     background: #1e1f22;
     border-radius: 5px;
