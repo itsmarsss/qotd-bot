@@ -62,6 +62,7 @@ function getConfig() {
         const data = JSON.parse(res);
 
         prefix.value = data.prefix;
+        qotdchannel.value = data.qotdchannel;
         managerreview.value = data.managerreview;
         reviewchannel.value = data.reviewchannel;
         embedcolor.value = data.embedcolor;
