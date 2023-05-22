@@ -184,7 +184,7 @@ public class Webserver {
                         "user": "%s",
                         "time": %s,
                         "poll": %s,
-                        "uuid": "$s"
+                        "uuid": "%s"
                     },
                     """;
 

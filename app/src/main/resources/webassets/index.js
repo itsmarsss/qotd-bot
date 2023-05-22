@@ -120,7 +120,7 @@ function getQueue() {
     </div>
 
     <div class="aside">
-        <button class="delete" title="Remove" onclick="delete(${q.uuid})">&#128465;&#65039;</button>
+        <button class="delete" title="Remove" onclick="deleteQOTD(${q.uuid})">&#128465;&#65039;</button>
     </div>
 </div>
 
