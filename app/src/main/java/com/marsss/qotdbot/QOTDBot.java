@@ -22,9 +22,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDateTime;
-import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +33,8 @@ public class QOTDBot {
 
     static long lastQOTD = 0;
 
-    private static final LinkedList<Question> questions = new LinkedList<>();
+    private static final HashMap<String, Question> questions = new HashMap<>();
+    private static final LinkedList<String> uuids = new LinkedList<>();
     private static boolean isPaused = false;
 
     static final String version = "3.1.1";
@@ -299,38 +298,38 @@ public class QOTDBot {
 
     static Question getNext() {
         if (questions.isEmpty()) {
-            questions.add(new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", jda.getSelfUser().getAsTag(), false));
+            questions.put(UUID.randomUUID().toString(), new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", jda.getSelfUser().getAsTag(), false));
         }
-        return questions.poll();
+        String uuid = uuids.poll();
+        Question temp = questions.get(uuid);
+        questions.remove(uuid);
+        return temp;
     }
 
     static int remove(int index) {
         if (index < 0 || index >= questions.size())
             return -1;
-        questions.remove(index);
-        writeQuestionsJSON();
-        return 0;
-    }
-
-    static int bremove(int s, int e) {
-        if (s > e) {
-            return -1;
-        }
-        if (s < 0 || s >= questions.size() || e >= questions.size())
-            return -1;
-
-        questions.subList(s, e + 1).clear();
+        String uuid = uuids.get(index);
+        questions.remove(uuid);
         writeQuestionsJSON();
         return 0;
     }
 
     static void add(Question q) {
-        questions.add(q);
+        String uuid = UUID.randomUUID().toString();
+        uuids.add(uuid);
+        questions.put(uuid, q);
         writeQuestionsJSON();
     }
 
     static LinkedList<Question> getQuestions() {
-        return questions;
+        LinkedList<Question> questionsList = new LinkedList<>();
+
+        for(String uuid : uuids) {
+            questionsList.add(questions.get(uuid));
+        }
+
+        return questionsList;
     }
 
     static String versionCheck() {
@@ -447,11 +446,11 @@ public class QOTDBot {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static void writeQuestionsJSON() {
         JSONObject questions = new JSONObject();
         JSONArray questionsList = new JSONArray();
-        for (Question q : QOTDBot.questions) {
+        for (String uuid : uuids) {
+            Question q = QOTDBot.questions.get(uuid);
             JSONObject question = new JSONObject();
             question.put("question", q.getQuestion());
             question.put("footer", q.getFooter());
