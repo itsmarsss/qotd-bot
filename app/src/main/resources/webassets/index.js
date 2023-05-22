@@ -11,9 +11,12 @@ const qotdchannel = document.getElementById('qotdchannel');
 const managerreview = document.getElementById('managerreview');
 const reviewchannel = document.getElementById('reviewchannel');
 const embedcolor = document.getElementById('embedcolor');
+const paused = document.getElementById('paused');
 
 const permissionrole = document.getElementById('permissionrole');
 const managerrole = document.getElementById('managerrole');
+
+
 const updateconfig = document.getElementById('updateconfig');
 
 
@@ -66,6 +69,7 @@ function getConfig() {
         managerreview.value = data.managerreview;
         reviewchannel.value = data.reviewchannel;
         embedcolor.value = data.embedcolor;
+        paused.value = data.paused;
 
         permissionrole.value = data.permissionrole;
         managerrole.value = data.managerrole;
@@ -84,9 +88,11 @@ function setConfig() {
             "managerreview": "${managerreview.value}",
             "reviewchannel": "${reviewchannel.value}",
             "embedcolor": "${embedcolor.value}",
+            "paused": "${paused.value}",
 
             "permissionrole": "${permissionrole.value}",
             "managerrole": "${managerrole.value}"
+
         }
         `;
 

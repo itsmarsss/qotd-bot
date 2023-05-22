@@ -102,7 +102,7 @@ main {
 }
 
 input,
-#managerreview {
+select {
     color: #fff;
     background: #1e1f22;
     border-radius: 5px;

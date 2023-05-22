@@ -121,6 +121,7 @@ public class Webserver {
                                 "managerreview": "%s",
                                 "reviewchannel": "%s",
                                 "embedcolor": "#%s",
+                                "paused": "%s",
                                 
                                 "permissionrole": "%s",
                                 "managerrole": "%s"
@@ -131,6 +132,7 @@ public class Webserver {
                     QOTDBot.config.getManagerReview(),
                     QOTDBot.config.getReviewChannel(),
                     QOTDBot.config.getQOTDColor(),
+                    QOTDBot.isPaused(),
                     QOTDBot.config.getPermRoleID(),
                     QOTDBot.config.getManagerRoleID());
 
@@ -164,9 +166,11 @@ public class Webserver {
             QOTDBot.config.setManagerReview(Boolean.parseBoolean((String) data.get("managerreview")));
             QOTDBot.config.setReviewChannel((String) data.get("reviewchannel"));
             QOTDBot.config.setQOTDColor((String) data.get("embedcolor"));
+            QOTDBot.setPaused(Boolean.parseBoolean((String) data.get("paused")));
 
             QOTDBot.config.setPermRoleID((String) data.get("permissionrole"));
             QOTDBot.config.setManagerRoleID((String) data.get("managerrole"));
+
 
             String response = "Success";
             he.sendResponseHeaders(200, response.length());

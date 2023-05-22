@@ -669,4 +669,11 @@ public class QOTDBot {
         return parent;
     }
 
+    public static boolean isPaused() {
+        return isPaused;
+    }
+
+    public static void setPaused(boolean paused) {
+        isPaused = paused;
+    }
 }
