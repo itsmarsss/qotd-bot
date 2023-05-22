@@ -77,10 +77,10 @@ main {
 
 .qotd-config {
     background: #2b2d31;
-    border-radius: 15px;
     width: 200px;
     height: 100%;
     top: 0;
+    left: 0;
     padding-left: 20px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -190,6 +190,7 @@ input,
     border-radius: 15px;
     overflow-y: auto;
     transition: 200ms;
+    max-height: 55vh;
 }
 
 .question {
