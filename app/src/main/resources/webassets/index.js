@@ -36,7 +36,18 @@ review.addEventListener("click", function () {
 
 function getConfig() {
     httpGetAsync("/api/v1/getconfig", (res) => {
+        console.log(res);
 
+        const data = JSON.parse(res);
+
+        prefix.value = data.prefix;
+        managerreview.value = data.managerreview;
+        reviewchannel.value = data.reviewchannel;
+        embedcolor.value = data.embedcolor;
+
+        permissionrole.value = data.permissionrole;
+        managerrole.value = data.managerrole;
+        updateconfig.value = data.updateconfig;
     });
 }
 

@@ -24,6 +24,8 @@ public class Webserver {
         server.createContext("/", new MainPage());
         server.createContext("/index.js", new JS());
         server.createContext("/index.css", new CSS());
+        server.createContext("/api/v1/getconfig", new GetConfig());
+        server.createContext("/api/v1/setconfig", new SetConfig());
         server.setExecutor(null);
         server.start();
         port = server.getAddress().getPort();
@@ -67,8 +69,6 @@ public class Webserver {
     private class MainPage implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
-            System.out.println(he.getRequestURI());
-
             String response = html;
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
@@ -80,8 +80,6 @@ public class Webserver {
     private class JS implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
-            System.out.println(he.getRequestURI());
-
             String response = js;
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
@@ -93,7 +91,46 @@ public class Webserver {
     private class CSS implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
-            System.out.println(he.getRequestURI());
+            String response = css;
+            he.sendResponseHeaders(200, response.length());
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private class GetConfig implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            String response = String.format("""
+            {
+            "prefix": "%s",
+            "managerreview": "%s",
+            "reviewchannel": "%s",
+            "embedcolor": "#%s",
+            
+            "permissionrole": "%s",
+            "managerrole": "%s"
+            }
+            """,
+                    QOTDBot.config.getPrefix(),
+                    QOTDBot.config.getManagerReview(),
+                    QOTDBot.config.getReviewChannel(),
+                    QOTDBot.config.getQOTDColor(),
+                    QOTDBot.config.getPermRoleID(),
+                    QOTDBot.config.getManagerRoleID());
+
+            he.sendResponseHeaders(200, response.length());
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private class SetConfig implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+
 
             String response = css;
             he.sendResponseHeaders(200, response.length());
