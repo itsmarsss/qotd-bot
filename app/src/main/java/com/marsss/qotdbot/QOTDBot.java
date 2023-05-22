@@ -369,8 +369,16 @@ public class QOTDBot {
         return questions;
     }
 
+    static HashMap<String, Question> getReviewWithUUID() {
+        return questions_review;
+    }
+
     static LinkedList<String> getUUIDs() {
         return uuids;
+    }
+
+    static LinkedList<String> getReviewUUIDs() {
+        return uuids_review;
     }
 
     static void approve(String uuid) {

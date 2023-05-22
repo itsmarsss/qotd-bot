@@ -218,8 +218,8 @@ public class Webserver {
     private class GetReview implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
-            HashMap<String, Question> questions = QOTDBot.getQueueWithUUID();
-            LinkedList<String> uuids = QOTDBot.getUUIDs();
+            HashMap<String, Question> questions = QOTDBot.getReviewWithUUID();
+            LinkedList<String> uuids = QOTDBot.getReviewUUIDs();
 
             final String template = """
                     
