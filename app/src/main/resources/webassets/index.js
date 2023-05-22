@@ -18,8 +18,14 @@ const list_title_text = document.getElementById('list-title-text');
 
 var qotdColor = "#000";
 
-function deleteQOTD(uuid) {
-    httpPostAsync(`/api/v1/delete`, `{"uuid":"${uuid}"}`, (res) => {
+function deleteQOTD(type, uuid) {
+    httpPostAsync(`/api/v1/delete`, `{"type":"${type}", "uuid":"${uuid}"}`, (res) => {
+        window.location.reload();
+    });
+}
+
+function approveQOTD(uuid) {
+    httpPostAsync(`/api/v1/approve`, `{"uuid":"${uuid}"}`, (res) => {
         window.location.reload();
     });
 }
@@ -91,6 +97,10 @@ function getQueue() {
 
         question_queue.innerHTML = "";
 
+        if (data.queue.length == 0) {
+            question_queue.innerHTML = "Nothing to see here.";
+        }
+
         for (let i in data.queue) {
 
             const q = data.queue[i];
@@ -99,9 +109,7 @@ function getQueue() {
 
             const ques = (q.poll ? "Poll: " : "Question: ") + q.question;
 
-            var card = "Error";
-
-            card = `
+            var card = `
         
 <div class="question" style="border-left: 5px solid ${qotdColor}">
     <div class="main">
@@ -120,13 +128,64 @@ function getQueue() {
     </div>
 
     <div class="aside">
-        <button class="delete" title="Remove" onclick="deleteQOTD("${q.uuid}")">&#128465;&#65039;</button>
+        <button class="delete" title="Remove" onclick="deleteQOTD("queue","${q.uuid}")">&#128465;&#65039;</button>
     </div>
 </div>
 
             `;
 
             question_queue.innerHTML += card;
+        }
+    });
+}
+
+function getReview() {
+    httpGetAsync(`/api/v1/getreview`, null, (res) => {
+        console.log(res);
+
+        const data = JSON.parse(res);
+
+        question_review.innerHTML = "";
+
+        if (data.queue.length == 0) {
+            question_review.innerHTML = "Nothing to see here.";
+        }
+
+        for (let i in data.queue) {
+
+            const q = data.queue[i];
+
+            const date = new Date(q.time);
+
+            const ques = (q.poll ? "Poll: " : "Question: ") + q.question;
+
+            var card = `
+        
+<div class="question" style="border-left: 5px solid ${qotdColor}">
+    <div class="main">
+        <div class="header">
+            <h3><b>Added by: ${q.user}</b></h3>
+        </div>
+        <div class="title">
+            <h2><b>${ques}</b></h2>
+        </div>
+        <div class="description">
+            <h4>Footer: <i>${q.footer}</i></h4>
+        </div>
+        <div class="footer">
+            <h4>Added on: ${formatDate(date)}</h4>
+        </div>
+    </div>
+    
+    <div class="aside">
+        <button class="deny" id="deny" title="Deny" onclick="deleteQOTD("review","${q.uuid}")">&#10060;</button>
+        <button class="approve" id="approve" title="Approve" onclick="approveQOTD("${q.uuid}")">&#9989;</button>
+    </div>
+</div>
+
+            `;
+
+            question_review.innerHTML += card;
         }
     });
 }
