@@ -78,6 +78,10 @@ public class ButtonListener extends ListenerAdapter {
                     return;
                 }
 
+                String uuid = id.replace("deny-qotd-", "");
+
+                QOTDBot.deny(uuid);
+
                 event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
 
                 e.replyEmbeds(CMD.se("Request successful")).setEphemeral(true).queue();
