@@ -12,16 +12,14 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -305,7 +303,55 @@ public class QOTDBot {
 
     static Question getNext() {
         if (questions.isEmpty()) {
-            questions.put(UUID.randomUUID().toString(), new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", jda.getSelfUser().getAsTag(), false));
+            String uuid = UUID.randomUUID().toString();
+            if (config.getTrivia()) {
+                try {
+                    URL url = new URL("https://opentdb.com/api.php?amount=1&type=multiple");
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    int responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        String line;
+                        StringBuilder response = new StringBuilder();
+
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+                        reader.close();
+
+                        String json = response.toString();
+                        JSONParser parser = new JSONParser();
+                        JSONObject jsonObject = (JSONObject) parser.parse(json);
+                        JSONArray results = (JSONArray) jsonObject.get("results");
+
+                        if (results != null && results.size() > 0) {
+                            JSONObject questionObject = (JSONObject) results.get(0);
+                            String question = (String) questionObject.get("question");
+                            String answer = (String) questionObject.get("correct_answer");
+
+                            System.out.println("Question: " + question);
+
+                            questions.put(uuid, new Question(question, "Answer: ||" + answer + "||", "OpenTDB Trivia", false));
+                        } else {
+                            System.out.println("No trivia question found in the response.");
+                            questions.put(uuid, new Question("Can someone add more questions? My queue is empty... :slight_smile:", "Trivia Error", jda.getSelfUser().getAsTag(), false));
+                        }
+                    } else {
+                        System.out.println("Failed to retrieve a trivia question. Response Code: " + responseCode);
+                        questions.put(uuid, new Question("Can someone add more questions? My queue is empty... :slight_smile:", "Trivia Error", jda.getSelfUser().getAsTag(), false));
+                    }
+                    connection.disconnect();
+                } catch (IOException | ParseException e) {
+                    e.printStackTrace();
+                    questions.put(uuid, new Question("Can someone add more questions? My queue is empty... :slight_smile:", "Trivia Error", jda.getSelfUser().getAsTag(), false));
+                }
+            } else {
+                questions.put(uuid, new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", jda.getSelfUser().getAsTag(), false));
+            }
+
+            uuids.add(uuid);
         }
         String uuid = uuids.poll();
         Question temp = questions.get(uuid);
@@ -688,7 +734,7 @@ public class QOTDBot {
     }
 
     public static void controlPanel() {
-        if(server == null){
+        if (server == null) {
             System.out.println("Click [Start] first.");
             return;
         }
