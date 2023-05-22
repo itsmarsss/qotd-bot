@@ -15,6 +15,7 @@ import java.util.LinkedList;
 public class Webserver {
 
     private int port;
+    private HttpServer server;
     private String html;
     private String js;
     private String css;
@@ -22,9 +23,12 @@ public class Webserver {
     public int getPort() {
         return port;
     }
+    public void terminate() {
+        server.start();
+    }
 
     public void startServer() throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 0), 0);
+        server = HttpServer.create(new InetSocketAddress("0.0.0.0", 0), 0);
         server.createContext("/", new MainPage());
         server.createContext("/index.js", new JS());
         server.createContext("/index.css", new CSS());

@@ -674,7 +674,17 @@ public class QOTDBot {
             System.out.println("Bot already Stopped.");
             return;
         }
+        System.out.println("Terminating connection with Discord...");
         jda.shutdownNow();
+        jda = null;
+        System.out.println("Connection terminated!");
+
+        System.out.println("Closing server...");
+        server.terminate();
+        server = null;
+        System.out.println("Server closed!");
+
+        System.out.println("Bot Stopped.");
     }
 
     public static void controlPanel() {
