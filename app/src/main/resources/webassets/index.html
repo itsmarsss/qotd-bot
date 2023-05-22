@@ -12,16 +12,14 @@
 </head>
 
 <body>
-    <h1>QOTD Bot Control Panel</h1>
-    <main>
-        <div class="qotd-config">
-            <div class="config-title">
-                <h5>
-                    <b>QOTD SETTINGS</b>
-                </h5>
-            </div>
+    <div class="qotd-config">
+        <div class="config-title">
+            <h5>
+                <b>QOTD SETTINGS</b>
+            </h5>
+        </div>
 
-            <!-- 
+        <!-- 
 Prefix
 Manager Review
 Review Channel
@@ -32,44 +30,51 @@ Manager Role
 Update Config
             -->
 
-            <div class="manager-config">
-                <div class="prefix">
-                    <h5>Prefix</h5>
-                    <input type="text" placeholder="Prefix" id="prefix">
-                </div>
-                <div class="managerreview">
-                    <h5>Manager Review</h5>
-                    <select id="managerreview" name="Manager Review">
-                        <option value="true">true</option>
-                        <option value="false">false</option>
-                    </select>
-                </div>
-                <div class="reviewchannel">
-                    <h5>Review Channel</h5>
-                    <input type="text" placeholder="Review Channel" id="reviewchannel">
-                </div>
-                <div class="embedcolor">
-                    <h5>Embed Color</h5>
-                    <input type="color" id="embedcolor">
-                </div>
+        <div class="manager-config">
+            <div class="prefix">
+                <h5>Prefix</h5>
+                <input type="text" placeholder="Prefix" id="prefix">
             </div>
-
-            <div class="admin-config">
-                <div class="permissionrole">
-                    <h5>Permission Role</h5>
-                    <input type="text" placeholder="Permission Role" id="permissionrole">
-                </div>
-                <div class="managerrole">
-                    <h5>Manager Role</h5>
-                    <input type="text" placeholder="Manager Role" id="managerrole">
-                </div>
-                <div class="updateconfig">
-                    <h5>Configuration</h5>
-                    <button class="update-config-button" id="updateconfig">Update Config</button>
-                </div>
+            <div class="managerreview">
+                <h5>Manager Review</h5>
+                <select id="managerreview" name="Manager Review">
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                </select>
+            </div>
+            <div class="reviewchannel">
+                <h5>Review Channel</h5>
+                <input type="text" placeholder="Review Channel" id="reviewchannel">
+            </div>
+            <div class="embedcolor">
+                <h5>Embed Color</h5>
+                <input type="color" id="embedcolor">
             </div>
         </div>
 
+        <hr>
+
+        <div class="admin-config">
+            <div class="permissionrole">
+                <h5>Permission Role</h5>
+                <input type="text" placeholder="Permission Role" id="permissionrole">
+            </div>
+            <div class="managerrole">
+                <h5>Manager Role</h5>
+                <input type="text" placeholder="Manager Role" id="managerrole">
+            </div>
+
+            <hr>
+
+            <div class="updateconfig">
+                <h5>Configuration</h5>
+                <button class="update-config-button" id="updateconfig">Update Config</button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <h1>QOTD Bot Control Panel</h1>
         <div class="qotd-queue">
             <div class="tabs">
                 <button class="tab-button" id="queue">Queue</button>

@@ -71,7 +71,7 @@ function getConfig() {
 
         qotdColor = data.embedcolor;
 
-        config.style.boxShadow = `${qotdColor}33 0px 8px 24px`;
+        config.style.border = `${qotdColor} solid 2px`;
     });
 }
 

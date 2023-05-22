@@ -31,6 +31,15 @@ body {
     border: 3px solid #2b2d31;
 }
 
+hr {
+    margin: 0px;
+    margin-top: 22.178px;
+    border: none;
+    height: 2px;
+    width: 175px;
+    background-color: #4e50587a;
+}
+
 .main {
     width: 85%;
 }
@@ -58,20 +67,24 @@ h4 {
 }
 
 main {
-    display: flex;
+    display: block;
     height: 100%;
+    width: calc(100% - 250px);
+    position: fixed;
+    right: 0px;
+    margin-right: 15px;
 }
 
 .qotd-config {
     background: #2b2d31;
     border-radius: 15px;
-    width: 20%;
-    margin-right: 10px;
-    margin-left: 10px;
+    width: 200px;
     height: 100%;
+    top: 0;
     padding-left: 20px;
     overflow-y: scroll;
     overflow-x: hidden;
+    position: fixed;
 }
 
 .qotd-config::-webkit-scrollbar {
@@ -126,7 +139,7 @@ input,
 
 .qotd-queue {
     margin-top: 20px;
-    width: 80%;
+    width: 100%;
 }
 
 .tabs {
