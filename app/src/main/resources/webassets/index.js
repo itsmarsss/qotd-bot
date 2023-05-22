@@ -7,6 +7,7 @@ const question_queue = document.getElementById('question-queue');
 const question_review = document.getElementById('question-review');
 
 const prefix = document.getElementById('prefix');
+const qotdchannel = document.getElementById('qotdchannel');
 const managerreview = document.getElementById('managerreview');
 const reviewchannel = document.getElementById('reviewchannel');
 const embedcolor = document.getElementById('embedcolor');
@@ -78,12 +79,13 @@ function setConfig() {
     const body = `
         {
             "prefix": "${prefix.value}",
-                "managerreview": "${managerreview.value}",
-                    "reviewchannel": "${reviewchannel.value}",
-                        "embedcolor": "${embedcolor.value}",
+            "qotdchannel": "${qotdchannel.value}",
+            "managerreview": "${managerreview.value}",
+            "reviewchannel": "${reviewchannel.value}",
+            "embedcolor": "${embedcolor.value}",
 
-                            "permissionrole": "${permissionrole.value}",
-                                "managerrole": "${managerrole.value}"
+            "permissionrole": "${permissionrole.value}",
+            "managerrole": "${managerrole.value}"
         }
         `;
 
