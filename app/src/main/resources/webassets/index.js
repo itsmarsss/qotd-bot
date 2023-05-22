@@ -44,6 +44,8 @@ review.addEventListener("click", function () {
     question_review.style.display = "block";
 
     list_title_text.innerHTML = "Review:";
+
+    getReview();
 });
 
 updateconfig.addEventListener("click", function () {
@@ -147,13 +149,13 @@ function getReview() {
 
         question_review.innerHTML = "";
 
-        if (data.queue.length == 0) {
+        if (data.review.length == 0) {
             question_review.innerHTML = "Nothing to see here.";
         }
 
-        for (let i in data.queue) {
+        for (let i in data.review) {
 
-            const q = data.queue[i];
+            const q = data.review[i];
 
             const date = new Date(q.time);
 

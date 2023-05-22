@@ -172,7 +172,6 @@ public class Webserver {
     private class GetQueue implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
-
             HashMap<String, Question> questions = QOTDBot.getQueueWithUUID();
             LinkedList<String> uuids = QOTDBot.getUUIDs();
 
@@ -219,7 +218,42 @@ public class Webserver {
     private class GetReview implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
-            String response = "Success"; // get review
+            HashMap<String, Question> questions = QOTDBot.getQueueWithUUID();
+            LinkedList<String> uuids = QOTDBot.getUUIDs();
+
+            final String template = """
+                    
+                    {
+                        "question": "%s",
+                        "footer": "%s",
+                        "user": "%s",
+                        "time": %s,
+                        "poll": %s,
+                        "uuid": "%s"
+                    },
+                    """;
+
+            StringBuilder data = new StringBuilder();
+
+            data.append("""
+                    {
+                    "review":[
+                    """);
+
+            for (String uuid : uuids) {
+                Question q = questions.get(uuid);
+                data.append(String.format(template,
+                        q.getQuestion(),
+                        q.getFooter(),
+                        q.getAuthor(),
+                        q.getMillis(),
+                        q.isPoll(),
+                        uuid));
+            }
+
+            data.append("]}");
+
+            String response = replaceLast(data.toString(), ",", "");
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());
@@ -244,11 +278,16 @@ public class Webserver {
                 throw new RuntimeException(e);
             }
 
+            String type = (String) data.get("type");
             String uuid = (String) data.get("uuid");
 
             System.out.println("\t" + uuid);
 
-            QOTDBot.remove(uuid);
+            if(type.equals("queue")) {
+                QOTDBot.remove(uuid);
+            }else{
+                QOTDBot.deny(uuid);
+            }
 
             String response = "Success";
 
