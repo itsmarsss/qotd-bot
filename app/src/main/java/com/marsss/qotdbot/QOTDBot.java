@@ -280,11 +280,13 @@ public class QOTDBot {
         setupWebpage();
     }
 
+    private static Webserver server;
+
     static void setupWebpage() {
         System.out.println();
         System.out.println("Starting Webserver...");
         try {
-            Webserver server = new Webserver();
+            server = new Webserver();
             server.startServer();
 
             System.out.println("Webpage setup completed!");
@@ -293,16 +295,7 @@ public class QOTDBot {
             System.out.println();
             System.out.println("Opening control panel...");
 
-            try {
-                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                    Desktop.getDesktop().browse(new URI("http://localhost:" + server.getPort()));
-                }
-                System.out.println("Successfully sent user to control panel...");
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Failed to open website.");
-                System.out.println("\tVisit http://localhost:" + server.getPort() + " to access control panel.");
-            }
+            controlPanel();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Failed to start Webserver.");
@@ -677,10 +670,32 @@ public class QOTDBot {
     }
 
     public static void stop() {
-        if (jda != null) {
-            jda.shutdownNow();
+        if (jda == null) {
+            System.out.println("Bot already Stopped");
+            return;
+        }
+        jda.shutdownNow();
+    }
+
+    public static void controlPanel() {
+        if(server == null){
+            System.out.println("Click [Start] first.");
+            return;
         }
 
-        System.exit(0);
+        try {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                Desktop.getDesktop().browse(new URI("http://localhost:" + server.getPort()));
+            }
+            System.out.println("Successfully sent user to control panel...");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to open website.");
+            System.out.println("\tVisit http://localhost:" + server.getPort() + " to access control panel.");
+        }
+    }
+
+    public static JDA getJDA() {
+        return jda;
     }
 }
