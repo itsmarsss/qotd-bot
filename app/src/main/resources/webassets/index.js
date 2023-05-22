@@ -69,6 +69,7 @@ function getConfig() {
         managerreview.value = data.managerreview;
         reviewchannel.value = data.reviewchannel;
         embedcolor.value = data.embedcolor;
+        trivia.value = data.trivia;
         paused.value = data.paused;
 
         permissionrole.value = data.permissionrole;
@@ -88,6 +89,7 @@ function setConfig() {
             "managerreview": "${managerreview.value}",
             "reviewchannel": "${reviewchannel.value}",
             "embedcolor": "${embedcolor.value}",
+            "trivia": "${trivia.value}",
             "paused": "${paused.value}",
 
             "permissionrole": "${permissionrole.value}",
