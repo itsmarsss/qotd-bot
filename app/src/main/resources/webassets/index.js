@@ -16,7 +16,9 @@ const updateconfig = document.getElementById('updateconfig');
 
 const list_title_text = document.getElementById('list-title-text');
 
-function deleteQOTD(index) {
+var qotdColor = "#000";
+
+function deleteQOTD(uuid) {
 
 }
 
@@ -54,6 +56,8 @@ function getConfig() {
         permissionrole.value = data.permissionrole;
         managerrole.value = data.managerrole;
         updateconfig.value = data.updateconfig;
+
+        qotdColor = data.embedcolor;
     });
 }
 
@@ -97,7 +101,7 @@ function getQueue() {
 
             card = `
         
-<div class="question">
+<div class="question" style="border-left: 5px solid ${qotdColor}">
     <div class="main">
         <div class="header">
             <h3><b>Added by: ${q.user}</b></h3>
@@ -109,7 +113,7 @@ function getQueue() {
             <h4>Footer: <i>${q.footer}</i></h4>
         </div>
         <div class="footer">
-            <h4>Added on: ${formatDate(date.toString())}</h4>
+            <h4>Added on: ${formatDate(date)}</h4>
         </div>
     </div>
 
@@ -154,10 +158,6 @@ function httpPostAsync(url, body, callback) {
     xmlHttp.open("POST", url, true);
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
     xmlHttp.send(body);
-}
-
-function deleteQOTD(uuid) {
-
 }
 
 function formatDate(date) {
