@@ -85,4 +85,14 @@ public class ConsoleMirror extends JFrame {
         setSize(new Dimension(600, 400));
         setVisible(true);
     }
+
+    private static ImageIcon loadIconFromInternet(String imageUrl) {
+        try {
+            URL url = new URL(imageUrl);
+            return new ImageIcon(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
