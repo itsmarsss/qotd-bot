@@ -5,6 +5,7 @@ import com.marsss.qotdbot.QOTDBot;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.net.URL;
 
 public class ConsoleMirror extends JFrame {
 
@@ -13,9 +14,12 @@ public class ConsoleMirror extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
         textArea.setLineWrap(true);
+        textArea.setEditable(false);
         textArea.setWrapStyleWord(true);
+        textArea.setForeground(Color.WHITE);
+        textArea.setBorder(BorderFactory.createEmptyBorder());
+        textArea.setBackground(new Color(30, 31, 34));
         textArea.setFont(new Font(Font.MONOSPACED, Font.BOLD, 12));
 
         PrintStream printStream = new PrintStream(new ConsoleOutputStream(textArea));
@@ -26,16 +30,25 @@ public class ConsoleMirror extends JFrame {
 
         JPanel buttonPanel = new JPanel();
 
-        JButton startButton = new JButton("Start");
-        startButton.addActionListener(actionEvent -> QOTDBot.start());
-        buttonPanel.add(startButton, BorderLayout.WEST);
+        Button startButton = new Button("Start", new Color(88, 101, 242), new Color(71, 82, 196), new Color(60, 69, 165));
+        startButton.addActionListener(actionEvent -> {
+            if(QOTDBot.getJDA() != null) {
+                System.out.println("Bot already Started");
+                return;
+            }
+            QOTDBot.start();
+        });
+        buttonPanel.add(startButton);
 
-        JButton endButton = new JButton("Stop");
+        Button endButton = new Button("Stop", new Color(242, 63, 66), new Color(198, 36, 36), new Color(161, 40, 40));
         endButton.addActionListener(actionEvent -> QOTDBot.stop());
-        buttonPanel.add(endButton, BorderLayout.SOUTH);
+        buttonPanel.add(endButton);
 
+        Button siteButton = new Button("Control Panel", new Color(36, 128, 70), new Color(26, 99, 52), new Color(21, 86, 43));
+        siteButton.addActionListener(actionEvent -> QOTDBot.controlPanel());
+        buttonPanel.add(siteButton);
 
-        JButton editButton = new JButton("Edit [config.yml]");
+        Button editButton = new Button("Edit [config.yml]", new Color(78, 80, 88), new Color(65, 68, 74), new Color(78, 80, 88));
         editButton.addActionListener(actionEvent -> {
             System.out.println();
             ProcessBuilder pb = new ProcessBuilder("Notepad.exe", QOTDBot.getParent() + "/config.yml");
@@ -57,11 +70,19 @@ public class ConsoleMirror extends JFrame {
                         JOptionPane.ERROR_MESSAGE);
             }
         });
-        buttonPanel.add(editButton, BorderLayout.EAST);
+        buttonPanel.add(editButton);
+
+        buttonPanel.setBackground(new Color(49, 51, 56));
 
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-        setSize(new Dimension(500, 250));
+        ImageIcon icon = loadIconFromInternet("https://raw.githubusercontent.com/itsmarsss/QOTD-Bot/main/assets/image.png");
+        if (icon != null) {
+            setIconImage(icon.getImage());
+        }
+
+        setBackground(new Color(49, 51, 56));
+        setSize(new Dimension(600, 400));
         setVisible(true);
     }
 }
