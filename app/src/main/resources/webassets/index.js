@@ -70,8 +70,6 @@ function getConfig() {
         updateconfig.value = data.updateconfig;
 
         qotdColor = data.embedcolor;
-
-        config.style.border = `${qotdColor} solid 2px`;
     });
 }
 
