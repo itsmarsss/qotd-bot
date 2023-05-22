@@ -162,4 +162,15 @@ public class Webserver {
             os.close();
         }
     }
+
+    private String readRequestBody(InputStream requestBodyStream) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(requestBodyStream));
+        StringBuilder requestBodyBuilder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            requestBodyBuilder.append(line);
+        }
+        reader.close();
+        return requestBodyBuilder.toString();
+    }
 }
