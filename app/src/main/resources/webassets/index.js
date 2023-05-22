@@ -91,59 +91,34 @@ function getQueue() {
 
             const date = new Date(q.time);
 
+            const ques = (q.poll ? "Poll: " : "Question: ") + q.question;
+
             var card = "Error";
 
-            if (q.poll) {
-                card = `
+            card = `
         
-                <div class="question">
-                    <div class="main">
-                        <div class="header">
-                            <h3><b>Added by: ${q.user}</b></h3>
-                        </div>
-                        <div class="title">
-                            <h2><b>Poll: ${q.question}</b></h2>
-                        </div>
-                        <div class="description">
-                            <h3>Footer: <i>${q.footer}</i></h3>
-                        </div>
-                        <div class="footer">
-                            <h4>Added on: ${date.toString()}</h4>
-                        </div>
-                    </div>
+<div class="question">
+    <div class="main">
+        <div class="header">
+            <h3><b>Added by: ${q.user}</b></h3>
+        </div>
+        <div class="title">
+            <h2><b>${ques}</b></h2>
+        </div>
+        <div class="description">
+            <h4>Footer: <i>${q.footer}</i></h4>
+        </div>
+        <div class="footer">
+            <h4>Added on: ${date.toString()}</h4>
+        </div>
+    </div>
 
-                    <div class="aside">
-                        <button class="delete" title="Remove">&#128465;&#65039;</button>
-                    </div>
-                </div>
+    <div class="aside">
+        <button class="delete" title="Remove" onclick="delete(${q.uuid})">&#128465;&#65039;</button>
+    </div>
+</div>
 
-                `;
-            } else {
-                card = `
-        
-                <div class="question">
-                    <div class="main">
-                        <div class="header">
-                            <h3><b>Added by: ${q.user}</b></h3>
-                        </div>
-                        <div class="title">
-                            <h2><b>Question: ${q.question}</b></h2>
-                        </div>
-                        <div class="description">
-                            <h3>Footer: <i>${q.footer}</i></h3>
-                        </div>
-                        <div class="footer">
-                            <h4>Added on: ${date.toString()}</h4>
-                        </div>
-                    </div>
-
-                    <div class="aside">
-                        <button class="delete" title="Remove">&#128465;&#65039;</button>
-                    </div>
-                </div>
-
-                `;
-            }
+            `;
 
             question_queue.innerHTML += card;
         }
@@ -179,6 +154,10 @@ function httpPostAsync(url, body, callback) {
     xmlHttp.open("POST", url, true);
     xmlHttp.setRequestHeader('Content-Type', 'application/json');
     xmlHttp.send(body);
+}
+
+function deleteQOTD(uuid) {
+
 }
 
 queue.click();
