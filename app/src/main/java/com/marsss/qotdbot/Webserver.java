@@ -1,5 +1,6 @@
 package com.marsss.qotdbot;
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -31,11 +32,7 @@ public class Webserver {
         js = loadFile("webassets/index.js");
         css = loadFile("webassets/index.css");
 
-        System.out.println(html);
-
-        System.out.println(js);
-
-        System.out.println(css);
+        System.out.println("Finished reading files.");
     }
 
     private String loadFile(String path) {
@@ -50,6 +47,7 @@ public class Webserver {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     file.append(line);
+                    file.append("\n");
                 }
 
                 System.out.println("File loaded: " + path);
@@ -70,7 +68,6 @@ public class Webserver {
         @Override
         public void handle(HttpExchange he) throws IOException {
             System.out.println(he.getRequestURI());
-            System.out.println(html);
 
             String response = html;
             he.sendResponseHeaders(200, response.length());
