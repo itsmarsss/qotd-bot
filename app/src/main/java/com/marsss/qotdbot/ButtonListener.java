@@ -53,7 +53,7 @@ public class ButtonListener extends ListenerAdapter {
                     try {
                         message.delete().queue();
                     } catch (Exception e) {
-                        message.addReaction(Emoji.fromUnicode("\uF6AB")).queue();
+                        message.addReaction(Emoji.fromUnicode("\u274C")).queue();
                     }
                 });
 
