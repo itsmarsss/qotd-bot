@@ -14,7 +14,7 @@ body {
 
 * {
     scrollbar-width: auto;
-    scrollbar-color: #1e1f22;
+    scrollbar-color: #1e1f22 #313338;
 }
 
 *::-webkit-scrollbar {
@@ -70,6 +70,7 @@ main {
     height: 100%;
     padding-left: 20px;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .qotd-config::-webkit-scrollbar {

@@ -109,7 +109,7 @@ function getQueue() {
             <h4>Footer: <i>${q.footer}</i></h4>
         </div>
         <div class="footer">
-            <h4>Added on: ${date.toString()}</h4>
+            <h4>Added on: ${formatDate(date.toString())}</h4>
         </div>
     </div>
 
@@ -158,6 +158,17 @@ function httpPostAsync(url, body, callback) {
 
 function deleteQOTD(uuid) {
 
+}
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+
+    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
 }
 
 queue.click();
