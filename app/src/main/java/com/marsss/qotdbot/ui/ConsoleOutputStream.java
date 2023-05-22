@@ -1,4 +1,4 @@
-package com.marsss.qotdbot;
+package com.marsss.qotdbot.ui;
 
 import javax.swing.*;
 import java.io.OutputStream;

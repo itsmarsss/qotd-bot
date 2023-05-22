@@ -1,5 +1,6 @@
 package com.marsss.qotdbot;
 
+import com.marsss.qotdbot.ui.ConsoleMirror;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -178,7 +179,7 @@ public class QOTDBot {
         start();
     }
 
-    static void start() {
+    public static void start() {
         boolean setupPass = true;
         try {
             System.out.println("Connecting to Discord...");
@@ -663,7 +664,7 @@ public class QOTDBot {
         return 1440 - (current - starttime);
     }
 
-    static String getParent() {
+    public static String getParent() {
         return parent;
     }
 
