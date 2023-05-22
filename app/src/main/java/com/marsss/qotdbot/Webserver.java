@@ -1,9 +1,11 @@
 package com.marsss.qotdbot;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -104,13 +106,13 @@ public class Webserver {
         public void handle(HttpExchange he) throws IOException {
             String response = String.format("""
             {
-            "prefix": "%s",
-            "managerreview": "%s",
-            "reviewchannel": "%s",
-            "embedcolor": "#%s",
-            
-            "permissionrole": "%s",
-            "managerrole": "%s"
+                "prefix": "%s",
+                "managerreview": "%s",
+                "reviewchannel": "%s",
+                "embedcolor": "#%s",
+                
+                "permissionrole": "%s",
+                "managerrole": "%s"
             }
             """,
                     QOTDBot.config.getPrefix(),
@@ -130,9 +132,30 @@ public class Webserver {
     private class SetConfig implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
+            String body = readRequestBody(he.getRequestBody());
 
+            JSONParser parser = new JSONParser();
+            JSONObject data;
+            try {
+                 data = (JSONObject) parser.parse(body);
+                System.out.println();
+                System.out.println("QOTD Bot config has been updated:");
+                System.out.println("\t" + body);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                System.out.println("Unable to read POST (GET) JSON");
+                throw new RuntimeException(e);
+            }
 
-            String response = css;
+            QOTDBot.config.setPrefix((String) data.get("prefix"));
+            QOTDBot.config.setManagerReview(Boolean.parseBoolean((String) data.get("managerreview")));
+            QOTDBot.config.setReviewChannel((String) data.get("reviewchannel"));
+            QOTDBot.config.setQOTDColor((String) data.get("embedcolor"));
+
+            QOTDBot.config.setPermRoleID((String) data.get("permissionrole"));
+            QOTDBot.config.setManagerRoleID((String) data.get("managerrole"));
+
+            String response = "Success";
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());
