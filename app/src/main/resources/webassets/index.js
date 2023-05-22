@@ -84,6 +84,65 @@ function getQueue() {
         const data = JSON.parse(res);
 
         question_queue.innerHTML = "";
+
+        for (let q in data.queue) {
+
+            var date = new Date(q.time);
+
+            var card = "Error";
+
+            if (q.poll) {
+                card = `
+        
+                <div class="question">
+                    <div class="main">
+                        <div class="header">
+                            <h3>Added by: ${q.user}</h3>
+                        </div>
+                        <div class="title">
+                            <h2>Poll: ${q.question}</h2>
+                        </div>
+                        <div class="description">
+                            <h3>${q.footer}</h3>
+                        </div>
+                        <div class="footer">
+                            <h4>Added on: ${date.toString()}</h4>
+                        </div>
+                    </div>
+
+                    <div class="aside">
+                        <button class="delete" title="Remove">&#128465;&#65039;</button>
+                    </div>
+                </div>
+
+                `;
+            } else {
+                card = `
+        
+                <div class="question">
+                    <div class="main">
+                        <div class="header">
+                            <h3>Added by: ${q.user}</h3>
+                        </div>
+                        <div class="title">
+                            <h2>Question: ${q.question}</h2>
+                        </div>
+                        <div class="description">
+                            <h3>${q.footer}</h3>
+                        </div>
+                        <div class="footer">
+                            <h4>Added on: ${date.toString()}</h4>
+                        </div>
+                    </div>
+
+                    <div class="aside">
+                        <button class="delete" title="Remove">&#128465;&#65039;</button>
+                    </div>
+                </div>
+
+                `;
+            }
+        }
     });
 }
 
