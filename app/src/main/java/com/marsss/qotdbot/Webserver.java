@@ -183,9 +183,9 @@ public class Webserver {
                         "footer": "%s",
                         "user": "%s",
                         "time": %s,
-                        "poll": %s
+                        "poll": %s,
+                        "uuid": "$s"
                     },
-                    
                     """;
 
             StringBuilder data = new StringBuilder();
@@ -202,12 +202,13 @@ public class Webserver {
                         q.getFooter(),
                         q.getAuthor(),
                         q.getMillis(),
-                        q.isPoll()));
+                        q.isPoll(),
+                        uuid));
             }
 
-            data.append("]");
+            data.append("]}");
 
-            String response = data.toString();
+            String response = replaceLast(data.toString(), ",", "");
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());
@@ -297,5 +298,9 @@ public class Webserver {
         }
         reader.close();
         return requestBodyBuilder.toString();
+    }
+
+    public static String replaceLast(String text, String regex, String replacement) {
+        return text.replaceFirst("(?s)"+regex+"(?!.*?"+regex+")", replacement);
     }
 }
