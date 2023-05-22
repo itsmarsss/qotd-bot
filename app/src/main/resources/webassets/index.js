@@ -142,6 +142,8 @@ function getQueue() {
 
                 `;
             }
+
+            question_queue.innerHTML += card;
         }
     });
 }
