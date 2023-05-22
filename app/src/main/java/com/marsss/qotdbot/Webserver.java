@@ -24,7 +24,7 @@ public class Webserver {
         return port;
     }
     public void terminate() {
-        server.stop();
+        server.stop(0);
     }
 
     public void startServer() throws Exception {
