@@ -58,19 +58,16 @@ public class ButtonListener extends ListenerAdapter {
                 });
 
                 e.replyEmbeds(CMD.se("Request successful")).setEphemeral(true).queue();
-            } else if (id.equals("approve-qotd")) {
+            } else if (id.startsWith("approve-qotd")) {
 
                 if (!(hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin())) {
                     e.replyEmbeds(CMD.se("You do not have permission to perform this action")).setEphemeral(true).queue();
                     return;
                 }
 
-                List<Field> flds = event.getMessage().getEmbeds().get(0).getFields();
-                boolean isPoll = flds.get(0).getValue().equals("Poll");
+                String uuid = id.replace("approve-qotd-", "");
 
-                Question q = new Question(flds.get(1).getValue(), flds.get(2).getValue(), flds.get(3).getValue(), isPoll);
-                q.setDate(flds.get(4).getValue());
-                QOTDBot.add(q);
+                QOTDBot.approve(uuid);
 
                 event.getMessage().delete().queueAfter(1, TimeUnit.SECONDS);
 
@@ -172,6 +169,7 @@ public class ButtonListener extends ListenerAdapter {
 
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.replyEmbeds(CMD.se("Request unsuccessful *(Hint: Embed possibly removed?)*")).setEphemeral(true).queue();
         }
     }
