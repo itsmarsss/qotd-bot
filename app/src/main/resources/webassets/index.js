@@ -1,3 +1,5 @@
+const config = document.getElementsByClassName('qotd-config')[0];
+
 const queue = document.getElementById('queue');
 const review = document.getElementById('review');
 
@@ -68,31 +70,33 @@ function getConfig() {
         updateconfig.value = data.updateconfig;
 
         qotdColor = data.embedcolor;
+
+        config.style.boxShadow = `${qotdColor}33 0px 8px 24px`;
     });
 }
 
 
 function setConfig() {
     const body = `
-{
-    "prefix": "${prefix.value}",
-    "managerreview": "${managerreview.value}",
-    "reviewchannel": "${reviewchannel.value}",
-    "embedcolor": "${embedcolor.value}",
-    
-    "permissionrole": "${permissionrole.value}",
-    "managerrole": "${managerrole.value}"
-}
-    `;
+        {
+            "prefix": "${prefix.value}",
+                "managerreview": "${managerreview.value}",
+                    "reviewchannel": "${reviewchannel.value}",
+                        "embedcolor": "${embedcolor.value}",
+
+                            "permissionrole": "${permissionrole.value}",
+                                "managerrole": "${managerrole.value}"
+        }
+        `;
 
     console.log(body);
-    httpPostAsync(`/api/v1/setconfig`, body, (res) => {
+    httpPostAsync(`/ api / v1 / setconfig`, body, (res) => {
         window.location.reload();
     });
 }
 
 function getQueue() {
-    httpGetAsync(`/api/v1/getqueue`, null, (res) => {
+    httpGetAsync(`/ api / v1 / getqueue`, null, (res) => {
         console.log(res);
 
         const data = JSON.parse(res);
@@ -112,8 +116,8 @@ function getQueue() {
             const ques = (q.poll ? "Poll: " : "Question: ") + q.question;
 
             var card = `
-        
-<div class="question" style="border-left: 5px solid ${qotdColor}">
+
+            < div class="question" style = "border-left: 5px solid ${qotdColor}" >
     <div class="main">
         <div class="header">
             <h3><b>Added by: ${q.user}</b></h3>
@@ -132,7 +136,7 @@ function getQueue() {
     <div class="aside">
         <button class="delete" title="Remove" onclick="deleteQOTD('queue','${q.uuid}')">&#128465;&#65039;</button>
     </div>
-</div>
+</div >
 
             `;
 
@@ -142,7 +146,7 @@ function getQueue() {
 }
 
 function getReview() {
-    httpGetAsync(`/api/v1/getreview`, null, (res) => {
+    httpGetAsync(`/ api / v1 / getreview`, null, (res) => {
         console.log(res);
 
         const data = JSON.parse(res);
@@ -162,8 +166,8 @@ function getReview() {
             const ques = (q.poll ? "Poll: " : "Question: ") + q.question;
 
             var card = `
-        
-<div class="question" style="border-left: 5px solid ${qotdColor}">
+
+            < div class="question" style = "border-left: 5px solid ${qotdColor}" >
     <div class="main">
         <div class="header">
             <h3><b>Added by: ${q.user}</b></h3>
@@ -183,7 +187,7 @@ function getReview() {
         <button class="deny" id="deny" title="Deny" onclick="deleteQOTD('review','${q.uuid}')">&#10060;</button>
         <button class="approve" id="approve" title="Approve" onclick="approveQOTD('${q.uuid}')">&#9989;</button>
     </div>
-</div>
+</div >
 
             `;
 
@@ -231,7 +235,7 @@ function formatDate(date) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
-    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+    return `${year} /${month}/${day} ${hours}:${minutes}:${seconds} `;
 }
 
 getConfig();
