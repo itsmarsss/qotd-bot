@@ -193,6 +193,7 @@ public class CMD extends ListenerAdapter {
                 try {
                     e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
                 } catch (Exception e) {
+                    e.printStackTrace();
                     this.e.getMessage().reply(req).queue();
                 }
             }
@@ -243,6 +244,7 @@ public class CMD extends ListenerAdapter {
                 try {
                     e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     e.getMessage().reply(req).queue();
                 }
             }
@@ -304,6 +306,7 @@ public class CMD extends ListenerAdapter {
                 try {
                     e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     e.getMessage().reply(req).queue();
                 }
             }
@@ -354,6 +357,7 @@ public class CMD extends ListenerAdapter {
                 try {
                     e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     e.getMessage().reply(req).queue();
                 }
             }
@@ -384,6 +388,7 @@ public class CMD extends ListenerAdapter {
 
             e.getMessage().replyEmbeds(se("Downloaded file, please run `" + QOTDBot.config.getPrefix() + " readfile` to load all questions in.")).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to read file.")).queue();
         }
     }
@@ -432,6 +437,7 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Index **" + param + "** has been removed from the queue.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid index.")).queue();
         }
     }
@@ -458,6 +464,7 @@ public class CMD extends ListenerAdapter {
 
             e.getMessage().reply(message).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid index.")).queue();
         }
     }
@@ -501,6 +508,7 @@ public class CMD extends ListenerAdapter {
 
             e.getMessage().reply(message).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid page index.")).queue();
         }
     }
@@ -541,6 +549,7 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
         }
     }
@@ -559,6 +568,7 @@ public class CMD extends ListenerAdapter {
             e.getMessage().replyEmbeds(se("QOTD prefix has been changed to `" + param + "`.")).queue();
             QOTDBot.jda.getPresence().setActivity(Activity.watching("for '" + QOTDBot.config.getPrefix() + " help'"));
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid prefix.")).queue();
         }
     }
@@ -579,6 +589,7 @@ public class CMD extends ListenerAdapter {
             QOTDBot.config.setManagerReview(setTo);
             e.getMessage().replyEmbeds(se("QOTD manager review: **" + QOTDBot.config.getManagerReview() + "**")).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
         }
     }
@@ -601,6 +612,7 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
         }
     }
@@ -616,6 +628,7 @@ public class CMD extends ListenerAdapter {
                             .build())
                     .queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to set color.")).queue();
         }
     }
@@ -682,6 +695,7 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to look for role.")).queue();
         }
     }
@@ -706,6 +720,7 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to look for role.")).queue();
         }
     }
@@ -726,6 +741,7 @@ public class CMD extends ListenerAdapter {
             QOTDBot.config.setDynamicConfig(setTo);
             e.getMessage().replyEmbeds(se("QOTD dynamic config: **" + QOTDBot.config.getDynamicConfig() + "**")).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
         }
     }

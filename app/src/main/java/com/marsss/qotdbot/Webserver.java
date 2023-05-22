@@ -77,6 +77,8 @@ public class Webserver {
     private class MainPage implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
+            System.out.println("Main page queried");
+
             String response = html;
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
@@ -110,6 +112,8 @@ public class Webserver {
     private class GetConfig implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
+            System.out.println("Config queried");
+
             String response = String.format("""
                             {
                                 "prefix": "%s",
@@ -172,6 +176,8 @@ public class Webserver {
     private class GetQueue implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
+            System.out.println("Queue queried");
+
             HashMap<String, Question> questions = QOTDBot.getQueueWithUUID();
             LinkedList<String> uuids = QOTDBot.getUUIDs();
 
@@ -218,6 +224,8 @@ public class Webserver {
     private class GetReview implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
+            System.out.println("Review queried");
+
             HashMap<String, Question> questions = QOTDBot.getReviewWithUUID();
             LinkedList<String> uuids = QOTDBot.getReviewUUIDs();
 

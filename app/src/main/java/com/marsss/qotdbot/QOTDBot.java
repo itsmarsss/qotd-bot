@@ -321,6 +321,7 @@ public class QOTDBot {
     static int remove(int index) {
         if (index < 0 || index >= questions.size())
             return -1;
+
         String uuid = uuids.get(index);
         uuids.remove(index);
         questions.remove(uuid);
@@ -382,6 +383,9 @@ public class QOTDBot {
     }
 
     static void approve(String uuid) {
+        if(!uuids_review.contains(uuid))
+            return;
+
         uuids_review.remove(uuid);
         Question q = questions_review.get(uuid);
 
@@ -393,6 +397,9 @@ public class QOTDBot {
     }
 
     static void deny(String uuid) {
+        if(!uuids_review.contains(uuid))
+            return;
+
         uuids_review.remove(uuid);
         questions_review.remove(uuid);
 
