@@ -177,6 +177,7 @@ public class Webserver {
             LinkedList<String> uuids = QOTDBot.getUUIDs();
 
             final String template = """
+                    
                     {
                         "question": "%s",
                         "footer": "%s",
@@ -189,6 +190,11 @@ public class Webserver {
 
             StringBuilder data = new StringBuilder();
 
+            data.append("""
+                    {
+                    "queue":[
+                    """);
+
             for (String uuid : uuids) {
                 Question q = questions.get(uuid);
                 data.append(String.format(template,
@@ -198,6 +204,8 @@ public class Webserver {
                         q.getMillis(),
                         q.isPoll()));
             }
+
+            data.append("]");
 
             String response = data.toString();
             he.sendResponseHeaders(200, response.length());
