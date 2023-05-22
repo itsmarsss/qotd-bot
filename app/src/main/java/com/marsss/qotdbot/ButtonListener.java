@@ -53,7 +53,7 @@ public class ButtonListener extends ListenerAdapter {
                     try {
                         message.delete().queue();
                     } catch (Exception e) {
-                        message.addReaction(Emoji.fromUnicode("\u1F6AB")).queue();
+                        message.addReaction(Emoji.fromUnicode("\uD83D\uDEAB")).queue();
                     }
                 });
 
@@ -169,7 +169,7 @@ public class ButtonListener extends ListenerAdapter {
 
             }
         } catch (Exception e) {
-            this.e.replyEmbeds(CMD.se("Request unsuccessful *(Hint: Embed possibly removed?)*")).setEphemeral(true).queue();
+            this.e.replyEmbeds(CMD.se("Request unsuccessful *(Unresolvable error encountered)*")).setEphemeral(true).queue();
         }
     }
 

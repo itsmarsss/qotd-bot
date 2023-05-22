@@ -35,6 +35,10 @@ public class QOTDBot {
 
     private static final HashMap<String, Question> questions = new HashMap<>();
     private static final LinkedList<String> uuids = new LinkedList<>();
+
+
+    private static final HashMap<String, Question> questions_review = new HashMap<>();
+    private static final LinkedList<String> uuids_review = new LinkedList<>();
     private static boolean isPaused = false;
 
     static final String version = "3.1.1";
@@ -252,6 +256,14 @@ public class QOTDBot {
             System.out.println("- questions.json not found or is improperly formatted -");
         }
 
+        if (readQuestionsReviewJSON("review.json")) {
+            System.out.println("~ Successfully read review.json ~");
+            System.out.println("\tAppended " + questions_review.size() + " questions for review");
+            System.out.println("\tWarning: Invalid questions have been deleted from the file");
+        } else {
+            System.out.println("- review.json not found or is improperly formatted -");
+        }
+
         System.out.println();
         System.out.println("Preparing upload.json");
         if (prepUploadJSON()) {
@@ -334,6 +346,15 @@ public class QOTDBot {
         writeQuestionsJSON();
     }
 
+    static String addReview(Question q) {
+        String uuid = UUID.randomUUID().toString();
+        uuids_review.add(uuid);
+        questions_review.put(uuid, q);
+        writeQuestionsReviewJSON();
+
+        return uuid;
+    }
+
     static LinkedList<Question> getQuestions() {
         LinkedList<Question> questionsList = new LinkedList<>();
 
@@ -350,6 +371,24 @@ public class QOTDBot {
 
     static LinkedList<String> getUUIDs() {
         return uuids;
+    }
+
+    static void approve(String uuid) {
+        uuids_review.remove(uuid);
+        Question q = questions_review.get(uuid);
+
+        add(q);
+
+        questions_review.remove(uuid);
+
+        writeQuestionsReviewJSON();
+    }
+
+    static void deny(String uuid) {
+        uuids_review.remove(uuid);
+        questions_review.remove(uuid);
+
+        writeQuestionsReviewJSON();
     }
 
     static String versionCheck() {
@@ -466,6 +505,43 @@ public class QOTDBot {
         }
     }
 
+    static boolean readQuestionsReviewJSON(String file) {
+        JSONParser parser = new JSONParser();
+
+        try (Reader reader = new FileReader(parent + "/" + file)) {
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            JSONArray questions = (JSONArray) jsonObject.get("questions");
+            for (Object q : questions) {
+                try {
+                    JSONObject questionObj = (JSONObject) q;
+                    String question = (String) questionObj.get("question");
+                    String footer = (String) questionObj.get("footer");
+                    String user = (String) questionObj.get("user");
+                    long time = (long) questionObj.get("time");
+                    boolean isPoll = (boolean) questionObj.get("poll");
+
+                    String uuid = (String) questionObj.get("uuid");
+
+                    Question newq = new Question(question, footer, user, isPoll);
+                    newq.setDate(time);
+
+                    questions_review.put(uuid, newq);
+                    uuids_review.add(uuid);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            reader.close();
+            writeQuestionsJSON();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private static void writeQuestionsJSON() {
         JSONObject questions = new JSONObject();
         JSONArray questionsList = new JSONArray();
@@ -482,6 +558,29 @@ public class QOTDBot {
         questions.put("questions", questionsList);
 
         try (FileWriter file = new FileWriter(parent + "/questions.json")) {
+            file.write(questions.toJSONString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeQuestionsReviewJSON() {
+        JSONObject questions = new JSONObject();
+        JSONArray questionsList = new JSONArray();
+        for (String uuid : uuids_review) {
+            Question q = QOTDBot.questions_review.get(uuid);
+            JSONObject question = new JSONObject();
+            question.put("question", q.getQuestion());
+            question.put("footer", q.getFooter());
+            question.put("user", q.getAuthor());
+            question.put("time", q.getMillis());
+            question.put("poll", q.isPoll());
+            question.put("uuid", uuid);
+            questionsList.add(question);
+        }
+        questions.put("questions", questionsList);
+
+        try (FileWriter file = new FileWriter(parent + "/review.json")) {
             file.write(questions.toJSONString());
         } catch (Exception e) {
             e.printStackTrace();
