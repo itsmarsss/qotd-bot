@@ -40,87 +40,38 @@ public class CMD extends ListenerAdapter {
 
         if (hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin()) {
             switch (rawSplit[1]) {
-                case "add":
-                    addQuestion(raw, event.getAuthor());
-                    break;
-                case "addpoll":
-                    addPoll(raw, event.getAuthor());
-                    break;
+                case "add" -> addQuestion(raw, event.getAuthor());
+                case "addpoll" -> addPoll(raw, event.getAuthor());
             }
         }
 
         if (hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin()) {
             switch (rawSplit[1]) {
-                case "upload":
-                    uploadFile();
-                    break;
-                case "readfile":
-                    readFile();
-                    break;
-                case "format":
-                    sendFormat();
-                    break;
-                case "remove":
-                    removeQuestion(raw);
-                    break;
-                case "bremove":
-                    removeQuestions(raw);
-                    break;
-                case "view":
-                    viewQuestion(raw);
-                    break;
-                case "queue":
-                    viewQueue(raw);
-                    break;
-                case "qotdtest":
-                    qotdTest();
-                    break;
-                case "postnext":
-                    postNext();
-                    break;
-                case "qotdchannel":
-                    setQOTDChannel(raw);
-                    break;
-                case "pause":
-                    setPause(true);
-                    break;
-                case "unpause":
-                    setPause(false);
-                    break;
-                case "prefix":
-                    setPrefix(raw);
-                    break;
-                case "managerreview":
-                    setManagerReview(raw);
-                    break;
-                case "reviewchannel":
-                    setReviewChannel(raw);
-                    break;
-                case "embedcolor":
-                    setColor(raw);
-                    break;
-                case "info":
-                    sendInfo();
-                    break;
-                case "version":
-                    checkVersion();
-                    break;
+                case "upload" -> uploadFile();
+                case "readfile" -> readFile();
+                case "format" -> sendFormat();
+                case "remove" -> removeQuestion(raw);
+                case "view" -> viewQuestion(raw);
+                case "queue" -> viewQueue(raw);
+                case "qotdtest" -> qotdTest();
+                case "postnext" -> postNext();
+                case "qotdchannel" -> setQOTDChannel(raw);
+                case "pause" -> setPause(true);
+                case "unpause" -> setPause(false);
+                case "prefix" -> setPrefix(raw);
+                case "managerreview" -> setManagerReview(raw);
+                case "reviewchannel" -> setReviewChannel(raw);
+                case "embedcolor" -> setColor(raw);
+                case "info" -> sendInfo();
+                case "version" -> checkVersion();
             }
         }
         if (isAdmin()) {
             switch (rawSplit[1]) {
-                case "permrole":
-                    qotdPerm(raw);
-                    break;
-                case "managerrole":
-                    qotdManager(raw);
-                    break;
-                case "dynamicconfig":
-                    setDynConfig(raw);
-                    break;
-                case "updateconfig":
-                    updateConfig();
-                    break;
+                case "permrole" -> qotdPerm(raw);
+                case "managerrole" -> qotdManager(raw);
+                case "dynamicconfig" -> setDynConfig(raw);
+                case "updateconfig" -> updateConfig();
             }
         }
     }
@@ -151,8 +102,11 @@ public class CMD extends ListenerAdapter {
 
             String title = "**__Added the following:__**\n";
 
+            String uuid = "";
+
             if (QOTDBot.config.getManagerReview()) {
                 title = "**__Requested the following:__**\n";
+                uuid = QOTDBot.addReview(q);
             } else {
                 QOTDBot.add(q);
             }
@@ -174,8 +128,8 @@ public class CMD extends ListenerAdapter {
             e.getMessage().reply(message).queue();
 
             if (QOTDBot.config.getManagerReview()) {
-                Button approveButton = Button.success("approve-qotd", "Approve and Delete");
-                Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
+                Button approveButton = Button.success("approve-qotd-" + uuid, "Approve and Delete");
+                Button denyButton = Button.danger("deny-qotd-" + uuid, "Deny and Delete");
 
                 MessageCreateData req = new MessageCreateBuilder()
                         .setEmbeds(new EmbedBuilder()
@@ -193,6 +147,7 @@ public class CMD extends ListenerAdapter {
                 try {
                     e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
                 } catch (Exception e) {
+                    e.printStackTrace();
                     this.e.getMessage().reply(req).queue();
                 }
             }
@@ -243,6 +198,7 @@ public class CMD extends ListenerAdapter {
                 try {
                     e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     e.getMessage().reply(req).queue();
                 }
             }
@@ -304,6 +260,7 @@ public class CMD extends ListenerAdapter {
                 try {
                     e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     e.getMessage().reply(req).queue();
                 }
             }
@@ -354,6 +311,7 @@ public class CMD extends ListenerAdapter {
                 try {
                     e.getGuild().getTextChannelById(QOTDBot.config.getReviewChannel()).sendMessage(req).queue();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                     e.getMessage().reply(req).queue();
                 }
             }
@@ -384,6 +342,7 @@ public class CMD extends ListenerAdapter {
 
             e.getMessage().replyEmbeds(se("Downloaded file, please run `" + QOTDBot.config.getPrefix() + " readfile` to load all questions in.")).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to read file.")).queue();
         }
     }
@@ -399,25 +358,27 @@ public class CMD extends ListenerAdapter {
     }
 
     private void sendFormat() {
-        String format = "QOTD json formatting:\n```"
-                + "{\r\n"
-                + "\t\"questions\": [\r\n"
-                + "\t\t{\r\n"
-                + "\t\t\t\"question\": \"Question here\",\r\n"
-                + "\t\t\t\"footer\": \"Footer here\",\r\n"
-                + "\t\t\t\"time\": 1234567890,\r\n"
-                + "\t\t\t\"user\": \"userhere#0000\"\r\n"
-                + "\t\t\t\"poll\": false,\r\n"
-                + "\t\t},\r\n\n"
-                + "\t\t{\n"
-                + "\t\t\t\"question\": \"Question here\",\r\n"
-                + "\t\t\t\"footer\": \"Footer here\",\r\n"
-                + "\t\t\t\"time\": 1234567890,\r\n"
-                + "\t\t\t\"user\": \"userhere#0000\"\r\n"
-                + "\t\t\t\"poll\": false,\r\n"
-                + "\t\t}\r\n"
-                + "\t]\r\n"
-                + "}```";
+        String format = """
+                QOTD json formatting:
+                ```{\r
+                \t"questions": [\r
+                \t\t{\r
+                \t\t\t"question": "Question here",\r
+                \t\t\t"footer": "Footer here",\r
+                \t\t\t"time": 1234567890,\r
+                \t\t\t"user": "userhere#0000"\r
+                \t\t\t"poll": false,\r
+                \t\t},\r
+
+                \t\t{
+                \t\t\t"question": "Question here",\r
+                \t\t\t"footer": "Footer here",\r
+                \t\t\t"time": 1234567890,\r
+                \t\t\t"user": "userhere#0000"\r
+                \t\t\t"poll": false,\r
+                \t\t}\r
+                \t]\r
+                }```""";
         e.getMessage().replyEmbeds(se(format)).queue();
     }
 
@@ -432,25 +393,8 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Index **" + param + "** has been removed from the queue.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid index.")).queue();
-        }
-    }
-
-    private void removeQuestions(String raw) {
-        // qotd bremove
-        try {
-            String[] num = (raw.substring(QOTDBot.config.getPrefix().length() + 1 + 7).trim()).split("-");
-            int start = Integer.parseInt(num[0]);
-            int end = Integer.parseInt(num[1]);
-
-            int status = QOTDBot.bremove(start, end);
-            if (status == -1) {
-                e.getMessage().replyEmbeds(se("Invalid numbers.")).queue();
-            } else {
-                e.getMessage().replyEmbeds(se("Indexes **" + start + "** to **" + end + "** have been removed from the queue.")).queue();
-            }
-        } catch (Exception e) {
-            this.e.getMessage().replyEmbeds(se("Invalid range.")).queue();
         }
     }
 
@@ -476,6 +420,7 @@ public class CMD extends ListenerAdapter {
 
             e.getMessage().reply(message).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid index.")).queue();
         }
     }
@@ -519,6 +464,7 @@ public class CMD extends ListenerAdapter {
 
             e.getMessage().reply(message).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid page index.")).queue();
         }
     }
@@ -559,6 +505,7 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
         }
     }
@@ -577,6 +524,7 @@ public class CMD extends ListenerAdapter {
             e.getMessage().replyEmbeds(se("QOTD prefix has been changed to `" + param + "`.")).queue();
             QOTDBot.jda.getPresence().setActivity(Activity.watching("for '" + QOTDBot.config.getPrefix() + " help'"));
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid prefix.")).queue();
         }
     }
@@ -597,6 +545,7 @@ public class CMD extends ListenerAdapter {
             QOTDBot.config.setManagerReview(setTo);
             e.getMessage().replyEmbeds(se("QOTD manager review: **" + QOTDBot.config.getManagerReview() + "**")).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
         }
     }
@@ -619,6 +568,7 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Invalid channel id.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to look for channel.")).queue();
         }
     }
@@ -634,6 +584,7 @@ public class CMD extends ListenerAdapter {
                             .build())
                     .queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to set color.")).queue();
         }
     }
@@ -700,6 +651,7 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to look for role.")).queue();
         }
     }
@@ -724,6 +676,7 @@ public class CMD extends ListenerAdapter {
                 e.getMessage().replyEmbeds(se("Invalid role id.")).queue();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Unable to look for role.")).queue();
         }
     }
@@ -744,6 +697,7 @@ public class CMD extends ListenerAdapter {
             QOTDBot.config.setDynamicConfig(setTo);
             e.getMessage().replyEmbeds(se("QOTD dynamic config: **" + QOTDBot.config.getDynamicConfig() + "**")).queue();
         } catch (Exception e) {
+            e.printStackTrace();
             this.e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
         }
     }
@@ -783,7 +737,6 @@ public class CMD extends ListenerAdapter {
                                         QOTDBot.config.getPrefix() + " readfile` - Reads the cached json file" + "\n`" +
                                         QOTDBot.config.getPrefix() + " format` - Sends json file format" + "\n`" +
                                         QOTDBot.config.getPrefix() + " remove <index>` - Remove QOTD at a specific index" + "\n`" +
-                                        QOTDBot.config.getPrefix() + " bremove <Start index>-<End index>` - Remove QOTD in an inclusive range" + "\n`" +
                                         QOTDBot.config.getPrefix() + " view <index>` - View details of QOTD at a specific index" + "\n`" +
                                         QOTDBot.config.getPrefix() + " queue <index|nothing>` - View QOTD queue" + "\n`" +
                                         QOTDBot.config.getPrefix() + " qotdtest` - Send a sample QOTD" + "\n`" +

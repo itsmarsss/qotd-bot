@@ -1,17 +1,18 @@
-package com.marsss.qotdbot;
+package com.marsss.qotdbot.ui;
+
+import com.marsss.qotdbot.QOTDBot;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 
 public class ConsoleMirror extends JFrame {
-    private final JTextArea textArea;
 
     public ConsoleMirror() {
         super("QOTD Bot Console");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        textArea = new JTextArea();
+        JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
@@ -43,6 +44,7 @@ public class ConsoleMirror extends JFrame {
                         "QOTD BOT Warning",
                         JOptionPane.WARNING_MESSAGE);
             } catch (IOException e) {
+                e.printStackTrace();
                 System.out.println("Notepad.exe not found:");
                 System.out.println("\tUnable to open: " + QOTDBot.getParent() + "/config.yml");
                 JOptionPane.showMessageDialog(null,
@@ -57,20 +59,5 @@ public class ConsoleMirror extends JFrame {
 
         setSize(new Dimension(500, 250));
         setVisible(true);
-    }
-}
-
-class ConsoleOutputStream extends OutputStream {
-    private final JTextArea textArea;
-
-    public ConsoleOutputStream(JTextArea textArea) {
-        this.textArea = textArea;
-    }
-
-    @Override
-    public void write(int b) {
-        textArea.append(String.valueOf((char) b));
-
-        textArea.setCaretPosition(textArea.getDocument().getLength());
     }
 }

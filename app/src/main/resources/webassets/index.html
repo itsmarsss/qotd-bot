@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" type="image"
+        href="https://raw.githubusercontent.com/itsmarsss/QOTD-Bot/main/assets/image.png" />
+    <link rel="stylesheet" href="index.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QOTD Bot Control Panel</title>
+</head>
+
+<body>
+    <div class="qotd-config">
+        <div class="config-title">
+            <h5>
+                <b>QOTD SETTINGS</b>
+            </h5>
+        </div>
+
+        <div class="manager-config">
+            <div class="prefix">
+                <h5>Prefix</h5>
+                <input type="text" placeholder="Prefix" id="prefix">
+            </div>
+            <div class="qotdchannel">
+                <h5>Review Channel</h5>
+                <input type="text" placeholder="QOTD Channel" id="qotdchannel">
+            </div>
+            <div class="managerreview">
+                <h5>Manager Review</h5>
+                <select id="managerreview" name="Manager Review">
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                </select>
+            </div>
+            <div class="reviewchannel">
+                <h5>Review Channel</h5>
+                <input type="text" placeholder="Review Channel" id="reviewchannel">
+            </div>
+            <div class="embedcolor">
+                <h5>Embed Color</h5>
+                <input type="color" id="embedcolor">
+            </div>
+            <div class="paused">
+                <h5>Pause</h5>
+                <select id="paused" name="Pause">
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                </select>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="admin-config">
+            <div class="permissionrole">
+                <h5>Permission Role</h5>
+                <input type="text" placeholder="Permission Role" id="permissionrole">
+            </div>
+            <div class="managerrole">
+                <h5>Manager Role</h5>
+                <input type="text" placeholder="Manager Role" id="managerrole">
+            </div>
+
+            <hr>
+
+            <div class="updateconfig">
+                <h5>Configuration</h5>
+                <button class="update-config-button" id="updateconfig">Update Config</button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <h1>QOTD Bot Control Panel</h1>
+        <div class="qotd-queue">
+            <div class="tabs">
+                <button class="tab-button" id="queue">Queue</button>
+                <button class="tab-button" id="review">Review</button>
+            </div>
+
+            <div class="list-title">
+                <h3 id="list-title-text">
+                    Queue:
+                </h3>
+            </div>
+
+            <div class="questions" id="question-queue">
+                Nothing to see here.
+            </div>
+
+            <div class="questions" id="question-review">
+                Nothing to see here.
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
+
+<script type="text/javascript" src="index.js"></script>

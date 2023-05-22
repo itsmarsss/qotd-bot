@@ -5,7 +5,7 @@ plugins {
 }
 
 mainClassName = 'com.marsss.qotdbot.QOTDBot'
-sourceCompatibility = 11
+sourceCompatibility = 15
 
 repositories {
     maven {
@@ -38,4 +38,4 @@ dependencies {
 }
 
 compileJava.options.encoding = 'UTF-8'
-targetCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_15

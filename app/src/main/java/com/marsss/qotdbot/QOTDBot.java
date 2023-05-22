@@ -1,5 +1,6 @@
 package com.marsss.qotdbot;
 
+import com.marsss.qotdbot.ui.ConsoleMirror;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -15,14 +16,14 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDateTime;
-import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +34,12 @@ public class QOTDBot {
 
     static long lastQOTD = 0;
 
-    private static final LinkedList<Question> questions = new LinkedList<>();
+    private static final HashMap<String, Question> questions = new HashMap<>();
+    private static final LinkedList<String> uuids = new LinkedList<>();
+
+
+    private static final HashMap<String, Question> questions_review = new HashMap<>();
+    private static final LinkedList<String> uuids_review = new LinkedList<>();
     private static boolean isPaused = false;
 
     static final String version = "3.1.1";
@@ -45,47 +51,48 @@ public class QOTDBot {
 
     private static boolean head = true;
 
-    private final static String template = "# IMPORTANT - Mandatory fields:\r\n"
-            + "# Input the bot's token here, this can be found in Developers Portal > Applications > [Bot Profile] > Bot > Token > [Copy]\r\n"
-            + "botToken: %s\r\n"
-            + "\r\n"
-            + "# Turn on developers mode in Settings > Advanced > Developer Mode, right click your Discord Server and click on [Copy ID]\r\n"
-            + "serverID: %s\r\n"
-            + "\r\n"
-            + "# Right click your QOTD channel and click on [Copy ID]\r\n"
-            + "channelID: %s\r\n"
-            + "\r\n"
-            + "# Set a prefix here for the bot, this is what members use to use the bot (e.g. qotd help)\r\n"
-            + "prefix: %s\r\n"
-            + "\r\n"
-            + "# Input number of minute(s) until another QOTD is sent ( 1 to 1440 [24 hours] )\r\n"
-            + "interval: %s\r\n"
-            + "\r\n"
-            + "# Start time, this dictates what time of the day your QOTD will be sent (24 hours time, local server time)\r\n"
-            + "# Hours\r\n"
-            + "hour: %s\r\n"
-            + "# Minutes\r\n"
-            + "minute: %s\r\n"
-            + "\r\n"
-            + "# Not mandatory fields:\r\n"
-            + "# Set a perm role, these members can add QOTDs (write everyone if everyone)\r\n"
-            + "permRoleID: %s\r\n"
-            + "\r\n"
-            + "# Set a manager role, these members can manage QOTDs (write everyone if everyone)\r\n"
-            + "managerRoleID: %s\r\n"
-            + "\r\n"
-            + "# Dynamic config.yml, config.yml is changed as its values are changed\r\n"
-            + "dynamicConfig: %s\r\n"
-            + "\r\n"
-            + "# QOTD submission review settings\r\n"
-            + "# Set to true if you want QOTD submissions to go through bot manager review\r\n"
-            + "managerReview: %s\r\n"
-            + "# Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed\r\n"
-            + "reviewChannel: %s\r\n"
-            + "\r\n"
-            + "# QOTD Embed color in hex (Do not include \"#\")\r\n"
-            + "QOTDColor: %s\r\n"
-            + "";
+    private final static String template = """
+            # IMPORTANT - Mandatory fields:\r
+            # Input the bot's token here, this can be found in Developers Portal > Applications > [Bot Profile] > Bot > Token > [Copy]\r
+            botToken: %s\r
+            \r
+            # Turn on developers mode in Settings > Advanced > Developer Mode, right click your Discord Server and click on [Copy ID]\r
+            serverID: %s\r
+            \r
+            # Right click your QOTD channel and click on [Copy ID]\r
+            channelID: %s\r
+            \r
+            # Set a prefix here for the bot, this is what members use to use the bot (e.g. qotd help)\r
+            prefix: %s\r
+            \r
+            # Input number of minute(s) until another QOTD is sent ( 1 to 1440 [24 hours] )\r
+            interval: %s\r
+            \r
+            # Start time, this dictates what time of the day your QOTD will be sent (24 hours time, local server time)\r
+            # Hours\r
+            hour: %s\r
+            # Minutes\r
+            minute: %s\r
+            \r
+            # Not mandatory fields:\r
+            # Set a perm role, these members can add QOTDs (write everyone if everyone)\r
+            permRoleID: %s\r
+            \r
+            # Set a manager role, these members can manage QOTDs (write everyone if everyone)\r
+            managerRoleID: %s\r
+            \r
+            # Dynamic config.yml, config.yml is changed as its values are changed\r
+            dynamicConfig: %s\r
+            \r
+            # QOTD submission review settings\r
+            # Set to true if you want QOTD submissions to go through bot manager review\r
+            managerReview: %s\r
+            # Right click your QOTD review channel and click on [Copy ID], this is where QOTD submissions are reviewed\r
+            reviewChannel: %s\r
+            \r
+            # QOTD Embed color in hex (Do not include "#")\r
+            QOTDColor: %s\r
+            """;
 
     public static void main(String[] args) throws URISyntaxException {
         if (args.length > 0) {
@@ -100,6 +107,8 @@ public class QOTDBot {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ex) {
                 ex.printStackTrace();
+                System.out.println("Failed to set look and feel");
+                System.out.println("\tYou can ignore this");
             }
 
             new ConsoleMirror();
@@ -171,7 +180,7 @@ public class QOTDBot {
         start();
     }
 
-    static void start() {
+    public static void start() {
         boolean setupPass = true;
         try {
             System.out.println("Connecting to Discord...");
@@ -179,6 +188,7 @@ public class QOTDBot {
             jda = JDABuilder.createDefault(config.getBotToken(), intent).build();
             jda.awaitReady();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("______________________________________________________");
             System.out.println("Given token is invalid.");
             System.out.println("\t- Make sure to enable MESSAGE CONTENT INTENT");
@@ -248,6 +258,14 @@ public class QOTDBot {
             System.out.println("- questions.json not found or is improperly formatted -");
         }
 
+        if (readQuestionsReviewJSON("review.json")) {
+            System.out.println("~ Successfully read review.json ~");
+            System.out.println("\tAppended " + questions_review.size() + " questions for review");
+            System.out.println("\tWarning: Invalid questions have been deleted from the file");
+        } else {
+            System.out.println("- review.json not found or is improperly formatted -");
+        }
+
         System.out.println();
         System.out.println("Preparing upload.json");
         if (prepUploadJSON()) {
@@ -258,42 +276,136 @@ public class QOTDBot {
 
         System.out.println();
         System.out.println("Finished!");
+
+        setupWebpage();
+    }
+
+    static void setupWebpage() {
+        System.out.println();
+        System.out.println("Starting Webserver...");
+        try {
+            Webserver server = new Webserver();
+            server.startServer();
+
+            System.out.println("Webpage setup completed!");
+            System.out.println("\tOn port: " + server.getPort());
+
+            System.out.println();
+            System.out.println("Opening control panel...");
+
+            try {
+                if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(new URI("http://localhost:" + server.getPort()));
+                }
+                System.out.println("Successfully sent user to control panel...");
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Failed to open website.");
+                System.out.println("\tVisit http://localhost:" + server.getPort() + " to access control panel.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Failed to start Webserver.");
+            System.out.println("\tError message: " + e.getMessage());
+        }
     }
 
     static Question getNext() {
         if (questions.isEmpty()) {
-            questions.add(new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", jda.getSelfUser().getAsTag(), false));
+            questions.put(UUID.randomUUID().toString(), new Question("Can someone add more questions? My queue is empty... :slight_smile:", "ADD QUESTION PLS", jda.getSelfUser().getAsTag(), false));
         }
-        return questions.poll();
+        String uuid = uuids.poll();
+        Question temp = questions.get(uuid);
+        questions.remove(uuid);
+        return temp;
     }
 
     static int remove(int index) {
         if (index < 0 || index >= questions.size())
             return -1;
-        questions.remove(index);
+
+        String uuid = uuids.get(index);
+        uuids.remove(index);
+        questions.remove(uuid);
         writeQuestionsJSON();
         return 0;
     }
 
-    static int bremove(int s, int e) {
-        if (s > e) {
-            return -1;
-        }
-        if (s < 0 || s >= questions.size() || e >= questions.size())
+    static int remove(String uuid) {
+        int index = uuids.indexOf(uuid);
+        if(index == -1)
             return -1;
 
-        questions.subList(s, e + 1).clear();
+        uuids.remove(index);
+        questions.remove(uuid);
         writeQuestionsJSON();
         return 0;
     }
 
     static void add(Question q) {
-        questions.add(q);
+        String uuid = UUID.randomUUID().toString();
+        uuids.add(uuid);
+        questions.put(uuid, q);
         writeQuestionsJSON();
     }
 
+    static String addReview(Question q) {
+        String uuid = UUID.randomUUID().toString();
+        uuids_review.add(uuid);
+        questions_review.put(uuid, q);
+        writeQuestionsReviewJSON();
+
+        return uuid;
+    }
+
     static LinkedList<Question> getQuestions() {
+        LinkedList<Question> questionsList = new LinkedList<>();
+
+        for(String uuid : uuids) {
+            questionsList.add(questions.get(uuid));
+        }
+
+        return questionsList;
+    }
+
+    static HashMap<String, Question> getQueueWithUUID() {
         return questions;
+    }
+
+    static HashMap<String, Question> getReviewWithUUID() {
+        return questions_review;
+    }
+
+    static LinkedList<String> getUUIDs() {
+        return uuids;
+    }
+
+    static LinkedList<String> getReviewUUIDs() {
+        return uuids_review;
+    }
+
+    static void approve(String uuid) {
+        if(!uuids_review.contains(uuid))
+            return;
+
+        uuids_review.remove(uuid);
+        Question q = questions_review.get(uuid);
+
+        add(q);
+
+        questions_review.remove(uuid);
+
+        writeQuestionsReviewJSON();
+    }
+
+    static void deny(String uuid) {
+        if(!uuids_review.contains(uuid))
+            return;
+
+        uuids_review.remove(uuid);
+        questions_review.remove(uuid);
+
+        writeQuestionsReviewJSON();
     }
 
     static String versionCheck() {
@@ -314,6 +426,7 @@ public class QOTDBot {
                 note = new StringBuilder();
 
         } catch (Exception e) {
+            e.printStackTrace();
             return "Unable to check for version and creator's note";
         }
         if (!newest.equals(version)) {
@@ -371,6 +484,7 @@ public class QOTDBot {
             file.write(String.format(template, token, serverID, channelID, prefix, interval, hour, minute, permRoleID, managerRoleID, dynamicConfig, managerReview, reviewChannel, colorHex));
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -394,6 +508,7 @@ public class QOTDBot {
                     newq.setDate(time);
                     add(newq);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             reader.close();
@@ -402,15 +517,53 @@ public class QOTDBot {
             return true;
 
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
 
-    @SuppressWarnings("unchecked")
+    static boolean readQuestionsReviewJSON(String file) {
+        JSONParser parser = new JSONParser();
+
+        try (Reader reader = new FileReader(parent + "/" + file)) {
+            JSONObject jsonObject = (JSONObject) parser.parse(reader);
+            JSONArray questions = (JSONArray) jsonObject.get("questions");
+            for (Object q : questions) {
+                try {
+                    JSONObject questionObj = (JSONObject) q;
+                    String question = (String) questionObj.get("question");
+                    String footer = (String) questionObj.get("footer");
+                    String user = (String) questionObj.get("user");
+                    long time = (long) questionObj.get("time");
+                    boolean isPoll = (boolean) questionObj.get("poll");
+
+                    String uuid = (String) questionObj.get("uuid");
+
+                    Question newq = new Question(question, footer, user, isPoll);
+                    newq.setDate(time);
+
+                    questions_review.put(uuid, newq);
+                    uuids_review.add(uuid);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            reader.close();
+            writeQuestionsJSON();
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private static void writeQuestionsJSON() {
         JSONObject questions = new JSONObject();
         JSONArray questionsList = new JSONArray();
-        for (Question q : QOTDBot.questions) {
+        for (String uuid : uuids) {
+            Question q = QOTDBot.questions.get(uuid);
             JSONObject question = new JSONObject();
             question.put("question", q.getQuestion());
             question.put("footer", q.getFooter());
@@ -424,6 +577,30 @@ public class QOTDBot {
         try (FileWriter file = new FileWriter(parent + "/questions.json")) {
             file.write(questions.toJSONString());
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeQuestionsReviewJSON() {
+        JSONObject questions = new JSONObject();
+        JSONArray questionsList = new JSONArray();
+        for (String uuid : uuids_review) {
+            Question q = QOTDBot.questions_review.get(uuid);
+            JSONObject question = new JSONObject();
+            question.put("question", q.getQuestion());
+            question.put("footer", q.getFooter());
+            question.put("user", q.getAuthor());
+            question.put("time", q.getMillis());
+            question.put("poll", q.isPoll());
+            question.put("uuid", uuid);
+            questionsList.add(question);
+        }
+        questions.put("questions", questionsList);
+
+        try (FileWriter file = new FileWriter(parent + "/review.json")) {
+            file.write(questions.toJSONString());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -431,6 +608,7 @@ public class QOTDBot {
         try (FileWriter file = new FileWriter(parent + "/upload.json")) {
             file.write("{\"questions\": []}");
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;
@@ -487,8 +665,15 @@ public class QOTDBot {
         return 1440 - (current - starttime);
     }
 
-    static String getParent() {
+    public static String getParent() {
         return parent;
     }
 
+    public static boolean isPaused() {
+        return isPaused;
+    }
+
+    public static void setPaused(boolean paused) {
+        isPaused = paused;
+    }
 }
