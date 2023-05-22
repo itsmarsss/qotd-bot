@@ -308,20 +308,20 @@ public class Webserver {
             try {
                 data = (JSONObject) parser.parse(body);
                 System.out.println();
-                System.out.println("QOTD Bot post has been requested to be deleted:");
+                System.out.println("QOTD Bot post has been requested to be approved:");
             } catch (ParseException e) {
                 e.printStackTrace();
                 System.out.println("Unable to read POST (GET) JSON");
                 throw new RuntimeException(e);
             }
 
-            System.out.println("\t" + data.get("uuid"));
+            String uuid = (String) data.get("uuid");
 
-            // find
+            System.out.println("\t" + uuid);
+
+            QOTDBot.approve(uuid);
 
             String response = "Success";
-
-            //String response = "Not found";
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());
