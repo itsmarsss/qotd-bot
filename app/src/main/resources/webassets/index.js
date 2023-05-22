@@ -14,14 +14,14 @@ queue.addEventListener("click", function () {
     question_queue.style.display = "block";
     question_review.style.display = "none";
 
-    list_title_text.innerHTML = "Queue:"
+    list_title_text.innerHTML = "Queue:";
 });
 
 review.addEventListener("click", function () {
     question_queue.style.display = "none";
     question_review.style.display = "block";
 
-    list_title_text.innerHTML = "Review:"
+    list_title_text.innerHTML = "Review:";
 });
 
 queue.click();
