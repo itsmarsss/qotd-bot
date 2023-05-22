@@ -58,19 +58,19 @@ function getConfig() {
 
 function setConfig() {
     const body = `
-    {
-        "prefix": "${prefix.value}",
-        "managerreview": "${managerreview.value}",
-        "reviewchannel": "${reviewchannel.value}",
-        "embedcolor": "${embedcolor.value}",
-        
-        "permissionrole": "${permissionrole.value}",
-        "managerrole": "${managerrole.value}"
-    }
+{
+    "prefix": "${prefix.value}",
+    "managerreview": "${managerreview.value}",
+    "reviewchannel": "${reviewchannel.value}",
+    "embedcolor": "${embedcolor.value}",
+    
+    "permissionrole": "${permissionrole.value}",
+    "managerrole": "${managerrole.value}"
+}
     `;
 
     console.log(body);
-    httpGetAsync(`/api/v1/setconfig`, body, (res) => {
+    httpPostAsync(`/api/v1/setconfig`, body, (res) => {
         window.location.reload();
     });
 }
@@ -84,7 +84,25 @@ function httpGetAsync(url, body, callback) {
             callback(xmlHttp.responseText);
         }
     }
+
     xmlHttp.open("GET", url, true);
+    xmlHttp.setRequestHeader('Content-Type', 'application/json');
+    xmlHttp.send(body);
+}
+
+
+function httpPostAsync(url, body, callback) {
+    console.log(url);
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            callback(xmlHttp.responseText);
+        }
+    }
+
+    xmlHttp.open("POST", url, true);
+    xmlHttp.setRequestHeader('Content-Type', 'application/json');
     xmlHttp.send(body);
 }
 
