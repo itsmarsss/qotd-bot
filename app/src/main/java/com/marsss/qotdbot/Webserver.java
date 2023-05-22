@@ -28,6 +28,10 @@ public class Webserver {
         server.createContext("/index.css", new CSS());
         server.createContext("/api/v1/getconfig", new GetConfig());
         server.createContext("/api/v1/setconfig", new SetConfig());
+        server.createContext("/api/v1/getqueue", new GetQueue());
+        server.createContext("/api/v1/getreview", new GetReview());
+        server.createContext("/api/v1/delete", new Delete());
+        server.createContext("/api/v1/approve", new Approve());
         server.setExecutor(null);
         server.start();
         port = server.getAddress().getPort();
@@ -156,6 +160,90 @@ public class Webserver {
             QOTDBot.config.setManagerRoleID((String) data.get("managerrole"));
 
             String response = "Success";
+            he.sendResponseHeaders(200, response.length());
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private class GetQueue implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            String response = "Success"; // get queue
+            he.sendResponseHeaders(200, response.length());
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private class GetReview implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            String response = "Success"; // get review
+            he.sendResponseHeaders(200, response.length());
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private class Delete implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            String body = readRequestBody(he.getRequestBody());
+
+            JSONParser parser = new JSONParser();
+            JSONObject data;
+            try {
+                data = (JSONObject) parser.parse(body);
+                System.out.println();
+                System.out.println("QOTD Bot post has been requested to be deleted:");
+            } catch (ParseException e) {
+                e.printStackTrace();
+                System.out.println("Unable to read POST (GET) JSON");
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("\t" + data.get("uuid"));
+
+            // find
+
+            String response = "Success";
+
+            //String response = "Not found";
+            he.sendResponseHeaders(200, response.length());
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private class Approve implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            String body = readRequestBody(he.getRequestBody());
+
+            JSONParser parser = new JSONParser();
+            JSONObject data;
+            try {
+                data = (JSONObject) parser.parse(body);
+                System.out.println();
+                System.out.println("QOTD Bot post has been requested to be deleted:");
+            } catch (ParseException e) {
+                e.printStackTrace();
+                System.out.println("Unable to read POST (GET) JSON");
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("\t" + data.get("uuid"));
+
+            // find
+
+            String response = "Success";
+
+            //String response = "Not found";
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());
