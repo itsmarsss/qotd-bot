@@ -189,7 +189,7 @@ public class Webserver {
             LinkedList<String> uuids = QOTDBot.getUUIDs();
 
             final String template = """
-                    
+                                        
                     {
                         "question": "%s",
                         "footer": "%s",
@@ -237,7 +237,7 @@ public class Webserver {
             LinkedList<String> uuids = QOTDBot.getReviewUUIDs();
 
             final String template = """
-                    
+                                        
                     {
                         "question": "%s",
                         "footer": "%s",
@@ -298,9 +298,9 @@ public class Webserver {
 
             System.out.println("\t" + uuid);
 
-            if(type.equals("queue")) {
+            if (type.equals("queue")) {
                 QOTDBot.remove(uuid);
-            }else{
+            } else {
                 QOTDBot.deny(uuid);
             }
 
@@ -356,6 +356,6 @@ public class Webserver {
     }
 
     public static String replaceLast(String text, String regex, String replacement) {
-        return text.replaceFirst("(?s)"+regex+"(?!.*?"+regex+")", replacement);
+        return text.replaceFirst("(?s)" + regex + "(?!.*?" + regex + ")", replacement);
     }
 }

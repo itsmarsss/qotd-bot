@@ -333,7 +333,7 @@ public class QOTDBot {
 
     static int remove(String uuid) {
         int index = uuids.indexOf(uuid);
-        if(index == -1)
+        if (index == -1)
             return -1;
 
         uuids.remove(index);
@@ -361,7 +361,7 @@ public class QOTDBot {
     static LinkedList<Question> getQuestions() {
         LinkedList<Question> questionsList = new LinkedList<>();
 
-        for(String uuid : uuids) {
+        for (String uuid : uuids) {
             questionsList.add(questions.get(uuid));
         }
 
@@ -385,7 +385,7 @@ public class QOTDBot {
     }
 
     static void approve(String uuid) {
-        if(!uuids_review.contains(uuid))
+        if (!uuids_review.contains(uuid))
             return;
 
         uuids_review.remove(uuid);
@@ -399,7 +399,7 @@ public class QOTDBot {
     }
 
     static void deny(String uuid) {
-        if(!uuids_review.contains(uuid))
+        if (!uuids_review.contains(uuid))
             return;
 
         uuids_review.remove(uuid);
@@ -675,5 +675,13 @@ public class QOTDBot {
 
     public static void setPaused(boolean paused) {
         isPaused = paused;
+    }
+
+    public static void stop() {
+        if (jda != null) {
+            jda.shutdownNow();
+        }
+
+        System.exit(0);
     }
 }

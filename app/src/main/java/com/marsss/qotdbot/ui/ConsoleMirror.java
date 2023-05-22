@@ -28,8 +28,12 @@ public class ConsoleMirror extends JFrame {
 
         JButton startButton = new JButton("Start");
         startButton.addActionListener(actionEvent -> QOTDBot.start());
-
         buttonPanel.add(startButton, BorderLayout.WEST);
+
+        JButton endButton = new JButton("Stop");
+        endButton.addActionListener(actionEvent -> QOTDBot.stop());
+        buttonPanel.add(endButton, BorderLayout.SOUTH);
+
 
         JButton editButton = new JButton("Edit [config.yml]");
         editButton.addActionListener(actionEvent -> {
