@@ -115,7 +115,7 @@ function getQueue() {
 
             var card = `
 
-            < div class="question" style = "border-left: 5px solid ${qotdColor}" >
+<div class="question" style = "border-left: 5px solid ${qotdColor}">
     <div class="main">
         <div class="header">
             <h3><b>Added by: ${q.user}</b></h3>
@@ -144,7 +144,7 @@ function getQueue() {
 }
 
 function getReview() {
-    httpGetAsync(`/ api / v1 / getreview`, null, (res) => {
+    httpGetAsync(`/api/v1/getreview`, null, (res) => {
         console.log(res);
 
         const data = JSON.parse(res);
@@ -165,7 +165,7 @@ function getReview() {
 
             var card = `
 
-            < div class="question" style = "border-left: 5px solid ${qotdColor}" >
+<div class="question" style = "border-left: 5px solid ${qotdColor}">
     <div class="main">
         <div class="header">
             <h3><b>Added by: ${q.user}</b></h3>
