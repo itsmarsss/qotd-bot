@@ -244,13 +244,14 @@ public class Webserver {
                 throw new RuntimeException(e);
             }
 
-            System.out.println("\t" + data.get("uuid"));
+            String uuid = (String) data.get("uuid");
 
-            // find
+            System.out.println("\t" + uuid);
+
+            QOTDBot.remove(uuid);
 
             String response = "Success";
 
-            //String response = "Not found";
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());

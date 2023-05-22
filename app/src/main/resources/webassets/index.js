@@ -19,7 +19,9 @@ const list_title_text = document.getElementById('list-title-text');
 var qotdColor = "#000";
 
 function deleteQOTD(uuid) {
-
+    httpPostAsync(`/api/v1/delete`, `{"uuid":"${uuid}"}`, (res) => {
+        window.location.reload();
+    });
 }
 
 queue.addEventListener("click", function () {

@@ -310,6 +310,18 @@ public class QOTDBot {
         if (index < 0 || index >= questions.size())
             return -1;
         String uuid = uuids.get(index);
+        uuids.remove(index);
+        questions.remove(uuid);
+        writeQuestionsJSON();
+        return 0;
+    }
+
+    static int remove(String uuid) {
+        int index = uuids.indexOf(uuid);
+        if(index == -1)
+            return -1;
+
+        uuids.remove(index);
         questions.remove(uuid);
         writeQuestionsJSON();
         return 0;
