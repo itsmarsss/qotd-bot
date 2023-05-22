@@ -328,10 +328,11 @@ public class QOTDBot {
 
                         if (results != null && results.size() > 0) {
                             JSONObject questionObject = (JSONObject) results.get(0);
-                            String question = (String) questionObject.get("question");
-                            String answer = (String) questionObject.get("correct_answer");
+                            String question = convertHtmlEscapeCharacters((String) questionObject.get("question"));
+                            String answer = convertHtmlEscapeCharacters((String) questionObject.get("correct_answer"));
 
                             System.out.println("Question: " + question);
+                            System.out.println("Answer: " + answer);
 
                             questions.put(uuid, new Question(question, "Answer: ||" + answer + "||", "OpenTDB Trivia", false));
                         } else {
@@ -753,5 +754,23 @@ public class QOTDBot {
 
     public static JDA getJDA() {
         return jda;
+    }
+
+    public static String convertHtmlEscapeCharacters(String input) {
+        String[][] escapePatterns = {
+                {"&amp;", "&"},
+                {"&lt;", "<"},
+                {"&gt;", ">"},
+                {"&quot;", "\""},
+                {"&apos;", "'"},
+                {"&#39;", "'"},
+                {"&nbsp;", " "}
+        };
+
+        for (String[] pattern : escapePatterns) {
+            input = input.replaceAll(pattern[0], pattern[1]);
+        }
+
+        return input;
     }
 }
