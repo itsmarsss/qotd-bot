@@ -125,7 +125,7 @@ public class Webserver {
                                 "managerreview": "%s",
                                 "reviewchannel": "%s",
                                 "embedcolor": "#%s",
-                                "trivia": "#%s",
+                                "trivia": "%s",
                                 "paused": "%s",
                                 
                                 "permissionrole": "%s",
