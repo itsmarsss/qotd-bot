@@ -85,9 +85,11 @@ function getQueue() {
 
         question_queue.innerHTML = "";
 
-        for (let q in data.queue) {
+        for (let i in data.queue) {
 
-            var date = new Date(q.time);
+            const q = data.queue[i];
+
+            const date = new Date(q.time);
 
             var card = "Error";
 
@@ -97,13 +99,13 @@ function getQueue() {
                 <div class="question">
                     <div class="main">
                         <div class="header">
-                            <h3>Added by: ${q.user}</h3>
+                            <h3><b>Added by: ${q.user}</b></h3>
                         </div>
                         <div class="title">
-                            <h2>Poll: ${q.question}</h2>
+                            <h2><b>Poll: ${q.question}</b></h2>
                         </div>
                         <div class="description">
-                            <h3>${q.footer}</h3>
+                            <h3>Footer: <i>${q.footer}</i></h3>
                         </div>
                         <div class="footer">
                             <h4>Added on: ${date.toString()}</h4>
@@ -122,13 +124,13 @@ function getQueue() {
                 <div class="question">
                     <div class="main">
                         <div class="header">
-                            <h3>Added by: ${q.user}</h3>
+                            <h3><b>Added by: ${q.user}</b></h3>
                         </div>
                         <div class="title">
-                            <h2>Question: ${q.question}</h2>
+                            <h2><b>Question: ${q.question}</b></h2>
                         </div>
                         <div class="description">
-                            <h3>${q.footer}</h3>
+                            <h3>Footer: <i>${q.footer}</i></h3>
                         </div>
                         <div class="footer">
                             <h4>Added on: ${date.toString()}</h4>
