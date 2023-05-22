@@ -109,7 +109,7 @@ public class Webserver {
         }
     }
 
-    private class GetConfig implements HttpHandler {
+    private static class GetConfig implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
             System.out.println("Config queried");
@@ -173,7 +173,7 @@ public class Webserver {
         }
     }
 
-    private class GetQueue implements HttpHandler {
+    private static class GetQueue implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
             System.out.println("Queue queried");
@@ -221,7 +221,7 @@ public class Webserver {
         }
     }
 
-    private class GetReview implements HttpHandler {
+    private static class GetReview implements HttpHandler {
         @Override
         public void handle(HttpExchange he) throws IOException {
             System.out.println("Review queried");

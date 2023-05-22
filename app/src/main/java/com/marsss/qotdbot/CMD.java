@@ -40,84 +40,38 @@ public class CMD extends ListenerAdapter {
 
         if (hasPerm(QOTDBot.config.getPermRoleID()) || hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin()) {
             switch (rawSplit[1]) {
-                case "add":
-                    addQuestion(raw, event.getAuthor());
-                    break;
-                case "addpoll":
-                    addPoll(raw, event.getAuthor());
-                    break;
+                case "add" -> addQuestion(raw, event.getAuthor());
+                case "addpoll" -> addPoll(raw, event.getAuthor());
             }
         }
 
         if (hasPerm(QOTDBot.config.getManagerRoleID()) || isAdmin()) {
             switch (rawSplit[1]) {
-                case "upload":
-                    uploadFile();
-                    break;
-                case "readfile":
-                    readFile();
-                    break;
-                case "format":
-                    sendFormat();
-                    break;
-                case "remove":
-                    removeQuestion(raw);
-                    break;
-                case "view":
-                    viewQuestion(raw);
-                    break;
-                case "queue":
-                    viewQueue(raw);
-                    break;
-                case "qotdtest":
-                    qotdTest();
-                    break;
-                case "postnext":
-                    postNext();
-                    break;
-                case "qotdchannel":
-                    setQOTDChannel(raw);
-                    break;
-                case "pause":
-                    setPause(true);
-                    break;
-                case "unpause":
-                    setPause(false);
-                    break;
-                case "prefix":
-                    setPrefix(raw);
-                    break;
-                case "managerreview":
-                    setManagerReview(raw);
-                    break;
-                case "reviewchannel":
-                    setReviewChannel(raw);
-                    break;
-                case "embedcolor":
-                    setColor(raw);
-                    break;
-                case "info":
-                    sendInfo();
-                    break;
-                case "version":
-                    checkVersion();
-                    break;
+                case "upload" -> uploadFile();
+                case "readfile" -> readFile();
+                case "format" -> sendFormat();
+                case "remove" -> removeQuestion(raw);
+                case "view" -> viewQuestion(raw);
+                case "queue" -> viewQueue(raw);
+                case "qotdtest" -> qotdTest();
+                case "postnext" -> postNext();
+                case "qotdchannel" -> setQOTDChannel(raw);
+                case "pause" -> setPause(true);
+                case "unpause" -> setPause(false);
+                case "prefix" -> setPrefix(raw);
+                case "managerreview" -> setManagerReview(raw);
+                case "reviewchannel" -> setReviewChannel(raw);
+                case "embedcolor" -> setColor(raw);
+                case "info" -> sendInfo();
+                case "version" -> checkVersion();
             }
         }
         if (isAdmin()) {
             switch (rawSplit[1]) {
-                case "permrole":
-                    qotdPerm(raw);
-                    break;
-                case "managerrole":
-                    qotdManager(raw);
-                    break;
-                case "dynamicconfig":
-                    setDynConfig(raw);
-                    break;
-                case "updateconfig":
-                    updateConfig();
-                    break;
+                case "permrole" -> qotdPerm(raw);
+                case "managerrole" -> qotdManager(raw);
+                case "dynamicconfig" -> setDynConfig(raw);
+                case "updateconfig" -> updateConfig();
             }
         }
     }
@@ -404,25 +358,27 @@ public class CMD extends ListenerAdapter {
     }
 
     private void sendFormat() {
-        String format = "QOTD json formatting:\n```"
-                + "{\r\n"
-                + "\t\"questions\": [\r\n"
-                + "\t\t{\r\n"
-                + "\t\t\t\"question\": \"Question here\",\r\n"
-                + "\t\t\t\"footer\": \"Footer here\",\r\n"
-                + "\t\t\t\"time\": 1234567890,\r\n"
-                + "\t\t\t\"user\": \"userhere#0000\"\r\n"
-                + "\t\t\t\"poll\": false,\r\n"
-                + "\t\t},\r\n\n"
-                + "\t\t{\n"
-                + "\t\t\t\"question\": \"Question here\",\r\n"
-                + "\t\t\t\"footer\": \"Footer here\",\r\n"
-                + "\t\t\t\"time\": 1234567890,\r\n"
-                + "\t\t\t\"user\": \"userhere#0000\"\r\n"
-                + "\t\t\t\"poll\": false,\r\n"
-                + "\t\t}\r\n"
-                + "\t]\r\n"
-                + "}```";
+        String format = """
+                QOTD json formatting:
+                ```{\r
+                \t"questions": [\r
+                \t\t{\r
+                \t\t\t"question": "Question here",\r
+                \t\t\t"footer": "Footer here",\r
+                \t\t\t"time": 1234567890,\r
+                \t\t\t"user": "userhere#0000"\r
+                \t\t\t"poll": false,\r
+                \t\t},\r
+
+                \t\t{
+                \t\t\t"question": "Question here",\r
+                \t\t\t"footer": "Footer here",\r
+                \t\t\t"time": 1234567890,\r
+                \t\t\t"user": "userhere#0000"\r
+                \t\t\t"poll": false,\r
+                \t\t}\r
+                \t]\r
+                }```""";
         e.getMessage().replyEmbeds(se(format)).queue();
     }
 

@@ -7,13 +7,12 @@ import java.awt.*;
 import java.io.*;
 
 public class ConsoleMirror extends JFrame {
-    private final JTextArea textArea;
 
     public ConsoleMirror() {
         super("QOTD Bot Console");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        textArea = new JTextArea();
+        JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
