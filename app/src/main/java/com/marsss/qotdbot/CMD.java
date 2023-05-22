@@ -62,6 +62,7 @@ public class CMD extends ListenerAdapter {
                 case "managerreview" -> setManagerReview(raw);
                 case "reviewchannel" -> setReviewChannel(raw);
                 case "embedcolor" -> setColor(raw);
+                case "trivia" -> setTrivia(raw);
                 case "info" -> sendInfo();
                 case "version" -> checkVersion();
             }
@@ -589,6 +590,27 @@ public class CMD extends ListenerAdapter {
         }
     }
 
+    private void setTrivia(String raw) {
+        // qotd trivia
+        try {
+            String param = raw.substring(QOTDBot.config.getPrefix().length() + 1 + 6).trim();
+            boolean setTo;
+            if (param.equalsIgnoreCase("true")) {
+                setTo = true;
+            } else if (param.equalsIgnoreCase("false")) {
+                setTo = false;
+            } else {
+                e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
+                return;
+            }
+            QOTDBot.config.setTrivia(setTo);
+            e.getMessage().replyEmbeds(se("QOTD trivia mode: **" + QOTDBot.config.getTrivia() + "**")).queue();
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.e.getMessage().replyEmbeds(se("Invalid parameter")).queue();
+        }
+    }
+
     private void sendInfo() {
         // qotd info
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy • hh:mm");
@@ -747,6 +769,7 @@ public class CMD extends ListenerAdapter {
                                         QOTDBot.config.getPrefix() + " managerreview <true|false>` - Toggle QOTD manager review" + "\n`" +
                                         QOTDBot.config.getPrefix() + " reviewchannel <channel id>` - Set QOTD request channel" + "\n`" +
                                         QOTDBot.config.getPrefix() + " qotdcolor <color in hex>` - Set QOTD embed color" + "\n`" +
+                                        QOTDBot.config.getPrefix() + " trivia <true|false>` - Toggle trivia mode when queue is empty" + "\n`" +
                                         QOTDBot.config.getPrefix() + " info` - See bot info" + "\n`" +
                                         QOTDBot.config.getPrefix() + " version` - See bot version", false)
                         .addBlankField(true)

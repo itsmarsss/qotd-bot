@@ -24,6 +24,8 @@ public class Config {
 
     private Color color = Color.decode("#E62127");
 
+    private boolean trivia = true;
+
     private boolean initialized;
 
     public Config() {
@@ -145,6 +147,14 @@ public class Config {
 
     public Color getColor() {
         return color;
+    }
+
+    public boolean getTrivia() {
+        return trivia;
+    }
+
+    public void setTrivia(boolean trivia) {
+        this.trivia = trivia;
     }
 
     public boolean getInitialized() {
