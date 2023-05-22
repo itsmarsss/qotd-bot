@@ -671,7 +671,7 @@ public class QOTDBot {
 
     public static void stop() {
         if (jda == null) {
-            System.out.println("Bot already Stopped");
+            System.out.println("Bot already Stopped.");
             return;
         }
         jda.shutdownNow();

@@ -33,7 +33,7 @@ public class ConsoleMirror extends JFrame {
         Button startButton = new Button("Start", new Color(88, 101, 242), new Color(71, 82, 196), new Color(60, 69, 165));
         startButton.addActionListener(actionEvent -> {
             if(QOTDBot.getJDA() != null) {
-                System.out.println("Bot already Started");
+                System.out.println("Bot already Started.");
                 return;
             }
             QOTDBot.start();
