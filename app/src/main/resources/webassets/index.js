@@ -171,5 +171,5 @@ function formatDate(date) {
     return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
 }
 
-queue.click();
 getConfig();
+queue.click();
