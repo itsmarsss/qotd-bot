@@ -88,13 +88,13 @@ function setConfig() {
         `;
 
     console.log(body);
-    httpPostAsync(`/ api / v1 / setconfig`, body, (res) => {
+    httpPostAsync(`/api/v1/setconfig`, body, (res) => {
         window.location.reload();
     });
 }
 
 function getQueue() {
-    httpGetAsync(`/ api / v1 / getqueue`, null, (res) => {
+    httpGetAsync(`/api/v1/getqueue`, null, (res) => {
         console.log(res);
 
         const data = JSON.parse(res);
