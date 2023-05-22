@@ -25,6 +25,8 @@ queue.addEventListener("click", function () {
     question_review.style.display = "none";
 
     list_title_text.innerHTML = "Queue:";
+
+    getQueue();
 });
 
 review.addEventListener("click", function () {
@@ -72,6 +74,16 @@ function setConfig() {
     console.log(body);
     httpPostAsync(`/api/v1/setconfig`, body, (res) => {
         window.location.reload();
+    });
+}
+
+function getQueue() {
+    httpGetAsync(`/api/v1/getqueue`, null, (res) => {
+        console.log(res);
+
+        const data = JSON.parse(res);
+
+        question_queue.innerHTML = "";
     });
 }
 
