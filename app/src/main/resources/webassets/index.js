@@ -128,7 +128,7 @@ function getQueue() {
     </div>
 
     <div class="aside">
-        <button class="delete" title="Remove" onclick="deleteQOTD("queue","${q.uuid}")">&#128465;&#65039;</button>
+        <button class="delete" title="Remove" onclick="deleteQOTD('queue','${q.uuid}')">&#128465;&#65039;</button>
     </div>
 </div>
 
@@ -178,8 +178,8 @@ function getReview() {
     </div>
     
     <div class="aside">
-        <button class="deny" id="deny" title="Deny" onclick="deleteQOTD("review","${q.uuid}")">&#10060;</button>
-        <button class="approve" id="approve" title="Approve" onclick="approveQOTD("${q.uuid}")">&#9989;</button>
+        <button class="deny" id="deny" title="Deny" onclick="deleteQOTD('review','${q.uuid}')">&#10060;</button>
+        <button class="approve" id="approve" title="Approve" onclick="approveQOTD('${q.uuid}')">&#9989;</button>
     </div>
 </div>
 
