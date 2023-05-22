@@ -117,6 +117,7 @@ public class Webserver {
             String response = String.format("""
                             {
                                 "prefix": "%s",
+                                "qotdchannel": "%s",
                                 "managerreview": "%s",
                                 "reviewchannel": "%s",
                                 "embedcolor": "#%s",
@@ -126,6 +127,7 @@ public class Webserver {
                             }
                             """,
                     QOTDBot.config.getPrefix(),
+                    QOTDBot.config.getChannelID(),
                     QOTDBot.config.getManagerReview(),
                     QOTDBot.config.getReviewChannel(),
                     QOTDBot.config.getQOTDColor(),
@@ -158,6 +160,7 @@ public class Webserver {
             }
 
             QOTDBot.config.setPrefix((String) data.get("prefix"));
+            QOTDBot.config.setChannelID((String) data.get("qotdchannel"));
             QOTDBot.config.setManagerReview(Boolean.parseBoolean((String) data.get("managerreview")));
             QOTDBot.config.setReviewChannel((String) data.get("reviewchannel"));
             QOTDBot.config.setQOTDColor((String) data.get("embedcolor"));
