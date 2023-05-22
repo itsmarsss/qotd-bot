@@ -169,7 +169,6 @@ public class ButtonListener extends ListenerAdapter {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
             this.e.replyEmbeds(CMD.se("Request unsuccessful *(Hint: Embed possibly removed?)*")).setEphemeral(true).queue();
         }
     }
