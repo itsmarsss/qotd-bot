@@ -38,6 +38,7 @@ public class Webserver {
         server.createContext("/api/v1/getreview", new GetReview());
         server.createContext("/api/v1/delete", new Delete());
         server.createContext("/api/v1/approve", new Approve());
+        server.createContext("/api/v1/postnext", new PostNext());
         server.setExecutor(null);
         server.start();
         port = server.getAddress().getPort();
@@ -341,6 +342,19 @@ public class Webserver {
             System.out.println("\t" + uuid);
 
             QOTDBot.approve(uuid);
+
+            String response = "Success";
+            he.sendResponseHeaders(200, response.length());
+            OutputStream os = he.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
+    }
+
+    private class PostNext implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            QOTDBot.postQOTD();
 
             String response = "Success";
             he.sendResponseHeaders(200, response.length());
