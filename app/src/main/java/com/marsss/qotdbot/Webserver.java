@@ -40,6 +40,7 @@ public class Webserver {
         server.createContext("/api/v1/delete", new Delete());
         server.createContext("/api/v1/approve", new Approve());
         server.createContext("/api/v1/postnext", new PostNext());
+        server.createContext("/api/v1/newpost", new NewPost());
         server.setExecutor(null);
         server.start();
         port = server.getAddress().getPort();

@@ -65,7 +65,7 @@ function hideModal() {
     }, 100);
 }
 
-function submitPost() {
+function submitModal() {
     const body = `
     {
         "author": ${nauthor},
