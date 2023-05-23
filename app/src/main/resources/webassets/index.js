@@ -44,7 +44,9 @@ function approveQOTD(uuid) {
 
 function postNext() {
     httpGetAsync("/api/v1/postnext", null, (res) => {
-        alert("Next QOTD Posted!");
+        if (res === "Success") {
+            alert("Next QOTD Posted!");
+        }
         window.location.reload();
     });
 }
@@ -75,7 +77,9 @@ function submitPost() {
 
     console.log(body);
     httpPostAsync(`/api/v1/newpost`, body, (res) => {
-        alert("New QOTD Added!");
+        if (res === "Success") {
+            alert("New QOTD Added!");
+        }
         window.location.reload();
     });
 }
