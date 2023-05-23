@@ -68,10 +68,10 @@ function hideModal() {
 function submitModal() {
     const body = `
     {
-        "author": "${nauthor}",
-        "question": "${nquestion}",
-        "footer": "${nfooter}",
-        "type": "${ntype}"
+        "author": "${nauthor.value}",
+        "question": "${nquestion.value}",
+        "footer": "${nfooter.value}",
+        "type": "${ntype.value}"
     }
     `;
 
