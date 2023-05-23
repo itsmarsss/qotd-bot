@@ -77,6 +77,36 @@ main {
     overflow-x: hidden;
 }
 
+.modal {
+    position: fixed;
+    z-index: 11;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    background: #000000b1;
+}
+
+.modal-content {
+    position: fixed;
+    border-radius: 15px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2b2d31;
+    width: 400px;
+    padding: 20px;
+}
+
+.modal-content h5 {
+    margin-bottom: 0px;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 300px;
+}
+
 .qotd-config {
     background: #2b2d31;
     width: 200px;
@@ -107,14 +137,14 @@ select {
     background: #1e1f22;
     border-radius: 5px;
     height: 40px;
+    width: 150px;
     outline: none;
     border: none;
     padding-left: 10px;
     margin-top: 5px;
 }
 
-.update-config-button,
-.postnext {
+button {
     margin-top: 5px;
     margin-bottom: 20px;
     outline: none;
@@ -130,14 +160,12 @@ select {
     font-weight: bold;
 }
 
-.update-config-button:hover,
-.postnext:hover {
+button:hover {
     transform: translateY(2px);
     background: #4752c4;
 }
 
-.update-config-button:active,
-.postnext:active {
+button:active {
     transform: translateY(0px);
     background: #3c45a5;
 }
@@ -191,12 +219,31 @@ select {
     width: 50%;
 }
 
+.cancel {
+    background: #f23f42;
+}
+
+.cancel:hover {
+    background: #c62424;
+}
+
+.cancel:active {
+    background: #a12828;
+}
+
+.newpost,
 .postnext {
-    float: right;
     right: 0px;
     position: absolute;
     margin: 0;
     padding: 9px;
+}
+
+.newpost {
+    right: 90px;
+}
+
+.postnext {
     background: #248046;
 }
 
@@ -313,4 +360,32 @@ select {
 
 .footer {
     bottom: 0px;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }

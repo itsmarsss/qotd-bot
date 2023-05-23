@@ -1,5 +1,11 @@
 const config = document.getElementsByClassName('qotd-config')[0];
 
+const modal = document.getElementById('modal');
+const nauthor = document.getElementById('nauthor');
+const nquestion = document.getElementById('nquestion');
+const nfooter = document.getElementById('nfooter');
+const ntype = document.getElementById('nquestiontype');
+
 const queue = document.getElementById('queue');
 const review = document.getElementById('review');
 
@@ -39,9 +45,52 @@ function approveQOTD(uuid) {
 function postNext() {
     httpGetAsync("/api/v1/postnext", null, (res) => {
         alert("Next QOTD Posted!");
-        window.location.reload;
+        window.location.reload();
     });
 }
+
+function showModal() {
+    modal.classList.add('fade-in');
+    modal.style.display = 'block';
+}
+
+function hideModal() {
+    modal.classList.add('fade-out');
+    setTimeout(function () {
+        modal.classList.remove('fade-in');
+        modal.classList.remove('fade-out');
+        modal.style.display = 'none';
+    }, 100);
+}
+
+function submitPost() {
+    const body = `
+    {
+        "author": ${nauthor},
+        "question": ${nquestion},
+        "footer": ${nfooter},
+        "type": ${ntype}
+    }
+    `;
+
+    console.log(body);
+    httpPostAsync(`/api/v1/newpost`, body, (res) => {
+        alert("New QOTD Added!");
+        window.location.reload();
+    });
+}
+
+modal.addEventListener("keypress", function (e) {
+    if (e.key === 'Escape') {
+        hideModal();
+    }
+});
+
+modal.addEventListener("click", function (e) {
+    if (e.target === e.currentTarget) {
+        hideModal();
+    }
+});
 
 queue.addEventListener("click", function () {
     question_queue.style.display = "block";
@@ -254,6 +303,7 @@ function formatDate(date) {
     return `${year} /${month}/${day} ${hours}:${minutes}:${seconds} `;
 }
 
+hideModal();
 getConfig();
 
 const urlParams = new URLSearchParams(window.location.search);
