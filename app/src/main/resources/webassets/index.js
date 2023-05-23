@@ -38,6 +38,7 @@ function approveQOTD(uuid) {
 
 function postNext() {
     httpGetAsync("/api/v1/postnext", null, (res) => {
+        alert("Next QOTD Posted!");
         window.location.reload;
     });
 }
