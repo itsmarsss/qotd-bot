@@ -10,7 +10,7 @@ import java.net.URL;
 public class ConsoleMirror extends JFrame {
 
     public ConsoleMirror() {
-        super("QOTD Bot Console");
+        super("QOTD Bot Console v" + QOTDBot.getVersion());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JTextArea textArea = new JTextArea();

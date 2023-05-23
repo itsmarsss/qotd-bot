@@ -716,6 +716,10 @@ public class QOTDBot {
         isPaused = paused;
     }
 
+    public static String getVersion() {
+        return version;
+    }
+
     public static void stop() {
         if (jda == null) {
             System.out.println("Bot already Stopped.");

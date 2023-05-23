@@ -45,7 +45,7 @@ public class Webserver {
         server.start();
         port = server.getAddress().getPort();
 
-        html = loadFile("webassets/index.html");
+        html = loadFile("webassets/index.html").replace("0.0.0", QOTDBot.getVersion());
         js = loadFile("webassets/index.js");
         css = loadFile("webassets/index.css");
 
