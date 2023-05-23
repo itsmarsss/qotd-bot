@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class Webserver {
 
@@ -397,6 +398,10 @@ public class Webserver {
                 String question = (String) data.get("question");
                 String footer = (String) data.get("footer");
                 boolean poll = data.get("type").equals("poll");
+
+                Question newq = new Question(question, footer, author, poll);
+
+                QOTDBot.add(newq);
 
                 String response = "Success";
                 he.sendResponseHeaders(200, response.length());
