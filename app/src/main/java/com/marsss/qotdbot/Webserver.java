@@ -162,28 +162,33 @@ public class Webserver {
                 System.out.println();
                 System.out.println("QOTD Bot config has been updated:");
                 System.out.println("\t" + body);
+
+                QOTDBot.config.setPrefix((String) data.get("prefix"));
+                QOTDBot.config.setChannelID((String) data.get("qotdchannel"));
+                QOTDBot.config.setManagerReview(Boolean.parseBoolean((String) data.get("managerreview")));
+                QOTDBot.config.setReviewChannel((String) data.get("reviewchannel"));
+                QOTDBot.config.setQOTDColor((String) data.get("embedcolor"));
+                QOTDBot.config.setTrivia(Boolean.parseBoolean((String) data.get("trivia")));
+                QOTDBot.setPaused(Boolean.parseBoolean((String) data.get("paused")));
+
+                QOTDBot.config.setPermRoleID((String) data.get("permissionrole"));
+                QOTDBot.config.setManagerRoleID((String) data.get("managerrole"));
+
+                String response = "Success";
+                he.sendResponseHeaders(200, response.length());
+                OutputStream os = he.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             } catch (ParseException e) {
                 e.printStackTrace();
                 System.out.println("Unable to read POST (GET) JSON");
-                throw new RuntimeException(e);
+
+                String response = "Failed";
+                he.sendResponseHeaders(200, response.length());
+                OutputStream os = he.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             }
-
-            QOTDBot.config.setPrefix((String) data.get("prefix"));
-            QOTDBot.config.setChannelID((String) data.get("qotdchannel"));
-            QOTDBot.config.setManagerReview(Boolean.parseBoolean((String) data.get("managerreview")));
-            QOTDBot.config.setReviewChannel((String) data.get("reviewchannel"));
-            QOTDBot.config.setQOTDColor((String) data.get("embedcolor"));
-            QOTDBot.config.setTrivia(Boolean.parseBoolean((String) data.get("trivia")));
-            QOTDBot.setPaused(Boolean.parseBoolean((String) data.get("paused")));
-
-            QOTDBot.config.setPermRoleID((String) data.get("permissionrole"));
-            QOTDBot.config.setManagerRoleID((String) data.get("managerrole"));
-
-            String response = "Success";
-            he.sendResponseHeaders(200, response.length());
-            OutputStream os = he.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
         }
     }
 
@@ -294,29 +299,35 @@ public class Webserver {
                 data = (JSONObject) parser.parse(body);
                 System.out.println();
                 System.out.println("QOTD Bot post has been requested to be deleted:");
+
+                String type = (String) data.get("type");
+                String uuid = (String) data.get("uuid");
+
+                System.out.println("\t" + uuid);
+
+                if (type.equals("queue")) {
+                    QOTDBot.remove(uuid);
+                } else {
+                    QOTDBot.deny(uuid);
+                }
+
+                String response = "Success";
+
+                he.sendResponseHeaders(200, response.length());
+                OutputStream os = he.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             } catch (ParseException e) {
                 e.printStackTrace();
                 System.out.println("Unable to read POST (GET) JSON");
-                throw new RuntimeException(e);
+
+                String response = "Failed";
+                he.sendResponseHeaders(200, response.length());
+                OutputStream os = he.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             }
 
-            String type = (String) data.get("type");
-            String uuid = (String) data.get("uuid");
-
-            System.out.println("\t" + uuid);
-
-            if (type.equals("queue")) {
-                QOTDBot.remove(uuid);
-            } else {
-                QOTDBot.deny(uuid);
-            }
-
-            String response = "Success";
-
-            he.sendResponseHeaders(200, response.length());
-            OutputStream os = he.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
         }
     }
 
@@ -331,23 +342,28 @@ public class Webserver {
                 data = (JSONObject) parser.parse(body);
                 System.out.println();
                 System.out.println("QOTD Bot post has been requested to be approved:");
+
+                String uuid = (String) data.get("uuid");
+
+                System.out.println("\t" + uuid);
+
+                QOTDBot.approve(uuid);
+
+                String response = "Success";
+                he.sendResponseHeaders(200, response.length());
+                OutputStream os = he.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             } catch (ParseException e) {
                 e.printStackTrace();
                 System.out.println("Unable to read POST (GET) JSON");
-                throw new RuntimeException(e);
+
+                String response = "Failed";
+                he.sendResponseHeaders(200, response.length());
+                OutputStream os = he.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
             }
-
-            String uuid = (String) data.get("uuid");
-
-            System.out.println("\t" + uuid);
-
-            QOTDBot.approve(uuid);
-
-            String response = "Success";
-            he.sendResponseHeaders(200, response.length());
-            OutputStream os = he.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
         }
     }
 
@@ -361,6 +377,42 @@ public class Webserver {
             OutputStream os = he.getResponseBody();
             os.write(response.getBytes());
             os.close();
+        }
+    }
+
+    private class NewPost implements HttpHandler {
+        @Override
+        public void handle(HttpExchange he) throws IOException {
+            String body = readRequestBody(he.getRequestBody());
+
+            JSONParser parser = new JSONParser();
+            JSONObject data;
+            try {
+                data = (JSONObject) parser.parse(body);
+                System.out.println();
+                System.out.println("QOTD Bot new post has been requested:");
+                System.out.println("\t" + body);
+
+                String author = (String) data.get("author");
+                String question = (String) data.get("question");
+                String footer = (String) data.get("footer");
+                boolean poll = data.get("type").equals("poll");
+
+                String response = "Success";
+                he.sendResponseHeaders(200, response.length());
+                OutputStream os = he.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            } catch (ParseException e) {
+                e.printStackTrace();
+                System.out.println("Unable to read POST (GET) JSON");
+
+                String response = "Failed";
+                he.sendResponseHeaders(200, response.length());
+                OutputStream os = he.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            }
         }
     }
 
