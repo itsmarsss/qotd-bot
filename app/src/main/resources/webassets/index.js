@@ -1,5 +1,11 @@
 const config = document.getElementsByClassName('qotd-config')[0];
 
+const modal = document.getElementById('modal');
+const nauthor = document.getElementById('nauthor');
+const nquestion = document.getElementById('nquestion');
+const nfooter = document.getElementById('nfooter');
+const ntype = document.getElementById('nquestiontype');
+
 const queue = document.getElementById('queue');
 const review = document.getElementById('review');
 
@@ -36,6 +42,60 @@ function approveQOTD(uuid) {
     });
 }
 
+function postNext() {
+    httpGetAsync("/api/v1/postnext", null, (res) => {
+        if (res === "Success") {
+            alert("Next QOTD Posted!");
+        }
+        window.location.reload();
+    });
+}
+
+function showModal() {
+    modal.classList.add('fade-in');
+    modal.style.display = 'block';
+}
+
+function hideModal() {
+    modal.classList.add('fade-out');
+    setTimeout(function () {
+        modal.classList.remove('fade-in');
+        modal.classList.remove('fade-out');
+        modal.style.display = 'none';
+    }, 100);
+}
+
+function submitModal() {
+    const body = `
+    {
+        "author": "${nauthor.value}",
+        "question": "${nquestion.value}",
+        "footer": "${nfooter.value}",
+        "type": "${ntype.value}"
+    }
+    `;
+
+    console.log(body);
+    httpPostAsync(`/api/v1/newpost`, body, (res) => {
+        if (res === "Success") {
+            alert("New QOTD Added!");
+        }
+        window.location.reload();
+    });
+}
+
+modal.addEventListener("keypress", function (e) {
+    if (e.key === 'Escape') {
+        hideModal();
+    }
+});
+
+modal.addEventListener("click", function (e) {
+    if (e.target === e.currentTarget) {
+        hideModal();
+    }
+});
+
 queue.addEventListener("click", function () {
     question_queue.style.display = "block";
     question_review.style.display = "none";
@@ -69,6 +129,7 @@ function getConfig() {
         managerreview.value = data.managerreview;
         reviewchannel.value = data.reviewchannel;
         embedcolor.value = data.embedcolor;
+        trivia.value = data.trivia;
         paused.value = data.paused;
 
         permissionrole.value = data.permissionrole;
@@ -88,6 +149,7 @@ function setConfig() {
             "managerreview": "${managerreview.value}",
             "reviewchannel": "${reviewchannel.value}",
             "embedcolor": "${embedcolor.value}",
+            "trivia": "${trivia.value}",
             "paused": "${paused.value}",
 
             "permissionrole": "${permissionrole.value}",
@@ -245,6 +307,7 @@ function formatDate(date) {
     return `${year} /${month}/${day} ${hours}:${minutes}:${seconds} `;
 }
 
+hideModal();
 getConfig();
 
 const urlParams = new URLSearchParams(window.location.search);
