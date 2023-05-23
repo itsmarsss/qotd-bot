@@ -12,6 +12,37 @@
 </head>
 
 <body>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <h3>New QOTD Post</h3>
+            <div class="author">
+                <h5>Author</h5>
+                <input type="text" placeholder="user#0000" id="nauthor">
+            </div>
+            <div class="nquestion">
+                <h5>Question</h5>
+                <input type="text" placeholder="Question" id="nquestion">
+            </div>
+            <div class="footer">
+                <h5>Footer</h5>
+                <input type="text" placeholder="Footer" id="nfooter">
+            </div>
+            <div class="questiontype">
+                <h5>Question Type</h5>
+                <select id="nquestiontype" name="Question Type">
+                    <option value="question">question</option>
+                    <option value="poll">poll</option>
+                </select>
+            </div>
+
+            <hr style="background: transparent;">
+
+            <button id="submit" class="submit" onclick="submitModal()">Submit</button>
+            <button id="cancel" class="cancel" onclick="hideModal()">Cancel</button>
+        </div>
+    </div>
+
     <div class="qotd-config">
         <div class="config-title">
             <h5>
@@ -42,6 +73,16 @@
             <div class="embedcolor">
                 <h5>Embed Color</h5>
                 <input type="color" id="embedcolor">
+            </div>
+
+            <hr>
+
+            <div class="trivia">
+                <h5>Trivia Mode</h5>
+                <select id="trivia" name="Trivia Mode">
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                </select>
             </div>
             <div class="paused">
                 <h5>Pause</h5>
@@ -85,6 +126,8 @@
                 <h3 id="list-title-text">
                     Queue:
                 </h3>
+                <button class="newpost" onclick="showModal()">New Post</button>
+                <button class="postnext" onclick="postNext()">Post Next</button>
             </div>
 
             <div class="questions" id="question-queue">

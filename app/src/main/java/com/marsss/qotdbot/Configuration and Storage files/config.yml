@@ -38,3 +38,6 @@ reviewChannel: 1234567890
 
 # QOTD Embed color in hex (Do not include "#")
 QOTDColor: E62127
+
+# Start sending trivia questions if queue is empty
+trivia: true
