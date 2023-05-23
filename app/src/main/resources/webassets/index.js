@@ -36,6 +36,12 @@ function approveQOTD(uuid) {
     });
 }
 
+function postNext() {
+    httpGetAsync("/api/v1/postnext", null, (res) => {
+        window.location.reload;
+    });
+}
+
 queue.addEventListener("click", function () {
     question_queue.style.display = "block";
     question_review.style.display = "none";

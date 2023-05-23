@@ -113,7 +113,8 @@ select {
     margin-top: 5px;
 }
 
-.update-config-button {
+.update-config-button,
+.postnext {
     margin-top: 5px;
     margin-bottom: 20px;
     outline: none;
@@ -129,12 +130,14 @@ select {
     font-weight: bold;
 }
 
-.update-config-button:hover {
+.update-config-button:hover,
+.postnext:hover {
     transform: translateY(2px);
     background: #4752c4;
 }
 
-.update-config-button:active {
+.update-config-button:active,
+.postnext:active {
     transform: translateY(0px);
     background: #3c45a5;
 }
@@ -181,6 +184,28 @@ select {
     z-index: 10;
     margin-top: 20px;
     height: 35px;
+    display: flex;
+}
+
+#list-title-text {
+    width: 50%;
+}
+
+.postnext {
+    float: right;
+    right: 0px;
+    position: absolute;
+    margin: 0;
+    padding: 9px;
+    background: #248046;
+}
+
+.postnext:hover {
+    background: #1a6334;
+}
+
+.postnext:active {
+    background: #15562b;
 }
 
 .questions {
