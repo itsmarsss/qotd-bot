@@ -152,9 +152,8 @@ function getConfig() {
             overlay.classList.remove('slide-in');
             overlay.classList.remove('slide-out');
             overlay.style.transform = "translateY(0)";
+            overlay.style.position = "";
         }, 100);
-
-        overlay.style.position = "";
     });
 }
 
