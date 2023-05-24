@@ -48,7 +48,7 @@ public class ConsoleMirror extends JFrame {
         siteButton.addActionListener(actionEvent -> QOTDBot.controlPanel());
         buttonPanel.add(siteButton);
 
-        Button editButton = new Button("Edit [config.yml]", new Color(78, 80, 88), new Color(65, 68, 74), new Color(78, 80, 88));
+        Button editButton = new Button("config.yml", new Color(78, 80, 88), new Color(65, 68, 74), new Color(78, 80, 88));
         editButton.addActionListener(actionEvent -> {
             System.out.println();
             ProcessBuilder pb = new ProcessBuilder("Notepad.exe", QOTDBot.getParent() + "/config.yml");
