@@ -41,7 +41,7 @@ managerrole.addEventListener('input', alertConfig);
 
 function alertConfig() {
     overlay.style.position = "sticky";
-    console.log(1);
+    overlay.classList.add('slide-in');
 }
 
 function deleteQOTD(type, uuid) {
@@ -146,6 +146,14 @@ function getConfig() {
         managerrole.value = data.managerrole;
 
         qotdColor = data.embedcolor;
+
+
+        overlay.classList.add('slide-out');
+        setTimeout(function () {
+            overlay.classList.add('slide-in');
+            overlay.classList.add('slide-out');
+            overlay.style.transform = "translateY(0)";
+        }, 100);
 
         overlay.style.position = "";
     });

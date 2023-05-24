@@ -140,6 +140,7 @@ main {
     border-radius: 7px;
     background: #222327;
     box-shadow: #959da533 0px 8px 24px;
+    transition: 200ms;
 }
 
 .reset {
@@ -416,6 +417,14 @@ button:active {
     animation: fadeOut 0.5s;
 }
 
+.slide-in {
+    animation: slideIn 0.25s;
+}
+
+.slide-out {
+    animation: slideIn 0.25s;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -433,5 +442,25 @@ button:active {
 
     to {
         opacity: 0;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(100px);
+    }
+
+    to {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0px);
+    }
+
+    to {
+        transform: translateY(100px);
     }
 }
