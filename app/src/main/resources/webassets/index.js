@@ -147,11 +147,10 @@ function getConfig() {
 
         qotdColor = data.embedcolor;
 
-
         overlay.classList.add('slide-out');
         setTimeout(function () {
-            overlay.classList.add('slide-in');
-            overlay.classList.add('slide-out');
+            overlay.classList.remove('slide-in');
+            overlay.classList.remove('slide-out');
             overlay.style.transform = "translateY(0)";
         }, 100);
 
