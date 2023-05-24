@@ -422,7 +422,7 @@ button:active {
 }
 
 .slide-out {
-    animation: slideIn 0.25s;
+    animation: slideOut 0.25s;
 }
 
 @keyframes fadeIn {
