@@ -45,6 +45,25 @@ Simply follow a tutorial to create a Discord bot and run the code. Pass in the b
 - Toggle dynamic config state
 - Update config file
 
+### GUI ~ Desktop Window
+- See a version of the logs
+- Controls
+  - Start
+  - Stop
+  - Control Panel
+  - Edit [config.yml]
+
+### Control Panel ~ Local website (accessible in web browsers)
+- Edit QOTD Bot configuration
+- View queue list
+   - Delete
+- View review list
+   - Approve
+   - Deny
+- Edit QOTD Bot configuration
+- Add new posts
+- Post next QOTD
+
 ## Video Demonstration
 <p align="center">Video Demonstration: https://www.youtube.com/watch?v=iJrDy7_vNNA</p>
 
