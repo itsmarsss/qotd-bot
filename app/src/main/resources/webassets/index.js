@@ -17,18 +17,32 @@ const qotdchannel = document.getElementById('qotdchannel');
 const managerreview = document.getElementById('managerreview');
 const reviewchannel = document.getElementById('reviewchannel');
 const embedcolor = document.getElementById('embedcolor');
+const trivia = document.getElementById('trivia');
 const paused = document.getElementById('paused');
 
 const permissionrole = document.getElementById('permissionrole');
 const managerrole = document.getElementById('managerrole');
 
-
-const updateconfig = document.getElementById('updateconfig');
-
+const overlay = document.getElementById('overlay');
 
 const list_title_text = document.getElementById('list-title-text');
 
 var qotdColor = "#000";
+
+prefix.addEventListener('input', alertConfig);
+qotdchannel.addEventListener('input', alertConfig);
+managerreview.addEventListener('change', alertConfig);
+reviewchannel.addEventListener('input', alertConfig);
+embedcolor.addEventListener('change', alertConfig);
+paused.addEventListener('change', alertConfig);
+trivia.addEventListener('change', alertConfig);
+permissionrole.addEventListener('input', alertConfig);
+managerrole.addEventListener('input', alertConfig);
+
+function alertConfig() {
+    overlay.style.position = "sticky";
+    console.log(1);
+}
 
 function deleteQOTD(type, uuid) {
     httpPostAsync(`/api/v1/delete`, `{"type":"${type}", "uuid":"${uuid}"}`, (res) => {
@@ -114,10 +128,6 @@ review.addEventListener("click", function () {
     getReview();
 });
 
-updateconfig.addEventListener("click", function () {
-    setConfig();
-});
-
 function getConfig() {
     httpGetAsync("/api/v1/getconfig", null, (res) => {
         console.log(res);
@@ -134,9 +144,10 @@ function getConfig() {
 
         permissionrole.value = data.permissionrole;
         managerrole.value = data.managerrole;
-        updateconfig.value = data.updateconfig;
 
         qotdColor = data.embedcolor;
+
+        overlay.style.position = "";
     });
 }
 

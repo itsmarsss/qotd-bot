@@ -127,6 +127,49 @@ main {
     margin-bottom: 0px;
 }
 
+.overlay {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 5px;
+    padding-left: 10px;
+    padding-top: 10px;
+    bottom: 10px;
+    width: 165px;
+    height: 40px;
+    border-radius: 7px;
+    background: #222327;
+    box-shadow: #959da533 0px 8px 24px;
+}
+
+.reset {
+    background: transparent;
+    transform: translateY(0px);
+}
+
+.reset:hover,
+.save:hover {
+    background: transparent;
+    transform: translateY(0px);
+}
+
+.reset:hover {
+    text-decoration: underline;
+}
+
+.reset:active,
+.save:active {
+    background: transparent;
+    transform: translateY(0px);
+}
+
+.save,
+.reset {
+    margin: 0px;
+    height: 30px;
+    padding: 5px;
+}
+
 .config-title {
     color: #919ba4;
 }
@@ -243,15 +286,18 @@ button:active {
     right: 90px;
 }
 
-.postnext {
+.postnext,
+.save {
     background: #248046;
 }
 
-.postnext:hover {
+.postnext:hover,
+.save:hover {
     background: #1a6334;
 }
 
-.postnext:active {
+.postnext:active,
+.save:active {
     background: #15562b;
 }
 
@@ -274,7 +320,7 @@ button:active {
     border-radius: 15px;
     padding: 20px;
     overflow: hidden;
-    box-shadow: rgba(90, 90, 100, 0.2) 0px 4px 12px;
+    box-shadow: #5a5a6433 0px 4px 12px;
 }
 
 .question * {
