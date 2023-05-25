@@ -24,6 +24,7 @@ public class Webserver {
     public int getPort() {
         return port;
     }
+
     public void terminate() {
         server.stop(0);
     }
@@ -135,15 +136,15 @@ public class Webserver {
                                 "managerrole": "%s"
                             }
                             """,
-                    QOTDBot.config.getPrefix(),
-                    QOTDBot.config.getChannelID(),
+                    escapeJson(QOTDBot.config.getPrefix()),
+                    escapeJson(QOTDBot.config.getChannelID()),
                     QOTDBot.config.getManagerReview(),
-                    QOTDBot.config.getReviewChannel(),
-                    QOTDBot.config.getQOTDColor(),
+                    escapeJson(QOTDBot.config.getReviewChannel()),
+                    escapeJson(QOTDBot.config.getQOTDColor()),
                     QOTDBot.config.getTrivia(),
                     QOTDBot.isPaused(),
-                    QOTDBot.config.getPermRoleID(),
-                    QOTDBot.config.getManagerRoleID());
+                    escapeJson(QOTDBot.config.getPermRoleID()),
+                    escapeJson(QOTDBot.config.getManagerRoleID()));
 
             he.sendResponseHeaders(200, response.length());
             OutputStream os = he.getResponseBody();
@@ -224,9 +225,9 @@ public class Webserver {
             for (String uuid : uuids) {
                 Question q = questions.get(uuid);
                 data.append(String.format(template,
-                        q.getQuestion(),
-                        q.getFooter(),
-                        q.getAuthor(),
+                        escapeJson(convertToHtml(q.getQuestion())),
+                        escapeJson(convertToHtml(q.getFooter())),
+                        escapeJson(q.getAuthor()),
                         q.getMillis(),
                         q.isPoll(),
                         uuid));
@@ -272,9 +273,9 @@ public class Webserver {
             for (String uuid : uuids) {
                 Question q = questions.get(uuid);
                 data.append(String.format(template,
-                        q.getQuestion(),
-                        q.getFooter(),
-                        q.getAuthor(),
+                        escapeJson(convertToHtml(q.getQuestion())),
+                        escapeJson(convertToHtml(q.getFooter())),
+                        escapeJson(q.getAuthor()),
                         q.getMillis(),
                         q.isPoll(),
                         uuid));
@@ -435,5 +436,61 @@ public class Webserver {
 
     public static String replaceLast(String text, String regex, String replacement) {
         return text.replaceFirst("(?s)" + regex + "(?!.*?" + regex + ")", replacement);
+    }
+
+    public static String convertToHtml(String markdown) {
+        String html = markdown
+                .replaceAll("\\*\\*(.*?)\\*\\*", "<strong>$1</strong>")
+                .replaceAll("\\*(.*?)\\*", "<em>$1</em>")
+                .replaceAll("__(.*?)__", "<strong>$1</strong>")
+                .replaceAll("_(.*?)_", "<em>$1</em>")
+                .replaceAll("```(.*?)```", "<code-block>$1</code-block>")
+                .replaceAll("`(.*?)`", "<code>$1</code>")
+                .replaceAll("\n", "<br>");
+
+        return html;
+    }
+
+    public static String escapeJson(String jsonString) {
+        StringBuilder escapedJson = new StringBuilder();
+
+        for (int i = 0; i < jsonString.length(); i++) {
+            char ch = jsonString.charAt(i);
+
+            switch (ch) {
+                case '\"':
+                    escapedJson.append("\\\"");
+                    break;
+                case '\\':
+                    escapedJson.append("\\\\");
+                    break;
+                case '/':
+                    escapedJson.append("\\/");
+                    break;
+                case '\b':
+                    escapedJson.append("\\b");
+                    break;
+                case '\f':
+                    escapedJson.append("\\f");
+                    break;
+                case '\n':
+                    escapedJson.append("\\n");
+                    break;
+                case '\r':
+                    escapedJson.append("\\r");
+                    break;
+                case '\t':
+                    escapedJson.append("\\t");
+                    break;
+                default:
+                    if (Character.isISOControl(ch)) {
+                        escapedJson.append(String.format("\\u%04X", (int) ch));
+                    } else {
+                        escapedJson.append(ch);
+                    }
+            }
+        }
+
+        return escapedJson.toString();
     }
 }
