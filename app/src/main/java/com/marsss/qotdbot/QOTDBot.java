@@ -40,7 +40,7 @@ public class QOTDBot {
     private static final LinkedList<String> uuids_review = new LinkedList<>();
     private static boolean isPaused = false;
 
-    static final String version = "4.3.6";
+    static final String version = "4.3.8";
     private static String parent;
     private static final EnumSet<GatewayIntent> intent = EnumSet.of(
             GatewayIntent.GUILD_MESSAGES,
@@ -48,6 +48,7 @@ public class QOTDBot {
             GatewayIntent.MESSAGE_CONTENT);
 
     private static boolean head = true;
+    private static boolean autostart = false;
 
     private final static String template = """
             # IMPORTANT - Mandatory fields:\r
@@ -93,11 +94,15 @@ public class QOTDBot {
             """;
 
     public static void main(String[] args) throws URISyntaxException {
-        if (args.length > 0) {
-            if (args[0].equalsIgnoreCase("--nohead")) {
+        for (String arg : args) {
+            if (arg.equals("--nohead") || arg.equals("--nh")) {
                 head = false;
             }
+            if (arg.equals("--autostart") || arg.equals("--as")) {
+                autostart = true;
+            }
         }
+
         if (head) {
             System.out.println("Loading UI...");
 
@@ -172,10 +177,14 @@ public class QOTDBot {
         System.out.println("~ Successfully read config.yml ~");
         System.out.println();
         System.out.println(head ? "** Click [Start] button to start the bot **" : "** Press [enter] to start the bot **");
-        Scanner sc = new Scanner(System.in);
-        sc.nextLine();
-        sc.close();
-        start();
+        if (autostart) {
+            start();
+        } else {
+            Scanner sc = new Scanner(System.in);
+            sc.nextLine();
+            sc.close();
+            start();
+        }
     }
 
     public static void start() {
