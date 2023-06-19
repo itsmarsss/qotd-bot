@@ -19,7 +19,26 @@ Simply follow a tutorial to create a Discord bot and run the code. Pass in the b
 1. The bot will only work on one server
 2. The bot must be self-hosted
 
-## Features:
+## Usage
+### Normal Run
+`java -jar <drag the .jar file into the window OR paste .jar file path (do not include "<" or ">")>`
+
+### No Window Run
+`java -jar <drag the .jar file into the window OR paste .jar file path (do not include "<" or ">")> --nohead`
+
+### Auto Start Run
+`java -jar <drag the .jar file into the window OR paste .jar file path (do not include "<" or ">")> --autostart`
+
+### No Window and Auto Start Run
+`java -jar <drag the .jar file into the window OR paste .jar file path (do not include "<" or ">")> --nohead --autostart`
+
+## Features
+#### Start Config
+| Argument | Usage |
+|---|---|
+| `--nohead` or `--nh` | Run without window |
+| `--autostart` or `--as` | Start bot ASAP (skip confirmation prompt) |
+
 #### Bot perms (by role)
 - Add questions with footers
 - Add poll with footers
