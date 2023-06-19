@@ -82,9 +82,9 @@ function hideModal() {
 function submitModal() {
     const body = `
     {
-        "author": "${nauthor.value}",
-        "question": "${nquestion.value}",
-        "footer": "${nfooter.value}",
+        "author": ${JSON.stringify(nauthor.value)},
+        "question": ${JSON.stringify(nquestion.value)},
+        "footer": ${JSON.stringify(nfooter.value)},
         "type": "${ntype.value}"
     }
     `;
@@ -160,17 +160,16 @@ function getConfig() {
 function setConfig() {
     const body = `
         {
-            "prefix": "${prefix.value}",
-            "qotdchannel": "${qotdchannel.value}",
+            "prefix": ${JSON.stringify(prefix.value)},
+            "qotdchannel": ${JSON.stringify(qotdchannel.value)},
             "managerreview": "${managerreview.value}",
-            "reviewchannel": "${reviewchannel.value}",
+            "reviewchannel": ${JSON.stringify(reviewchannel.value)},
             "embedcolor": "${embedcolor.value}",
             "trivia": "${trivia.value}",
             "paused": "${paused.value}",
 
-            "permissionrole": "${permissionrole.value}",
-            "managerrole": "${managerrole.value}"
-
+            "permissionrole": ${JSON.stringify(permissionrole.value)},
+            "managerrole": ${JSON.stringify(managerrole.value)}
         }
         `;
 
