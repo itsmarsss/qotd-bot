@@ -682,8 +682,11 @@ public class CMD extends ListenerAdapter {
         // qotd managerrole
         try {
             String param = raw.substring(QOTDBot.config.getPrefix().length() + 1 + 11).trim();
-            if (param.equalsIgnoreCase("everyone"))
+            if (param.equalsIgnoreCase("everyone")) {
+                e.getMessage().replyEmbeds(se("QOTD manager role has been changed; `everyone` can approve or deny questions")).queue();
+                QOTDBot.config.setManagerRoleID("everyone");
                 return;
+            }
             boolean exists = false;
             for (Role r : e.getGuild().getRoles()) {
                 if (r.getId().equals(param)) {
