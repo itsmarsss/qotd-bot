@@ -621,6 +621,7 @@ public class CMD extends ListenerAdapter {
                 .addField("Prefix:", QOTDBot.config.getPrefix(), true)
                 .addBlankField(true)
                 .addField("Interval:", QOTDBot.config.getInterval() + " minute(s)", true)
+                .addField("QOTD Channel:", "<@&" + QOTDBot.config.getChannelID() + ">", true)
                 .addField("Perm role ID:", QOTDBot.config.getPermRoleID().equals("everyone") ? "everyone" : "<@&" + QOTDBot.config.getPermRoleID() + ">", true)
                 .addBlankField(true)
                 .addField("Manager role ID:", QOTDBot.config.getManagerRoleID().equals("everyone") ? "everyone" : "<@&" + QOTDBot.config.getManagerRoleID() + ">", true)
