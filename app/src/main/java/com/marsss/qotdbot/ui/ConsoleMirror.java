@@ -76,7 +76,7 @@ public class ConsoleMirror extends JFrame {
 
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-        ImageIcon icon = loadIconFromInternet("https://raw.githubusercontent.com/itsmarsss/QOTD-Bot/main/assets/image.png");
+        ImageIcon icon = loadIconFromInternet("https://raw.githubusercontent.com/itsmarsss/qotd-bot/main/assets/image.png");
         if (icon != null) {
             setIconImage(icon.getImage());
         }

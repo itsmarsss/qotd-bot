@@ -125,7 +125,7 @@ public class QOTDBot {
         System.out.println(" \\___\\_\\\\____/  |_|  |_____/  |____/ \\____/  |_|  ");
         System.out.println("--------------------------------------------------");
         System.out.println("   =========== PROGRAM SOURCE CODE =========");
-        System.out.println("   = https://github.com/itsmarsss/QOTD-Bot =");
+        System.out.println("   = https://github.com/itsmarsss/qotd-bot =");
         System.out.println("   =========================================");
         System.out.println("      Welcome to QOTD Bot's Control Prompt");
         System.out.println();
@@ -461,7 +461,7 @@ public class QOTDBot {
         String newest;
         StringBuilder note = new StringBuilder("Author's Note: ");
         try {
-            url = new URL("https://raw.githubusercontent.com/itsmarsss/QOTD-Bot/main/newestversion");
+            url = new URL("https://raw.githubusercontent.com/itsmarsss/qotd-bot/main/newestversion");
             URLConnection uc;
             uc = url.openConnection();
             BufferedReader reader = new BufferedReader(new InputStreamReader(uc.getInputStream()));
@@ -481,13 +481,13 @@ public class QOTDBot {
             return "   [There is a newer version of QOTD Bot]" +
                     "\n\t##############################################" +
                     "\n\t   " + version + "(current) >> " + newest + "(newer)" +
-                    "\nNew version: https://github.com/itsmarsss/QOTD-Bot/releases" +
+                    "\nNew version: https://github.com/itsmarsss/qotd-bot/releases" +
                     "\n\t##############################################" +
                     "\n" + note;
         }
         return " This program is up to date!" +
                 "\n" + note +
-                "\n[https://github.com/itsmarsss/QOTD-Bot/releases]";
+                "\n[https://github.com/itsmarsss/qotd-bot/releases]";
     }
 
     private static boolean readConfigYML() {

@@ -171,29 +171,45 @@ public class Webserver {
                 data = (JSONObject) parser.parse(body);
                 System.out.println();
                 System.out.println("QOTD Bot config has been updated:");
-                System.out.println("\t" + data);
+                System.out.println("\t" + body);
 
-                QOTDBot.config.setPrefix((String) data.get("prefix"));
+                Config tempConfig = new Config(QOTDBot.config);
 
-                QOTDBot.config.setInterval(Integer.parseInt((String) data.get("interval")));
-                QOTDBot.config.setHour(Integer.parseInt((String) data.get("hour")));
-                QOTDBot.config.setMinute(Integer.parseInt((String) data.get("minute")));
+                tempConfig.setPrefix((String) data.get("prefix"));
 
-                QOTDBot.config.setChannelID((String) data.get("qotdchannel"));
-                QOTDBot.config.setManagerReview(Boolean.parseBoolean((String) data.get("managerreview")));
-                QOTDBot.config.setReviewChannel((String) data.get("reviewchannel"));
-                QOTDBot.config.setQOTDColor((String) data.get("embedcolor"));
-                QOTDBot.config.setTrivia(Boolean.parseBoolean((String) data.get("trivia")));
-                QOTDBot.setPaused(Boolean.parseBoolean((String) data.get("paused")));
+                tempConfig.setInterval(Integer.parseInt((String) data.get("interval")));
+                tempConfig.setHour(Integer.parseInt((String) data.get("hour")));
+                tempConfig.setMinute(Integer.parseInt((String) data.get("minute")));
 
-                QOTDBot.config.setPermRoleID((String) data.get("permissionrole"));
-                QOTDBot.config.setManagerRoleID((String) data.get("managerrole"));
+                tempConfig.setChannelID((String) data.get("qotdchannel"));
+                tempConfig.setManagerReview(Boolean.parseBoolean((String) data.get("managerreview")));
+                tempConfig.setReviewChannel((String) data.get("reviewchannel"));
+                tempConfig.setQOTDColor((String) data.get("embedcolor"));
+                tempConfig.setTrivia(Boolean.parseBoolean((String) data.get("trivia")));
 
-                String response = "Success";
-                he.sendResponseHeaders(200, response.length());
-                OutputStream os = he.getResponseBody();
-                os.write(response.getBytes());
-                os.close();
+                tempConfig.setPermRoleID((String) data.get("permissionrole"));
+                tempConfig.setManagerRoleID((String) data.get("managerrole"));
+
+                if (tempConfig.isValid()) {
+                    QOTDBot.setPaused(Boolean.parseBoolean((String) data.get("paused")));
+
+                    QOTDBot.config = tempConfig;
+                    QOTDBot.config.writeYML(false);
+
+                    String response = "Success";
+                    he.sendResponseHeaders(200, response.length());
+                    OutputStream os = he.getResponseBody();
+                    os.write(response.getBytes());
+                    os.close();
+                } else {
+                    System.out.println("Unable to read POST (GET) JSON");
+
+                    String response = "Failed";
+                    he.sendResponseHeaders(200, response.length());
+                    OutputStream os = he.getResponseBody();
+                    os.write(response.getBytes());
+                    os.close();
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
                 System.out.println("Unable to read POST (GET) JSON");
@@ -451,7 +467,8 @@ public class Webserver {
     }
 
     public static String convertToHtml(String markdown) {
-        String html = markdown
+
+        return markdown
                 .replaceAll("\\*\\*(.*?)\\*\\*", "<strong>$1</strong>")
                 .replaceAll("\\*(.*?)\\*", "<em>$1</em>")
                 .replaceAll("__(.*?)__", "<strong>$1</strong>")
@@ -459,8 +476,6 @@ public class Webserver {
                 .replaceAll("```(.*?)```", "<code-block>$1</code-block>")
                 .replaceAll("`(.*?)`", "<code>$1</code>")
                 .replaceAll("\n", "<br>");
-
-        return html;
     }
 
     public static String escapeJson(String jsonString) {

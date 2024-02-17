@@ -34,9 +34,9 @@ Simply follow a tutorial to create a Discord bot and run the code. Pass in the b
 
 ## Features
 #### Start Config
-| Argument | Usage |
-|---|---|
-| `--nohead` or `--nh` | Run without window |
+| Argument                | Usage                                     |
+|-------------------------|-------------------------------------------|
+| `--nohead` or `--nh`    | Run without window                        |
 | `--autostart` or `--as` | Start bot ASAP (skip confirmation prompt) |
 
 #### Bot perms (by role)

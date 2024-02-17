@@ -31,6 +31,33 @@ public class Config {
     public Config() {
     }
 
+    public Config(Config config) {
+        this.botToken = config.botToken;
+        this.serverID = config.serverID;
+        this.channelID = config.channelID;
+        this.prefix = config.prefix;
+
+        this.interval = config.interval;
+        this.hour = config.hour;
+        this.minute = config.minute;
+
+        this.permRoleID = config.permRoleID;
+        this.managerRoleID = config.managerRoleID;
+
+        this.dynamicConfig = config.dynamicConfig;
+
+        this.managerReview = config.managerReview;
+        this.reviewChannel = config.reviewChannel;
+
+        this.QOTDColor = config.QOTDColor;
+
+        this.color = config.color;
+
+        this.trivia = config.trivia;
+
+        this.initialized = config.initialized;
+    }
+
     public String getBotToken() {
         return botToken;
     }
@@ -191,7 +218,7 @@ public class Config {
         return !managerRoleID.isBlank();
     }
 
-    private void writeYML(boolean exception) {
+    public void writeYML(boolean exception) {
         if ((dynamicConfig || exception) && getInitialized()) {
             QOTDBot.writeConfigYML();
         }
