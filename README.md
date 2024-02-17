@@ -12,7 +12,7 @@ Simpler version of: Simple Question Of The Day (QOTD) Discord Bot you can add to
 ## What is this bot for?
 QOTD stands for Question Of The Day and is usually used to keep servers active and members talking.
 ## What does it do?
-This bot is the Lite version of QOTD-Bot at [https://github.com/itsmarsss/QOTD-Bot]; QOTD managers can send QOTDs to a specific channel and a thread will be made for users to answer the question.
+This bot is the Lite version of QOTD-Bot at [https://github.com/itsmarsss/qotd-bot/tree/qotd-bot-lite]; QOTD managers can send QOTDs to a specific channel and a thread will be made for users to answer the question.
 ## How to set it up?
 Simply follow a tutorial to create a Discord bot and run the code. Pass in the bot's token and configure the bot through the commands in `qotd help`.
 ## Restrictions?
