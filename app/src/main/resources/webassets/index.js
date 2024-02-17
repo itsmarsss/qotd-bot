@@ -13,6 +13,9 @@ const question_queue = document.getElementById('question-queue');
 const question_review = document.getElementById('question-review');
 
 const prefix = document.getElementById('prefix');
+const interval = document.getElementById('interval');
+const hour = document.getElementById('hour');
+const minute = document.getElementById('minute');
 const qotdchannel = document.getElementById('qotdchannel');
 const managerreview = document.getElementById('managerreview');
 const reviewchannel = document.getElementById('reviewchannel');
@@ -30,6 +33,9 @@ const list_title_text = document.getElementById('list-title-text');
 var qotdColor = "#000";
 
 prefix.addEventListener('input', alertConfig);
+interval.addEventListener('input', alertConfig);
+hour.addEventListener('input', alertConfig);
+minute.addEventListener('input', alertConfig);
 qotdchannel.addEventListener('input', alertConfig);
 managerreview.addEventListener('change', alertConfig);
 reviewchannel.addEventListener('input', alertConfig);
@@ -135,6 +141,9 @@ function getConfig() {
         const data = JSON.parse(res);
 
         prefix.value = data.prefix;
+        interval.value = data.interval;
+        hour.value = data.hour;
+        minute.value = data.minute;
         qotdchannel.value = data.qotdchannel;
         managerreview.value = data.managerreview;
         reviewchannel.value = data.reviewchannel;
@@ -161,6 +170,11 @@ function setConfig() {
     const body = `
         {
             "prefix": ${JSON.stringify(prefix.value)},
+
+            "interval": "${interval.value}",
+            "hour": "${hour.value}",
+            "minute": "${minute.value}",
+
             "qotdchannel": ${JSON.stringify(qotdchannel.value)},
             "managerreview": "${managerreview.value}",
             "reviewchannel": ${JSON.stringify(reviewchannel.value)},

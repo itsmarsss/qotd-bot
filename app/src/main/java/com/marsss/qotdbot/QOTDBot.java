@@ -40,7 +40,7 @@ public class QOTDBot {
     private static final LinkedList<String> uuids_review = new LinkedList<>();
     private static boolean isPaused = false;
 
-    static final String version = "4.4.0";
+    static final String version = "4.4.2";
     private static String parent;
     private static final EnumSet<GatewayIntent> intent = EnumSet.of(
             GatewayIntent.GUILD_MESSAGES,
@@ -62,7 +62,7 @@ public class QOTDBot {
             channelID: %s\r
             \r
             # Set a prefix here for the bot, this is what members use to use the bot (e.g. qotd help)\r
-            prefix: %s\r
+            prefix: "%s"\r
             \r
             # Input number of minute(s) until another QOTD is sent ( 1 to 1440 [24 hours] )\r
             interval: %s\r

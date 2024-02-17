@@ -11,7 +11,6 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.UUID;
 
 public class Webserver {
 
@@ -125,6 +124,11 @@ public class Webserver {
             String response = String.format("""
                             {
                                 "prefix": "%s",
+                                
+                                "interval": "%s",
+                                "hour": "%s",
+                                "minute": "%s",
+                                
                                 "qotdchannel": "%s",
                                 "managerreview": "%s",
                                 "reviewchannel": "%s",
@@ -137,6 +141,9 @@ public class Webserver {
                             }
                             """,
                     escapeJson(QOTDBot.config.getPrefix()),
+                    QOTDBot.config.getInterval(),
+                    QOTDBot.config.getHour(),
+                    QOTDBot.config.getMinute(),
                     escapeJson(QOTDBot.config.getChannelID()),
                     QOTDBot.config.getManagerReview(),
                     escapeJson(QOTDBot.config.getReviewChannel()),
@@ -164,9 +171,14 @@ public class Webserver {
                 data = (JSONObject) parser.parse(body);
                 System.out.println();
                 System.out.println("QOTD Bot config has been updated:");
-                System.out.println("\t" + body);
+                System.out.println("\t" + data);
 
                 QOTDBot.config.setPrefix((String) data.get("prefix"));
+
+                QOTDBot.config.setInterval(Integer.parseInt((String) data.get("interval")));
+                QOTDBot.config.setHour(Integer.parseInt((String) data.get("hour")));
+                QOTDBot.config.setMinute(Integer.parseInt((String) data.get("minute")));
+
                 QOTDBot.config.setChannelID((String) data.get("qotdchannel"));
                 QOTDBot.config.setManagerReview(Boolean.parseBoolean((String) data.get("managerreview")));
                 QOTDBot.config.setReviewChannel((String) data.get("reviewchannel"));
@@ -394,7 +406,7 @@ public class Webserver {
                 data = (JSONObject) parser.parse(body);
                 System.out.println();
                 System.out.println("QOTD Bot new post has been requested:");
-                System.out.println("\t" + body);
+                System.out.println("\t" + data);
 
                 String author = (String) data.get("author");
                 String question = (String) data.get("question");
