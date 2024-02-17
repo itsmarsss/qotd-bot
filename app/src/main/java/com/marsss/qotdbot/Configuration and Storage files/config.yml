@@ -9,7 +9,7 @@ serverID: 1234567890
 channelID: 1234567890
 
 # Set a prefix here for the bot, this is what members use to use the bot (e.g. qotd help)
-prefix: qotd
+prefix: "qotd"
 
 # Input number of minute(s) until another QOTD is sent ( 1 to 1440 [24 hours] )
 interval: 1440
