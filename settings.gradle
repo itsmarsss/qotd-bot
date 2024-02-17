@@ -1,2 +1,2 @@
-rootProject.name = 'QOTD-Bot'
+rootProject.name = 'QOTDBot-Lite'
 include('app')

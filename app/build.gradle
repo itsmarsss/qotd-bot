@@ -4,7 +4,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "8.1.0"
 }
 
-mainClassName = 'com.marsss.qotdbot.QOTDBot'
+mainClassName = 'com.marsss.qotdbotlite.QOTDBotLite'
 sourceCompatibility = 15
 
 repositories {
@@ -22,7 +22,7 @@ repositories {
 
 jar {
     manifest {
-        attributes "Main-Class": "com.marsss.qotdbot.QOTDBot"
+        attributes "Main-Class": "com.marsss.qotdbotlite.QOTDBotLite"
     }
 
     from {
@@ -34,7 +34,6 @@ dependencies {
     implementation("net.dv8tion:JDA:5.0.0-beta.5")
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation group: 'org.yaml', name: 'snakeyaml', version: '1.8'
-    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 }
 
 compileJava.options.encoding = 'UTF-8'
