@@ -158,8 +158,11 @@ public class CMD extends ListenerAdapter {
 
             String title = "**__Added the following:__**\n";
 
+            String uuid = "";
+
             if (QOTDBot.config.getManagerReview()) {
                 title = "**__Requested the following:__**\n";
+                uuid = QOTDBot.addReview(q);
             } else {
                 QOTDBot.add(q);
             }
@@ -181,8 +184,8 @@ public class CMD extends ListenerAdapter {
             e.getMessage().reply(message).queue();
 
             if (QOTDBot.config.getManagerReview()) {
-                Button approveButton = Button.success("approve-qotd", "Approve and Delete");
-                Button denyButton = Button.danger("deny-qotd", "Deny and Delete");
+                Button approveButton = Button.success("approve-qotd-" + uuid, "Approve and Delete");
+                Button denyButton = Button.danger("deny-qotd-" + uuid, "Deny and Delete");
 
                 MessageCreateData req = new MessageCreateBuilder()
                         .setEmbeds(new EmbedBuilder()

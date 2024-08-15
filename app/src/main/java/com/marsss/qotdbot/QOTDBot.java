@@ -40,7 +40,7 @@ public class QOTDBot {
     private static final LinkedList<String> uuids_review = new LinkedList<>();
     private static boolean isPaused = false;
 
-    static final String version = "4.4.2";
+    static final String version = "4.4.3";
     private static String parent;
     private static final EnumSet<GatewayIntent> intent = EnumSet.of(
             GatewayIntent.GUILD_MESSAGES,
